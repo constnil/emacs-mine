@@ -11,15 +11,26 @@
 
 (require 'package)
 
-(defun install-pkg (pkg)
-  "Install PKG."
-  (unless (package-installed-p pkg)
-    (unless (assoc pkg package-archive-contents)
-      (package-refresh-contents))
-    (package-install pkg)))
+(let ((archives
+       '(("melpa" . "http://melpa.org/packages/")
+         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+         ("marmalade" . "http://marmalade-repo.org/packages/"))))
+  (dolist (arch archives)
+    (add-to-list 'package-archives arch)))
 
-(install-pkg 'use-package)
-(install-pkg 'better-defaults)
+(when (< emacs-major-version 24)
+  (add-to-list 'package-archives
+               '("gnu" . "http://elpa.gnu.org/packages/")))
+
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (unless (assoc 'use-package package-archive-contents)
+    (package-refresh-contents))
+  (package-install 'use-package))
+
+(require 'use-package)
+
 
 (let* ((current-dir (file-name-directory load-file-name))
        (setup-dir (expand-file-name "setup" current-dir)))
