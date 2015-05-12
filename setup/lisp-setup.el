@@ -1,4 +1,3 @@
-
 ;;; lisp-setup.el --- Lisp setups.
 
 ;; Copyright (C) 2015, Wu Tiefeng.
@@ -10,10 +9,7 @@
 
 ;;; Code:
 
-(require 'dot-emacs-vars)
-(require 'dot-emacs-funcs)
-
-(install-packages '(paredit))
+(require 'use-package)
 
 (unless is-cygwin
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
@@ -21,8 +17,13 @@
       (setq inferior-lisp-program "clisp")
     (setq inferior-lisp-program "clbuild lisp")))
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode)))
-(add-hook 'lisp-mode-hook (lambda () (paredit-mode)))
+(use-package cider)
+
+(use-package paredit
+  :config
+  (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode)))
+  (add-hook 'lisp-mode-hook (lambda () (paredit-mode)))
+  (add-hook 'clojure-mode-hook (lambda () (paredit-mode))))
 
 (provide 'lisp-setup)
 
