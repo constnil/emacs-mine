@@ -9,13 +9,15 @@
 
 ;;; Code:
 
-(require 'use-package)
+(require 'var-setup)
 
 (unless is-cygwin
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (if (or is-mswin is-mac)
       (setq inferior-lisp-program "clisp")
     (setq inferior-lisp-program "clbuild lisp")))
+
+(require 'use-package)
 
 (use-package cider)
 
