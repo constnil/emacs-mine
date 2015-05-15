@@ -3,3 +3,4 @@ backups/
 places
 *.el~
 smex-items
+ido.last*

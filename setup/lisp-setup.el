@@ -22,10 +22,16 @@
 
 (use-package rainbow-blocks :disabled t)
 (use-package clojure-mode)
+(use-package eldoc
+  :config
+  (eldoc-add-command
+   'paredit-backward-delete
+   'paredit-close-round))
+
 (use-package paredit)
 (use-package cider)
 
-(dolist (x '(scheme emacs-lisp lisp clojure))
+(dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-nrepl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
   (when (fboundp 'rainbow-blocks-mode)
     (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-blocks-mode))
