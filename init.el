@@ -14,15 +14,12 @@
   (add-to-list 'load-path setup-dir))
 
 (require 'core-setup)
-
+(require 'syntax-check-setup)
 (require 'lisp-setup)
+(require 'binding-setup)
+(require 'misc-setup)
 
-;(require 'minibuf-setup)
-;(require 'flycheck-setup)
-;(require 'acejump-setup)
 ;(require 'projectile-setup)
 ;(require 'magit-setup)
-;(require 'misc-setup)
-
 
 ;;; init.el ends here

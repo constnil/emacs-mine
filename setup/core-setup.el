@@ -11,13 +11,11 @@
 
 (require 'package-setup)
 (require 'evil-setup)
-
-(global-set-key (kbd "C-h") `delete-backward-char)
-(global-set-key (kbd "M-/") `help-command)
-
 (require 'buffer-setup)
 (require 'window-setup)
 (require 'frame-setup)
+(require 'minibuf-setup)
+(require 'complete-setup)
 
 (provide 'core-setup)
 

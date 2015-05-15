@@ -2,3 +2,4 @@ elpa/
 backups/
 places
 *.el~
+smex-items

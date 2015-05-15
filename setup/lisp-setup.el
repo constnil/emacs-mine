@@ -10,6 +10,26 @@
 ;;; Code:
 
 (require 'var-setup)
+(require 'use-package)
+
+(use-package smartparens
+  :config
+  (smartparens-strict-mode +1))
+
+(use-package rainbow-delimiters
+  :config
+  (rainbow-delimiters-mode +1))
+
+(use-package rainbow-blocks :disabled t)
+(use-package clojure-mode)
+(use-package paredit)
+(use-package cider)
+
+(dolist (x '(scheme emacs-lisp lisp clojure))
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
+  (when (fboundp 'rainbow-blocks-mode)
+    (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-blocks-mode))
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
 
 (unless is-cygwin
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
@@ -17,15 +37,7 @@
       (setq inferior-lisp-program "clisp")
     (setq inferior-lisp-program "clbuild lisp")))
 
-(require 'use-package)
-
-(use-package cider)
-
-(use-package paredit
-  :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode)))
-  (add-hook 'lisp-mode-hook (lambda () (paredit-mode)))
-  (add-hook 'clojure-mode-hook (lambda () (paredit-mode))))
+(show-paren-mode 1)
 
 (provide 'lisp-setup)
 

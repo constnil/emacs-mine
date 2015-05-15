@@ -15,6 +15,13 @@
   :config
   (popwin-mode 1))
 
+(use-package ace-window
+  :config
+  (setq aw-keys
+	'(?a ?s ?d ?f ?g ?h ?j ?k ?l ?x ?m ?v ?b ?n ?i ?o))
+  (setq aw-dispatch-always t)
+  (global-set-key (kbd "M-p") 'ace-window))
+
 (global-set-key (kbd "C-M-h") 'windmove-left)
 (global-set-key (kbd "C-M-j") 'windmove-down)
 (global-set-key (kbd "C-M-k") 'windmove-up)

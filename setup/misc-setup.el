@@ -9,7 +9,7 @@
 
 ;;; Code:
 
-(setq gdb-many-windows t)
+;(setq gdb-many-windows t)
 
 (provide 'misc-setup)
 
