@@ -24,5 +24,4 @@
 (require 'theme-setup)
 (require 'misc-setup)
 
-
 ;;; init.el ends here
