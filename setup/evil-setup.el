@@ -12,6 +12,7 @@
 (require 'use-package)
 
 (use-package evil
+  :diminish undo-tree-mode
   :config
   (define-key evil-normal-state-map
     (kbd "j") 'evil-next-visual-line)

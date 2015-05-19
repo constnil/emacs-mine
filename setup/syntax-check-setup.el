@@ -12,6 +12,7 @@
 (require 'use-package)
 
 (use-package flycheck
+  :diminish flycheck-mode
   :config
   (global-flycheck-mode t)
 

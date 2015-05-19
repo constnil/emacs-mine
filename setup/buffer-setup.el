@@ -25,6 +25,7 @@
 (global-set-key (kbd "M-h") 'previous-buffer)
 (global-set-key (kbd "M-l") 'next-buffer)
 (global-set-key (kbd "M-k") 'kill-buffer)
+(global-set-key (kbd "M-c") 'kill-buffer-and-window)
 
 (provide 'buffer-setup)
 

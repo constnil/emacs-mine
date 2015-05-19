@@ -4,3 +4,4 @@ places
 *.el~
 smex-items
 ido.last*
+eshell/

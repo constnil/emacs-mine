@@ -15,11 +15,14 @@
 
 (require 'core-setup)
 (require 'syntax-check-setup)
+(require 'completion-setup)
+(require 'projectile-setup)
 (require 'lisp-setup)
+(require 'snippet-setup)
+(require 'git-setup)
 (require 'binding-setup)
+(require 'theme-setup)
 (require 'misc-setup)
 
-;(require 'projectile-setup)
-;(require 'magit-setup)
 
 ;;; init.el ends here

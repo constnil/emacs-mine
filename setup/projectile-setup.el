@@ -9,7 +9,9 @@
 
 ;;; Code:
 
-(install-packages '(projectile))
+(require 'use-package)
+
+(use-package projectile)
 
 (provide 'projectile-setup)
 

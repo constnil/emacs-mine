@@ -10,7 +10,7 @@
 ;;; Code:
 
 ;(setq gdb-many-windows t)
-
+(scroll-bar-mode -1)
 (provide 'misc-setup)
 
 ;;; misc-setup.el ends here

@@ -15,7 +15,6 @@
 (require 'window-setup)
 (require 'frame-setup)
 (require 'minibuf-setup)
-(require 'complete-setup)
 
 (provide 'core-setup)
 

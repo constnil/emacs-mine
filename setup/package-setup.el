@@ -34,6 +34,9 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(require 'diminish)
+(require 'bind-key)
+
 (provide 'package-setup)
 
 ;;; package-setup.el ends here
