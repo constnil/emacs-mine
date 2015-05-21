@@ -25,4 +25,7 @@
 (require 'misc-setup)
 
 
+(require 'server)
+(unless (server-running-p) (server-start))
+
 ;;; init.el ends here

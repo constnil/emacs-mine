@@ -1,7 +1,11 @@
-elpa/
 backups/
-places
-*.el~
-smex-items
-ido.last*
+elpa/
 eshell/
+server/
+
+places
+smex-items
+
+ido.last*
+
+*.el~
