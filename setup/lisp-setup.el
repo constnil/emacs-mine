@@ -12,6 +12,7 @@
 (require 'use-package)
 
 ;; Common setup
+(electric-pair-mode 1)
 (show-paren-mode 1)
 
 (use-package smartparens

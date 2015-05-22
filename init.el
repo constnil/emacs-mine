@@ -18,6 +18,7 @@
 (require 'completion-setup)
 (require 'projectile-setup)
 (require 'lisp-setup)
+(require 'csharp-setup)
 (require 'snippet-setup)
 (require 'git-setup)
 (require 'binding-setup)

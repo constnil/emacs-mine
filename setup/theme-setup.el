@@ -9,7 +9,9 @@
 
 ;;; Code:
 
-(load-theme 'deeper-blue)
+;;(load-theme 'deeper-blue)
+;;(load-theme 'misterioso)
+(load-theme 'tango-dark)
 
 (provide 'theme-setup)
 
