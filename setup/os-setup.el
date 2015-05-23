@@ -14,13 +14,23 @@
 
 ;; MS Windows setup
 (when is-mswin
-  (let ((cygroot (getenv "CYGWIN_ROOT")))
+  (let* ((cygroot (getenv "CYGWIN_ROOT"))
+		 (cygbin (concat cygroot "/bin")))
 	(use-package cygwin-mount
+	  :disabled t
 	  :if cygroot
 	  :config
 	  (cygwin-mount-activate)
-	  ;;	  (setq shell-file-name (expand-file-name "bin/bash.exe" cygroot))
-	  )))
+	  (when (file-readable-p cygroot)
+		(setq exec-path (cons cygbin exec-path))
+		(setenv "PATH" (concat cygbin ";" (getenv "PATH")))
+		;; NT-emacs assumes a Windows shell. Change to bash.
+		(setq shell-file-name "bash")
+		(setenv "SHELL" shell-file-name)
+		(setq explicit-shell-file-name shell-file-name)
+		;; This removes unsightly ^M characters that would otherwise
+		;; appear in the output of java applications.
+		(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)))))
 
 (provide 'os-setup)
 
