@@ -15,6 +15,8 @@
   (add-to-list 'default-frame-alist '(height . 40))
   (add-to-list 'default-frame-alist '(width . 150)))
 
+(scroll-bar-mode -1)
+
 (provide 'frame-setup)
 
 ;;; frame-setup.el ends here

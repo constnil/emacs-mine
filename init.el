@@ -14,15 +14,8 @@
   (add-to-list 'load-path setup-dir))
 
 (require 'core-setup)
-(require 'syntax-check-setup)
-(require 'completion-setup)
-(require 'projectile-setup)
-(require 'lisp-setup)
-(require 'csharp-setup)
-(require 'snippet-setup)
-(require 'git-setup)
-(require 'binding-setup)
-(require 'theme-setup)
+(require 'os-setup)
+(require 'coding-setup)
 (require 'misc-setup)
 
 (require 'server)

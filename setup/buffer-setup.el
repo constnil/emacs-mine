@@ -22,8 +22,33 @@
   :config
   (global-set-key (kbd "M-p") 'ace-jump-buffer))
 
-(global-set-key (kbd "M-h") 'previous-buffer)
-(global-set-key (kbd "M-l") 'next-buffer)
+;; switch to previous/next buffer (skip *[buffer]*)
+;; from stackoverflow, with some modifications
+(defun prev-non-start-buffer ()
+  "Switch to previous non *[buffer]* buffer."
+  (interactive)
+  (let ((bread-crumb (buffer-name)))
+    (previous-buffer)
+    (while (and (string-match-p "^\*" (buffer-name))
+				(not (equal bread-crumb (buffer-name))))
+	  (previous-buffer))))
+(global-set-key (kbd "M-h") 'prev-non-start-buffer)
+
+(defun next-non-start-buffer ()
+  "Switch to next non *[buffer]* buffer."
+  (interactive)
+  (let ((bread-crumb (buffer-name)))
+    (next-buffer)
+    (while (and (string-match-p "^\*.*\*$" (buffer-name))
+				(not (equal bread-crumb (buffer-name))))
+	  (next-buffer))))
+(global-set-key (kbd "M-l") 'next-non-start-buffer)
+
+;; remove minor mode M-h bindings
+(require 'nxml-mode)
+(add-hook 'nxml-mode-hook
+		  (lambda () (define-key nxml-mode-map (kbd "M-h") nil)))
+
 (global-set-key (kbd "M-k") 'kill-buffer)
 (global-set-key (kbd "M-c") 'kill-buffer-and-window)
 

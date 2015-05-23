@@ -9,8 +9,9 @@
 
 ;;; Code:
 
-;(setq gdb-many-windows t)
-(scroll-bar-mode -1)
+(require 'binding-setup)
+(require 'theme-setup)
+
 (provide 'misc-setup)
 
 ;;; misc-setup.el ends here
