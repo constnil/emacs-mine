@@ -12,6 +12,8 @@
 (require 'binding-setup)
 (require 'theme-setup)
 
+(setq inhibit-startup-screen t)
+
 (provide 'misc-setup)
 
 ;;; misc-setup.el ends here

@@ -19,6 +19,9 @@
 (require 'misc-setup)
 
 (require 'server)
+(setq server-auth-dir
+	  (expand-file-name "server" user-emacs-directory))
+(setq server-name "server")
 (unless (server-running-p) (server-start))
 
 ;;; init.el ends here
