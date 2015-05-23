@@ -14,19 +14,14 @@
 
 ;; MS Windows setup
 (when is-mswin
-  (let ((cygroot (getenv "CYGWIN_ROOT_DIRECTORY")))
+  (let ((cygroot (getenv "CYGWIN_ROOT")))
 	(use-package cygwin-mount
 	  :if cygroot
-;;	  :config
-;;	  (cygwin-mount-activate)
-;;	  (setq shell-file-name (expand-file-name "bin/bash.exe" cygroot))
-	  )
-	(use-package setup-cygwin
-	  :if cygroot
-	  :init
-	  (setq cygwin-root-directory cygroot))))
+	  :config
+	  (cygwin-mount-activate)
+	  ;;	  (setq shell-file-name (expand-file-name "bin/bash.exe" cygroot))
+	  )))
 
 (provide 'os-setup)
 
 ;;; os-setup.el ends here
-
