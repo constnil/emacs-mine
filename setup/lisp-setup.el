@@ -23,7 +23,10 @@
   :config
   (rainbow-delimiters-mode +1))
 
-(use-package paredit)
+(use-package paredit
+  :config
+  (define-key paredit-mode-map (kbd "C-=") 'paredit-forward-slurp-sexp)
+  (define-key paredit-mode-map (kbd "C--") 'paredit-forward-barf-sexp))
 
 (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook"))

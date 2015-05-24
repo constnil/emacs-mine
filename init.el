@@ -17,11 +17,6 @@
 (require 'os-setup)
 (require 'coding-setup)
 (require 'misc-setup)
-
-(require 'server)
-(setq server-auth-dir
-	  (expand-file-name "server" user-emacs-directory))
-(setq server-name "server")
-(unless (server-running-p) (server-start))
+(require 'server-setup)
 
 ;;; init.el ends here

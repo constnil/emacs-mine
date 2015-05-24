@@ -10,11 +10,11 @@
 ;;; Code:
 
 (when window-system
-  (tool-bar-mode -1)
   ;; windows system frame default size
   (add-to-list 'default-frame-alist '(height . 40))
   (add-to-list 'default-frame-alist '(width . 150)))
 
+(tool-bar-mode -1)
 (scroll-bar-mode -1)
 
 (provide 'frame-setup)

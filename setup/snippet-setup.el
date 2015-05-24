@@ -14,7 +14,7 @@
 (use-package yasnippet
   :diminish yas-minor-mode
   :config
-  (setq yas-snippet-dirs (expand-file-name "snippets" "~/emacs.d"))
+  (setq yas-snippet-dirs (expand-file-name "snippets" "~/.emacs.d"))
   (yas-global-mode 1))
 
 (provide 'snippet-setup)
