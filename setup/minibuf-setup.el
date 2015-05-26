@@ -18,8 +18,6 @@
   ;; This is old M-x
   (global-set-key (kbd "C-c M-x") 'execute-extended-command))
 
-(define-key minibuffer-local-map [escape] 'abort-recursive-edit)
-
 (provide 'minibuf-setup)
 
 ;;; minibuf-setup.el ends here

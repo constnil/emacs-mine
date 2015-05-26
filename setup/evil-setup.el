@@ -18,8 +18,8 @@
 (use-package evil-leader
   :config
   (setq evil-leader/in-all-states 1)
-  (evil-leader/set-leader ",")
-  (evil-leader/set-key "i" 'evil-insert-state)
+  (evil-leader/set-leader "SPC")
+  (evil-leader/set-key "i" 'evil-insert)
   (evil-leader/set-key "j" 'evil-ace-jump-char-mode)
   (evil-leader/set-key "k" 'evil-ace-jump-word-mode)
   (evil-leader/set-key "l" 'evil-ace-jump-line-mode)
@@ -37,16 +37,16 @@
 (use-package evil
   :diminish undo-tree-mode
   :config
-  (define-key evil-normal-state-map (kbd "i") 'evil-emacs-state)
+  (add-hook 'evil-insert-state-entry-hook
+			(lambda (&rest args) (evil-emacs-state 1)))
+  (define-key evil-emacs-state-map [escape] 'evil-normal-state)
+
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
   (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
-  (define-key evil-normal-state-map (kbd "'") 'evil-repeat-find-char-reverse)
-  (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (global-set-key [escape] 'evil-exit-emacs-state)
+
   (global-set-key (kbd "C-c C-e") 'evil-mode)
   (setq evil-esc-delay 0)
   (evil-mode 1))
