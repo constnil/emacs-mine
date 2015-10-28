@@ -9,6 +9,8 @@
 
 ;;; Code:
 
+(prefer-coding-system 'utf-8)
+
 (let* ((load-dir (file-name-directory load-file-name))
        (setup-dir (expand-file-name "setup" load-dir)))
   (add-to-list 'load-path setup-dir))

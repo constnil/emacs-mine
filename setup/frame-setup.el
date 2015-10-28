@@ -8,11 +8,17 @@
 ;;; Commentary:
 
 ;;; Code:
+(require 'var-setup)
 
 (when window-system
   ;; windows system frame default size
-  (add-to-list 'default-frame-alist '(height . 40))
-  (add-to-list 'default-frame-alist '(width . 150)))
+  (add-to-list 'default-frame-alist '(height . 25))
+  (add-to-list 'default-frame-alist '(width . 80))
+  (if is-mswin
+	  (add-to-list 'default-frame-alist
+				   '(font . "Courier New-14"))
+	  (add-to-list 'default-frame-alist
+				   '(font . "Courier New-18"))))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
