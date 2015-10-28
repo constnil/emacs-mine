@@ -50,7 +50,7 @@
 		  (lambda () (define-key nxml-mode-map (kbd "M-h") nil)))
 
 (global-set-key (kbd "M-k") 'kill-buffer)
-(global-set-key (kbd "M-c") 'kill-buffer-and-window)
+(global-set-key (kbd "M-`") 'kill-buffer-and-window)
 
 (provide 'buffer-setup)
 

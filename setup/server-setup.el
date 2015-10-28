@@ -15,7 +15,10 @@
   (setq server-auth-dir
 		(expand-file-name "server" user-emacs-directory))
   (setq server-name "server")
-  (unless (server-running-p) (server-start)))
+  (unless (server-running-p)
+	(message "Starting emacs server...")
+	(server-start)
+	(message "Emacs server started!")))
 
 (provide 'server-setup)
 
