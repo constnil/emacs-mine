@@ -32,6 +32,12 @@
 		;; appear in the output of java applications.
 		(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)))))
 
+(when is-mac
+  (setenv "PATH"
+		  (concat
+		   "/usr/local/bin"":"
+		   (getenv "PATH"))))
+
 (provide 'os-setup)
 
 ;;; os-setup.el ends here
