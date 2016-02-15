@@ -19,19 +19,28 @@
   :config
   (setq evil-leader/in-all-states 1)
   (evil-leader/set-leader "SPC")
-  (evil-leader/set-key "i" 'evil-insert)
+  
   (evil-leader/set-key "j" 'evil-ace-jump-char-mode)
   (evil-leader/set-key "k" 'evil-ace-jump-word-mode)
   (evil-leader/set-key "l" 'evil-ace-jump-line-mode)
+
   (evil-leader/set-key "d" 'evil-delete-buffer)
   (evil-leader/set-key "n" 'evil-next-buffer)
   (evil-leader/set-key "p" 'evil-prev-buffer)
+
+  (global-set-key (kbd "<C-tab>") 'evil-next-buffer)
+  (global-set-key (kbd "<C-M-tab>") 'evil-prev-buffer)
+
   (evil-leader/set-key "w" 'evil-write)
   (evil-leader/set-key "W" 'evil-write-all)
+
   (evil-leader/set-key "b" 'eval-buffer)
   (evil-leader/set-key "e" 'eval-defun)
-  (evil-leader/set-key "l" 'eval-last-sexp)
+  (evil-leader/set-key "s" 'eval-last-sexp)
+
+  (evil-leader/set-key "i" 'evil-insert)
   (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)
+
   (global-evil-leader-mode))
 
 (use-package evil
