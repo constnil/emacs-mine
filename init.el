@@ -20,5 +20,6 @@
 (require 'coding-setup)
 (require 'misc-setup)
 (require 'server-setup)
+(require 'customize-setup)
 
 ;;; init.el ends here

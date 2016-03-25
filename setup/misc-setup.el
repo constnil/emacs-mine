@@ -14,6 +14,8 @@
 
 (setq inhibit-startup-screen t)
 
+(use-package ag)
+
 (provide 'misc-setup)
 
 ;;; misc-setup.el ends here

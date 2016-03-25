@@ -11,7 +11,14 @@
 
 (require 'use-package)
 
-(use-package projectile)
+(use-package projectile
+  :config
+  (projectile-global-mode)
+  (setq projectile-indexing-method 'alien)
+  (setq projectile-enable-caching t)
+  (setq projectile-switch-project-action 'projectile-dired)
+										;(projectile-tags-command "etags -Re -f \"%s\" %s")
+  (global-set-key [f5] 'projectile-find-file))
 
 (provide 'projectile-setup)
 
