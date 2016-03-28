@@ -3,6 +3,8 @@ elpa/
 eshell/
 server/
 
+.cask/
+
 places
 smex-items
 

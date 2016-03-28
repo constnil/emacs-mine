@@ -23,6 +23,13 @@
   (setq company-tooltip-flip-when-above t)
   (global-company-mode 1))
 
+;; helm
+(use-package helm
+  :config
+  (require 'helm-config)
+  (global-set-key (kbd "M-h") 'helm-M-x)
+  (helm-mode 1))
+
 ;; ido
 (ido-mode +1)
 (ido-everywhere +1)

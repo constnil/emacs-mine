@@ -28,9 +28,6 @@
   (evil-leader/set-key "n" 'evil-next-buffer)
   (evil-leader/set-key "p" 'evil-prev-buffer)
 
-  (global-set-key (kbd "<C-tab>") 'evil-next-buffer)
-  (global-set-key (kbd "<C-M-tab>") 'evil-prev-buffer)
-
   (evil-leader/set-key "w" 'evil-write)
   (evil-leader/set-key "W" 'evil-write-all)
 

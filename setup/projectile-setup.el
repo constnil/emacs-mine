@@ -20,6 +20,8 @@
 										;(projectile-tags-command "etags -Re -f \"%s\" %s")
   (global-set-key [f5] 'projectile-find-file))
 
+(use-package helm-projectile)
+
 (provide 'projectile-setup)
 
 ;;; projectile-setup.el ends here
