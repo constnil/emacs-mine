@@ -9,8 +9,8 @@
 
 ;;; Code:
 
-(require 'projectile-setup)
 (require 'syntax-check-setup)
+(require 'projectile-setup)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -18,7 +18,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- ;;'(projectile-tags-command "etags -Re -f \"%s\" %s")
+ '(projectile-ignored-project-function nil)
+ '(projectile-ignored-projects nil)
+ '(projectile-project-root-files-bottom-up (quote (".projectile" ".hg" ".fslckout" ".bzr" "_darcs")))
  )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
