@@ -17,7 +17,6 @@
   (setq projectile-indexing-method 'alien
 		projectile-enable-caching t
 		projectile-switch-project-action 'projectile-dired)
-  (use-package ag)
   (use-package helm-projectile
 	:config
 	;; enable Helm version of Projectile with replacment commands

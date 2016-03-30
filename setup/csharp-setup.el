@@ -18,7 +18,7 @@
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (use-package omnisharp
 	:defer t
-										;	:init (push '(company-omnisharp :with company-yasnippet) company-backends-csharp-mode)
+	;:init (push '(company-omnisharp :with company-yasnippet) company-backends-csharp-mode)
 	:config
 	(evil-leader/set-key-for-mode 'csharp-mode
 	  ;; Compile

@@ -18,9 +18,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(projectile-ignored-project-function nil)
- '(projectile-ignored-projects nil)
- '(projectile-project-root-files-bottom-up (quote (".projectile" ".hg" ".fslckout" ".bzr" "_darcs")))
+ '(projectile-globally-ignored-file-suffixes
+   (quote (".pdb" ".dll" ".exe" ".pch" ".obj" ".manifest" ".preset" ".log")))
  )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

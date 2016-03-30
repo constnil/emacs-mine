@@ -21,10 +21,10 @@
   (evil-leader/set-leader "SPC")
   
   (evil-leader/set-key "b" 'eval-buffer)
+  (evil-leader/set-key "r" 'eval-region)
   (evil-leader/set-key "d" 'eval-defun)
   (evil-leader/set-key "s" 'eval-last-sexp)
 
-  (evil-leader/set-key "i" 'evil-insert)
   (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)
 
   (global-evil-leader-mode))
@@ -61,13 +61,13 @@
 (use-package evil-numbers
   :config
   (define-key evil-normal-state-map (kbd "+")
-    'evil-numbers/inc-at-pt)
+	'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "-")
-    'evil-numbers/dec-at-pt))
+	'evil-numbers/dec-at-pt))
 
 (setq scroll-margin 5
-      scroll-conservatively 9999
-      scroll-step 1)
+	  scroll-conservatively 9999
+	  scroll-step 1)
 
 (provide 'evil-setup)
 
