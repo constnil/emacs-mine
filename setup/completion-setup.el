@@ -90,14 +90,6 @@
 
   (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 
-  ;; shell history.
-  (define-key shell-mode-map (kbd "C-l") 'helm-comint-input-ring)
-
-  ;; use helm to list eshell history
-  (add-hook 'eshell-mode-hook
-			#'(lambda ()
-				(substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
-
   ;; remove minor mode M-h bindings
   (require 'nxml-mode)
   (add-hook 'nxml-mode-hook
@@ -105,9 +97,9 @@
   (use-package helm-ag
 	:config
 	(global-set-key (kbd "M-f") 'helm-ag))
-  (use-package helm-ls-git)
-  (use-package helm-ls-hg)
   (use-package helm-ls-svn)
+  (use-package helm-ls-hg)
+  (use-package helm-ls-git)
   (use-package helm-flx)
   (use-package helm-flycheck
 	:config
