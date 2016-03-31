@@ -19,7 +19,11 @@
  ;; If there is more than one, they won't work right.
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(projectile-globally-ignored-file-suffixes
-   (quote (".pdb" ".dll" ".exe" ".pch" ".obj" ".manifest" ".preset" ".log")))
+   (quote
+	(".pdb" ".dll" ".exe" ".pch" ".obj" ".manifest" ".preset" ".log")))
+ '(projectile-project-root-files-bottom-up
+   (quote
+	(".projectile" ".hg" ".fslckout" ".bzr" "_darcs" ".svn" "CVS" ".git" "Makefile")))
  )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

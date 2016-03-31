@@ -19,11 +19,10 @@
 (require 'snippet-setup)
 
 (require 'git-setup)
-(require 'gdb)
 
-(setq gdb-many-windows t)
-(setq-default tab-width 4)
 (global-linum-mode t)
+(setq-default tab-width 4)
+(setq gdb-many-windows t)
 
 (provide 'coding-setup)
 
