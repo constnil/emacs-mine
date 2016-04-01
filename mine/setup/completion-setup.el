@@ -52,6 +52,7 @@
 
 ;; helm
 (use-package helm
+  :bind* ("M-h" . helm-M-x)
   :config
   (require 'helm-config)
   ;; See https://github.com/bbatsov/prelude/pull/670 for a detailed
@@ -72,7 +73,6 @@
 		helm-semantic-fuzzy-match t
 		helm-split-window-in-side-p t)
   (helm-autoresize-mode 1)
-  (global-set-key (kbd "M-h") 'helm-M-x)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   (global-set-key (kbd "M-m") 'helm-mini)
   (global-set-key (kbd "M-a") 'helm-apropos)
@@ -91,9 +91,10 @@
   (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 
   ;; remove minor mode M-h bindings
-  (require 'nxml-mode)
-  (add-hook 'nxml-mode-hook
-			(lambda () (define-key nxml-mode-map (kbd "M-h") nil)))
+  ;; (require 'nxml-mode)
+  ;; (add-hook 'nxml-mode-hook
+  ;; 			(lambda () (define-key nxml-mode-map (kbd "M-h") nil)))
+
   (use-package helm-ag
 	:config
 	(global-set-key (kbd "M-f") 'helm-ag))

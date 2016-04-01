@@ -23,7 +23,8 @@
   (require 'use-package))
 (setq use-package-always-ensure t)
 (use-package diminish)
-(use-package bind-key)
+(use-package bind-key
+  :bind* ("C-." . describe-personal-keybindings))
 
 (provide 'package-setup)
 

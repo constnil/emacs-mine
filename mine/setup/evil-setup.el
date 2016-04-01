@@ -34,6 +34,7 @@
   :config
   (add-hook 'evil-insert-state-entry-hook
 			(lambda (&rest args) (evil-emacs-state 1)))
+  (unbind-key "C-." evil-normal-state-map)
   (define-key evil-emacs-state-map [escape] 'evil-normal-state)
 
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)

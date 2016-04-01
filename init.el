@@ -23,7 +23,7 @@
   (defvar suit-root (expand-file-name suit config-root))
   (add-to-list 'load-path suit-root)
   (require 'package)
-  (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
+  (setq package-user-dir (expand-file-name "elpa" config-root))
   (let ((archives
 		 '(("melpa" . "http://melpa.org/packages/")
 		   ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
