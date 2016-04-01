@@ -11,6 +11,9 @@
 
 (require 'package)
 
+(setq package-enable-at-startup nil)
+(package-initialize)
+
 (unless (package-installed-p 'use-package)
   (unless (assoc 'use-package package-archive-contents)
 	(package-refresh-contents))

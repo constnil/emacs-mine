@@ -30,9 +30,6 @@
 	  (add-to-list 'archives '("gnu" . "http://elpa.gnu.org/packages/")))
 	(dolist (arch archives)
 	  (add-to-list 'package-archives arch)))
-
-  (setq package-enable-at-startup nil)
-  (package-initialize)
   (load (expand-file-name suit-init-file suit-root) t)
   (message "config suit \"%s\" loaded" suit))
 
