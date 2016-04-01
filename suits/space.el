@@ -10,6 +10,6 @@
 ;;; Code:
 
 (message "setting spacemacs user-emacs-directory")
-(setq user-emacs-directory (expand-file-name "space" user-emacs-directory))
+(setq user-emacs-directory (expand-file-name "space/" user-emacs-directory))
 
 ;;; space.el ends here
