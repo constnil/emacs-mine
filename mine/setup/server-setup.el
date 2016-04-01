@@ -9,15 +9,9 @@
 
 ;;; Code:
 
-(require 'var-setup)
-(when is-mswin
-  (require 'server)
-  (setq server-auth-dir
-		(expand-file-name "server" user-emacs-directory))
-  (setq server-name "server")
-  (message "Starting emacs server...")
-  (server-start)
-  (message "Emacs server started!"))
+(require 'server)
+(when (not (eq (server-running-p) t))
+  (server-start))
 
 (provide 'server-setup)
 

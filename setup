@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd $HOME/.emacs.d
+
+git pull
+
+git submodule init
+git submodule sync
+git submodule update
+git submodule foreach git checkout master
+git submodule foreach git pull -f origin
