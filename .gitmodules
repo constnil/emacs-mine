@@ -1,0 +1,9 @@
+[submodule "live"]
+	path = live
+	url = git://github.com/overtone/emacs-live.git
+[submodule "prelude"]
+	path = prelude
+	url = git://github.com/bbatsov/prelude.git
+[submodule "space"]
+	path = space
+	url = git://github.com/syl20bnr/spacemacs.git
