@@ -14,6 +14,7 @@
 	   (env (getenv "EMACS_CONFIG"))
 	   (suit (or (and (member env suits) env) "mine")))
   (message "config suit \"%s\" start loading" suit)
+  (setq user-emacs-directory (expand-file-name suit user-emacs-directory))
   (defvar suit-init-file "init.el")
   (let ((setup-file (concat suit ".el")))
 	(or (load (expand-file-name setup-file config-root) t)
@@ -22,6 +23,7 @@
   (defvar suit-root (expand-file-name suit config-root))
   (add-to-list 'load-path suit-root)
   (require 'package)
+  (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
   (let ((archives
 		 '(("melpa" . "http://melpa.org/packages/")
 		   ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
