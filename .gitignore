@@ -5,12 +5,13 @@ server/
 
 .cask/
 
+ido.last
 places
 recentf
 smex-items
 
-ido.last*
+helm*
 projectile*
 
-*.el~
+*~
 \#*#
