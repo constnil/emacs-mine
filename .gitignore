@@ -13,6 +13,5 @@ smex-items
 helm*
 projectile*
 
-*.el
 *~
 \#*#
