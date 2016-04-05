@@ -10,11 +10,11 @@
 ;;; Code:
 
 (require 'package-setup)
-(require 'evil-setup)
+(require 'frame-setup)
 (require 'buffer-setup)
 (require 'window-setup)
-(require 'frame-setup)
 (require 'minibuf-setup)
+(require 'evil-setup)
 
 (provide 'core-setup)
 

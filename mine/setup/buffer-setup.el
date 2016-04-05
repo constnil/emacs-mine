@@ -9,8 +9,6 @@
 
 ;;; Code:
 
-(require 'use-package)
-
 ;; switch to previous/next buffer (skip *[buffer]*)
 ;; from stackoverflow, with some modifications
 (defun prev-non-start-buffer ()

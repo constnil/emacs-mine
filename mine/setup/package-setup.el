@@ -10,8 +10,15 @@
 ;;; Code:
 
 (require 'package)
-
-(setq package-enable-at-startup nil)
+(let ((archives
+	   '(("melpa" . "http://melpa.org/packages/")
+		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+		 ("marmalade" . "http://marmalade-repo.org/packages/")
+		 ("org" . "http://orgmode.org/elpa/"))))
+  (when (< emacs-major-version 24)
+	(add-to-list 'archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  (dolist (arch archives)
+	(add-to-list 'package-archives arch)))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -19,9 +26,9 @@
 	(package-refresh-contents))
   (package-install 'use-package))
 
-(eval-when-compile
-  (require 'use-package))
+(require 'use-package)
 (setq use-package-always-ensure t)
+
 (use-package diminish)
 (use-package bind-key
   :bind* ("C-." . describe-personal-keybindings))
