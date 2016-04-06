@@ -33,6 +33,8 @@
 (use-package bind-key
   :bind* ("C-." . describe-personal-keybindings))
 
+(use-package better-defaults)
+
 (provide 'package-setup)
 
 ;;; package-setup.el ends here
