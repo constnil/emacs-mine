@@ -19,6 +19,7 @@
 	(add-to-list 'archives '("gnu" . "http://elpa.gnu.org/packages/")))
   (dolist (arch archives)
 	(add-to-list 'package-archives arch)))
+(setq package-enable-at-startup nil)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -29,11 +30,10 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(use-package better-defaults)
 (use-package diminish)
 (use-package bind-key
   :bind* ("C-." . describe-personal-keybindings))
-
-(use-package better-defaults)
 
 (provide 'package-setup)
 

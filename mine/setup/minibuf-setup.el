@@ -13,14 +13,11 @@
 (require 'completion-setup)
 
 (use-package smex
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("C-c M-x" . execute-extended-command))
   :config
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is old M-x
-  (global-set-key (kbd "C-c M-x") 'execute-extended-command))
-
-(define-key minibuffer-local-map (kbd "C-l") 'helm-minibuffer-history)
+  (smex-initialize))
 
 (provide 'minibuf-setup)
 

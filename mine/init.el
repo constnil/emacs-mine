@@ -15,6 +15,7 @@
        (setup-dir (expand-file-name "setup" load-dir)))
   (add-to-list 'load-path setup-dir))
 
+(require 'var-setup)
 (require 'package-setup)
 (require 'os-setup)
 (require 'frame-setup)
