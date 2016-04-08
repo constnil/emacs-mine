@@ -15,6 +15,11 @@
 
 (use-package bookmark+)
 
+(use-package guru-mode
+  :config
+  (setq guru-warn-only t)
+  (guru-global-mode +1))
+
 (setq inhibit-startup-screen t)
 (setq gc-cons-threshold 20000000)
 

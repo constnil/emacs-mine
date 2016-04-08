@@ -13,7 +13,7 @@
 
 (use-package popwin
   :config
-  (popwin-mode 1))
+  (popwin-mode +1))
 
 (global-set-key (kbd "C-M-h") 'windmove-left)
 (global-set-key (kbd "C-M-j") 'windmove-down)
