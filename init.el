@@ -14,6 +14,7 @@
        (env (getenv "EMACS_CONFIG"))
        (suit (or (and (member env suits) env) "mine")))
   (message "config suit \"%s\" start loading" suit)
+  (setenv "EMACS_CONFIG" suit) ; In case environment variable not set
   (defvar suit-init-file "init.el")
   (let ((setup-file (concat suit ".el")))
     (or (load (expand-file-name setup-file config-root) t)
