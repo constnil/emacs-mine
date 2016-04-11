@@ -14,8 +14,9 @@
 
 ;; MS Windows setup
 (when is-mswin
+  (setq file-name-coding-system 'gbk)
   (let* ((cygroot (getenv "CYGWIN_ROOT"))
-		 (cygbin (concat cygroot "/bin")))
+         (cygbin (concat cygroot "/bin")))
     (when cygroot
       (use-package cygwin-mount
         :disabled t
