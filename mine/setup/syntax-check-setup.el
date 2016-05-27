@@ -21,7 +21,6 @@
     (eval-after-load 'flycheck
       '(custom-set-variables
 	'(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
-  (global-set-key (kbd "C-c C-f") 'flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package flycheck-pos-tip)

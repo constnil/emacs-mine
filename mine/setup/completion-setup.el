@@ -32,7 +32,7 @@
 (use-package ag)
 
 ;; ido
-(global-set-key (kbd "C-x C-d") 'ido-dired)
+(global-set-key (kbd "C-c C-d") 'ido-dired)
 (ido-mode +1)
 (ido-everywhere +1)
 (use-package ido-ubiquitous
@@ -77,11 +77,11 @@
   (global-set-key (kbd "M-m") 'helm-mini)
   (global-set-key (kbd "M-a") 'helm-apropos)
   (global-set-key (kbd "M-i") 'helm-info-emacs)
-  (global-set-key (kbd "M-b") 'helm-buffers-list)
-  (global-set-key (kbd "C-x C-p") 'helm-browse-project)
-  (global-set-key (kbd "C-x C-r") 'helm-recentf)
-  (global-set-key (kbd "C-x C-o") 'helm-find-files)
-  (global-set-key (kbd "C-x C-l") 'helm-locate-library)
+  (global-set-key (kbd "C-c C-b") 'helm-buffers-list)
+  (global-set-key (kbd "C-c C-p") 'helm-browse-project)
+  (global-set-key (kbd "C-c C-r") 'helm-recentf)
+  (global-set-key (kbd "C-c C-o") 'helm-find-files)
+  (global-set-key (kbd "C-c C-l") 'helm-locate-library)
 
   (define-key helm-map (kbd "M-a") 'helm-toggle-all-marks)
   (define-key helm-map (kbd "M-m") 'helm-toggle-visible-mark)
@@ -90,24 +90,19 @@
 
   (substitute-key-definition 'find-tag 'helm-etags-select global-map)
 
-  ;; remove minor mode M-h bindings
-  ;; (require 'nxml-mode)
-  ;; (add-hook 'nxml-mode-hook
-  ;; 			(lambda () (define-key nxml-mode-map (kbd "M-h") nil)))
-
   (use-package helm-ag
 	:config
-	(global-set-key (kbd "M-f") 'helm-ag))
+	(global-set-key (kbd "C-c C-a") 'helm-ag))
   (use-package helm-ls-svn)
   (use-package helm-ls-hg)
   (use-package helm-ls-git)
   (use-package helm-flx)
   (use-package helm-flycheck
 	:config
-	(global-set-key (kbd "M-c") 'helm-flycheck))
+	(global-set-key (kbd "C-c C-c") 'helm-flycheck))
   (use-package helm-flymake
 	:config
-	(global-set-key (kbd "M-k") 'helm-flymake))
+	(global-set-key (kbd "C-c C-k") 'helm-flymake))
   (use-package helm-descbinds
 	:config
 	(require 'helm-eshell) 

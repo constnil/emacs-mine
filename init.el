@@ -10,7 +10,7 @@
 ;;; Code:
 
 (let* ((config-root user-emacs-directory)
-       (suits '("live" "mine" "prelude" "space"))
+       (suits '("live" "mine" "prelude" "space" "bling"))
        (env (getenv "EMACS_CONFIG"))
        (suit (or (and (member env suits) env) "mine")))
   (message "config suit \"%s\" start loading" suit)
