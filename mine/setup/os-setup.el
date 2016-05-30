@@ -14,26 +14,7 @@
 
 ;; MS Windows setup
 (when is-mswin
-  (setq file-name-coding-system 'gbk)
-  (let* ((cygroot (getenv "CYGWIN_ROOT"))
-         (cygbin (concat cygroot "/bin")))
-    (when cygroot
-      (use-package cygwin-mount
-        :disabled t
-        :defer t
-        :if cygroot
-        :config
-        (cygwin-mount-activate)
-        (when (file-readable-p cygroot)
-          (setq exec-path (cons cygbin exec-path))
-          (setenv "PATH" (concat cygbin ";" (getenv "PATH")))
-          ;; NT-emacs assumes a Windows shell. Change to bash.
-          (setq shell-file-name "bash")
-          (setenv "SHELL" shell-file-name)
-          (setq explicit-shell-file-name shell-file-name)
-          ;; This removes unsightly ^M characters that would otherwise
-          ;; appear in the output of java applications.
-          (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))))))
+  (setq file-name-coding-system 'gbk))
 
 ;; OSX setup
 (when is-mac

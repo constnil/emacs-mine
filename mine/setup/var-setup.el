@@ -11,7 +11,6 @@
 
 (defvar is-mac (equal system-type 'darwin))
 (defvar is-mswin (equal system-type 'windows-nt))
-(defvar is-cygwin (equal system-type 'cygwin))
 
 (provide 'var-setup)
 

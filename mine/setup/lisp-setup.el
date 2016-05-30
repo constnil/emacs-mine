@@ -30,12 +30,9 @@
 
 (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook"))
-			(lambda ()
-			  (enable-paredit-mode)
-			  (rainbow-delimiters-mode))))
-
-(global-set-key (kbd "C-x d") 'mark-defun)
-(global-set-key (kbd "C-x s") 'mark-sexp)
+            (lambda ()
+              (enable-paredit-mode)
+              (rainbow-delimiters-mode))))
 
 ;; emacs lisp setup
 (use-package eldoc
@@ -48,13 +45,8 @@
   (add-hook 'lisp-interaction-mode-hook 'eldoc-mode))
 
 ;; common lisp setup
-(require 'var-setup)
-
-(unless is-cygwin
-  (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (if (or is-mswin is-mac)
-	  (setq inferior-lisp-program "clisp")
-	(setq inferior-lisp-program "clbuild lisp")))
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "clisp")
 
 ;; clojure setup
 (use-package clojure-mode)

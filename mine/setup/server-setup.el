@@ -10,6 +10,7 @@
 ;;; Code:
 
 (require 'server)
+
 (when (not (eq (server-running-p) t))
   (server-start))
 

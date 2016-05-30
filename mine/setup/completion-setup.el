@@ -11,6 +11,10 @@
 
 (require 'use-package)
 
+;; search
+(use-package ack)
+(use-package ag)
+
 ;; company
 (use-package company
   :diminish company-mode
@@ -27,12 +31,7 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (global-company-mode 1))
 
-;; search
-(use-package ack)
-(use-package ag)
-
 ;; ido
-(global-set-key (kbd "C-c C-d") 'ido-dired)
 (ido-mode +1)
 (ido-everywhere +1)
 (use-package ido-ubiquitous
@@ -49,67 +48,6 @@
 		ido-default-file-method 'selected-window
 		ido-auto-merge-work-directories-length -1)
   (flx-ido-mode +1))
-
-;; helm
-(use-package helm
-  :bind* ("M-h" . helm-M-x)
-  :config
-  (require 'helm-config)
-  ;; See https://github.com/bbatsov/prelude/pull/670 for a detailed
-  ;; discussion of these options.
-  (setq helm-buffers-fuzzy-matching t
-		helm-M-x-fuzzy-match t
-		helm-apropos-fuzzy-match t
-		helm-buffers-fuzzy-matching t
-		helm-completion-in-region-fuzzy-match t
-		helm-ff-file-name-history-use-recentf t
-		helm-ff-search-library-in-sexp t
-		helm-imenu-fuzzy-match t
-		helm-lisp-fuzzy-completion t
-		helm-locate-fuzzy-match t
-		helm-mode-fuzzy-match t
-		helm-move-to-line-cycle-in-source t
-		helm-recentf-fuzzy-match t
-		helm-semantic-fuzzy-match t
-		helm-split-window-in-side-p t)
-  (helm-autoresize-mode 1)
-  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-  (global-set-key (kbd "M-m") 'helm-mini)
-  (global-set-key (kbd "M-a") 'helm-apropos)
-  (global-set-key (kbd "M-i") 'helm-info-emacs)
-  (global-set-key (kbd "C-c C-b") 'helm-buffers-list)
-  (global-set-key (kbd "C-c C-p") 'helm-browse-project)
-  (global-set-key (kbd "C-c C-r") 'helm-recentf)
-  (global-set-key (kbd "C-c C-o") 'helm-find-files)
-  (global-set-key (kbd "C-c C-l") 'helm-locate-library)
-
-  (define-key helm-map (kbd "M-a") 'helm-toggle-all-marks)
-  (define-key helm-map (kbd "M-m") 'helm-toggle-visible-mark)
-  (define-key helm-map (kbd "M-p") 'helm-previous-source)
-  (define-key helm-map (kbd "M-n") 'helm-next-source)
-
-  (substitute-key-definition 'find-tag 'helm-etags-select global-map)
-
-  (use-package helm-ag
-	:config
-	(global-set-key (kbd "C-c C-a") 'helm-ag))
-  (use-package helm-ls-svn)
-  (use-package helm-ls-hg)
-  (use-package helm-ls-git)
-  (use-package helm-flx)
-  (use-package helm-flycheck
-	:config
-	(global-set-key (kbd "C-c C-c") 'helm-flycheck))
-  (use-package helm-flymake
-	:config
-	(global-set-key (kbd "C-c C-k") 'helm-flymake))
-  (use-package helm-descbinds
-	:config
-	(require 'helm-eshell) 
-	(helm-descbinds-mode))
-  (helm-mode +1)
-  (helm-adaptive-mode +1)
-  (helm-push-mark-mode +1))
 
 (provide 'completion-setup)
 

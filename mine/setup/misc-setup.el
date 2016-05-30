@@ -23,14 +23,6 @@
 (setq inhibit-startup-screen t)
 (setq gc-cons-threshold 20000000)
 
-;; shell history.
-(define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring)
-
-;; use helm to list eshell history
-(add-hook 'eshell-mode-hook
-		  #'(lambda ()
-			  (substitute-key-definition 'eshell-list-history 'helm-eshell-history eshell-mode-map)))
-
 (provide 'misc-setup)
 
 ;;; misc-setup.el ends here

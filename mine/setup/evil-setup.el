@@ -11,29 +11,11 @@
 
 (require 'use-package)
 
-(use-package evil-search-highlight-persist
-  :config
-  (global-evil-search-highlight-persist t))
-
-(use-package evil-leader
-  :config
-  (setq evil-leader/in-all-states 1)
-  (evil-leader/set-leader "SPC")
-  
-  (evil-leader/set-key "b" 'eval-buffer)
-  (evil-leader/set-key "r" 'eval-region)
-  (evil-leader/set-key "d" 'eval-defun)
-  (evil-leader/set-key "s" 'eval-last-sexp)
-
-  (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)
-
-  (global-evil-leader-mode))
-
 (use-package evil
   :diminish undo-tree-mode
   :config
   (add-hook 'evil-insert-state-entry-hook
-			(lambda (&rest args) (evil-emacs-state 1)))
+            (lambda (&rest args) (evil-emacs-state 1)))
   (unbind-key "C-." evil-normal-state-map)
   (define-key evil-emacs-state-map [escape] 'evil-normal-state)
 
@@ -42,33 +24,53 @@
   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
   (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  
+  (use-package evil-search-highlight-persist
+    :config
+    (global-evil-search-highlight-persist t)
+    (define-key evil-normal-state-map (kbd "C-/") 'evil-search-highlight-persist-remove-all))
+
+  (use-package goto-chg)
+
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+
+  (use-package evil-visualstar)
+  (use-package evil-numbers
+    :config
+    (define-key evil-normal-state-map (kbd "+")
+      'evil-numbers/inc-at-pt)
+    (define-key evil-normal-state-map (kbd "-")
+      'evil-numbers/dec-at-pt))
+
+  (use-package powerline-evil
+    :config
+    (powerline-evil-vim-color-theme)
+    (display-time-mode t))
+
+  (setq scroll-margin 5
+        scroll-conservatively 9999
+        scroll-step 1)
 
   (global-set-key (kbd "C-c C-e") 'evil-mode)
-  (setq evil-esc-delay 0)
-  (evil-mode 1))
 
-(use-package powerline-evil
-  :config
-  (powerline-evil-vim-color-theme)
-  (display-time-mode t))
+  ;; (use-package evil-leader
+  ;;   :config
+  ;;   (setq evil-leader/in-all-states 1)
+  ;;   (evil-leader/set-leader "SPC")
 
-(use-package goto-chg)
+  ;;   (evil-leader/set-key "b" 'eval-buffer)
+  ;;   (evil-leader/set-key "r" 'eval-region)
+  ;;   (evil-leader/set-key "d" 'eval-defun)
+  ;;   (evil-leader/set-key "s" 'eval-last-sexp)
 
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
+  ;;   (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)
 
-(use-package evil-visualstar)
-(use-package evil-numbers
-  :config
-  (define-key evil-normal-state-map (kbd "+")
-	'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "-")
-	'evil-numbers/dec-at-pt))
+  ;;   (global-evil-leader-mode))
+  ;;   (evil-mode 1)
 
-(setq scroll-margin 5
-	  scroll-conservatively 9999
-	  scroll-step 1)
+  (setq evil-esc-delay 0))
 
 (provide 'evil-setup)
 

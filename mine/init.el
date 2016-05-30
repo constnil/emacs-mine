@@ -22,7 +22,7 @@
 (require 'buffer-setup)
 (require 'window-setup)
 (require 'minibuf-setup)
-;;(require 'evil-setup)
+(require 'evil-setup)
 (require 'coding-setup)
 (require 'misc-setup)
 (require 'server-setup)
