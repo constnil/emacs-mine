@@ -20,7 +20,7 @@
 (global-set-key (kbd "C-M-k") 'windmove-up)
 (global-set-key (kbd "C-M-l") 'windmove-right)
 
-(winner-mode 1)
+;; (winner-mode 1)
 
 (provide 'window-setup)
 
