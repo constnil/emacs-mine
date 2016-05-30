@@ -30,6 +30,7 @@
 (global-set-key (kbd "C-M-?") 'query-replace-regexp)
 
 ;; org-mode
+(unbind-key "<C-tab>" org-mode-map)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 (global-set-key (kbd "C-c c") 'org-capture)
