@@ -19,7 +19,6 @@
     (while (and (string-match-p "^\*" (buffer-name))
                 (not (equal bread-crumb (buffer-name))))
       (previous-buffer))))
-(global-set-key (kbd "<C-S-tab>") 'prev-non-start-buffer)
 
 (defun next-non-start-buffer ()
   "Switch to next non *[buffer]* buffer."
@@ -29,9 +28,6 @@
     (while (and (string-match-p "^\*.*\*$" (buffer-name))
                 (not (equal bread-crumb (buffer-name))))
       (next-buffer))))
-(global-set-key (kbd "<C-tab>") 'next-non-start-buffer)
-
-(global-set-key (kbd "M-`") 'kill-buffer-and-window)
 
 (provide 'buffer-setup)
 

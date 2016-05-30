@@ -9,7 +9,6 @@
 
 ;;; Code:
 
-(require 'binding-setup)
 (require 'theme-setup)
 (require 'completion-setup)
 

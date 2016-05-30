@@ -27,6 +27,7 @@
   (require 'misc-setup)
   (require 'server-setup)
   (require 'customize-setup)
+  (require 'binding-setup)
 
   (let ((mine-file (expand-file-name "mine.el" load-dir)))
     (when (file-exists-p mine-file)

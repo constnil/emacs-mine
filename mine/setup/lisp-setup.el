@@ -25,6 +25,7 @@
 
 (use-package paredit
   :config
+  (unbind-key "M-?" paredit-mode-map)
   (define-key paredit-mode-map (kbd "C-=") 'paredit-forward-slurp-sexp)
   (define-key paredit-mode-map (kbd "C--") 'paredit-forward-barf-sexp))
 

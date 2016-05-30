@@ -15,11 +15,6 @@
   :config
   (popwin-mode +1))
 
-(global-set-key (kbd "C-M-h") 'windmove-left)
-(global-set-key (kbd "C-M-j") 'windmove-down)
-(global-set-key (kbd "C-M-k") 'windmove-up)
-(global-set-key (kbd "C-M-l") 'windmove-right)
-
 ;; (winner-mode 1)
 
 (provide 'window-setup)
