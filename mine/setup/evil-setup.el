@@ -14,16 +14,17 @@
 (use-package evil
   :diminish undo-tree-mode
   :config
-  (add-hook 'evil-insert-state-entry-hook
-            (lambda (&rest args) (evil-emacs-state 1)))
-  (define-key evil-emacs-state-map [escape] 'evil-normal-state)
-  (define-key evil-normal-state-map (kbd "i") 'evil-mode)
+  (unbind-key "C-z" evil-motion-state-map)
+  (unbind-key "C-z" evil-insert-state-map)
+
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
   (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
   
+  (define-key evil-emacs-state-map [escape] 'evil-normal-state)
+
   (use-package evil-search-highlight-persist
     :config
     (global-evil-search-highlight-persist t)
@@ -36,6 +37,7 @@
     (global-evil-surround-mode 1))
 
   (use-package evil-visualstar)
+
   (use-package evil-numbers
     :config
     (define-key evil-normal-state-map (kbd "+")
