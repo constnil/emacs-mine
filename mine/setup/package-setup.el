@@ -33,7 +33,7 @@
 (use-package better-defaults)
 (use-package diminish)
 (use-package bind-key
-  :bind* ("C-." . describe-personal-keybindings))
+  :bind* ("C-c C-." . describe-personal-keybindings))
 
 (provide 'package-setup)
 

@@ -16,9 +16,8 @@
   :config
   (add-hook 'evil-insert-state-entry-hook
             (lambda (&rest args) (evil-emacs-state 1)))
-  (unbind-key "C-." evil-normal-state-map)
   (define-key evil-emacs-state-map [escape] 'evil-normal-state)
-
+  (define-key evil-normal-state-map (kbd "i") 'evil-mode)
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
@@ -28,7 +27,7 @@
   (use-package evil-search-highlight-persist
     :config
     (global-evil-search-highlight-persist t)
-    (define-key evil-normal-state-map (kbd "C-/") 'evil-search-highlight-persist-remove-all))
+    (global-set-key (kbd "C-c C-/") 'evil-search-highlight-persist-remove-all))
 
   (use-package goto-chg)
 
@@ -53,23 +52,7 @@
         scroll-conservatively 9999
         scroll-step 1)
 
-  (global-set-key (kbd "C-c C-e") 'evil-mode)
-
-  ;; (use-package evil-leader
-  ;;   :config
-  ;;   (setq evil-leader/in-all-states 1)
-  ;;   (evil-leader/set-leader "SPC")
-
-  ;;   (evil-leader/set-key "b" 'eval-buffer)
-  ;;   (evil-leader/set-key "r" 'eval-region)
-  ;;   (evil-leader/set-key "d" 'eval-defun)
-  ;;   (evil-leader/set-key "s" 'eval-last-sexp)
-
-  ;;   (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)
-
-  ;;   (global-evil-leader-mode))
-  ;;   (evil-mode 1)
-
+  (global-set-key (kbd "C-`") 'evil-mode)
   (setq evil-esc-delay 0))
 
 (provide 'evil-setup)
