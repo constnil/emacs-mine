@@ -14,16 +14,12 @@
 (use-package flycheck
   :diminish flycheck-mode
   :config
-  (global-flycheck-mode t)
-
-  ;; flycheck errors on a tooltip (doesnt work on console)
   (when (display-graphic-p (selected-frame))
     (eval-after-load 'flycheck
       '(custom-set-variables
-	'(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
-  (add-hook 'after-init-hook #'global-flycheck-mode))
-
-(use-package flycheck-pos-tip)
+        '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+  (global-set-key (kbd "C-c C-c") 'flycheck-mode)
+  (use-package flycheck-pos-tip))
 
 (provide 'syntax-check-setup)
 

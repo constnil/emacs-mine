@@ -12,6 +12,12 @@
 (require 'theme-setup)
 (require 'completion-setup)
 
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode)
+  (global-set-key (kbd "C-/") 'undo-tree-undo)
+  (global-set-key (kbd "M-/") 'undo-tree-redo))
+
 (use-package bookmark+)
 
 (use-package guru-mode

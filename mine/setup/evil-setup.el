@@ -28,7 +28,8 @@
   (use-package evil-search-highlight-persist
     :config
     (global-evil-search-highlight-persist t)
-    (global-set-key (kbd "C-c C-/") 'evil-search-highlight-persist-remove-all))
+    (global-set-key (kbd "C-c C-/")
+                    'evil-search-highlight-persist-remove-all))
 
   (use-package goto-chg)
 
