@@ -19,7 +19,7 @@
   (global-set-key (kbd "M-/") 'undo-tree-redo))
 
 (use-package bookmark+)
-
+(use-package markdown-mode+)
 (use-package guru-mode
   :config
   (setq guru-warn-only t)

@@ -1,8 +1,8 @@
 ;;; csharp-setup.el --- C# setups.
 
-;; Copyright (C) 2015, Wu Tiefeng.
+;; copyright (c) 2015, wu tiefeng.
 
-;; Author: Wu Tiefeng <IcebergWTF@qq.com>
+;; author: wu tiefeng <icebergwtf@qq.com>
 ;; Maintainer: Wu Tiefeng
 
 ;;; Commentary:
@@ -16,11 +16,13 @@
 
 (use-package omnisharp
   :defer t
-  ;; :init (push '(company-omnisharp :with company-yasnippet) company-backends-csharp-mode)
   :config
-  (add-hook 'csharp-mode-hook 'omnisharp-mode)
-  (add-to-list 'company-backends 'company-omnisharp)
-  (setq omnisharp-server-executable-path "~/bin/OmniSharp/OmniSharp.exe"))
+  (setq omnisharp-server-executable-path "~/warehouse/builds/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"
+        ;;        "~/warehouse/builds/omnisharp-roslyn/artifacts/publish/OmniSharp/default/net451/OmniSharp.exe"
+        )
+  (when (file-exists-p omnisharp-server-executable-path)
+    (add-hook 'csharp-mode-hook 'omnisharp-mode)
+    (add-to-list 'company-backends 'company-omnisharp)))
 
 (provide 'csharp-setup)
 
