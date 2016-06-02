@@ -32,6 +32,9 @@
 (setq org-special-ctrl-o t)
 (setq org-ctrl-k-protect-subtree t)
 (setq org-catch-invisible-edits 'smart)
+(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-checkbox-dependencies t)
+(setq org-log-done 'time)
 
 ;; misc
 (setq inhibit-startup-screen t)
