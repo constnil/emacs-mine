@@ -25,6 +25,15 @@
   (setq guru-warn-only t)
   (guru-global-mode +1))
 
+;; org-mode
+(setq org-startup-indented t)
+(setq org-special-ctrl-k t)
+(setq org-special-ctrl-a/e t)
+(setq org-special-ctrl-o t)
+(setq org-ctrl-k-protect-subtree t)
+(setq org-catch-invisible-edits 'smart)
+
+;; misc
 (setq inhibit-startup-screen t)
 (setq gc-cons-threshold 20000000)
 

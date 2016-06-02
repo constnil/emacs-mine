@@ -27,8 +27,8 @@
   (setq company-tooltip-flip-when-above t)
   (define-key company-active-map (kbd "M-n") 'company-next-page)
   (define-key company-active-map (kbd "M-p") 'company-previous-page)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
   (global-company-mode 1))
 
 ;; ido
