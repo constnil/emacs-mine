@@ -6,6 +6,7 @@ url/
 
 .cask/
 
+mine.el
 ido.last
 recentf
 smex-items
