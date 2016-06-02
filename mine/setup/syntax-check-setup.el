@@ -18,7 +18,7 @@
     (eval-after-load 'flycheck
       '(custom-set-variables
         '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
-  (global-set-key (kbd "C-c C-c") 'flycheck-mode)
+  (global-set-key (kbd "C-c C-f") 'flycheck-mode)
   (use-package flycheck-pos-tip))
 
 (provide 'syntax-check-setup)
