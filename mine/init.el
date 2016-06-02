@@ -29,7 +29,7 @@
   (require 'customize-setup)
   (require 'binding-setup)
 
-  (let ((mine-file (expand-file-name "mine.el" load-dir)))
+  (let ((mine-file "~/.mine.el"))
     (when (file-exists-p mine-file)
       (load mine-file))))
 
