@@ -20,7 +20,11 @@
 (setq org-log-done 'time)
 (setq org-completion-use-ido t)
 (setq org-return-follows-link t)
-(setq org-tags-column -97)
+(setq org-use-property-inheritance t)
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "|" "DONE(d)")
+        (sequence "OPEN(o)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")))
 
 (provide 'org-setup)
 
