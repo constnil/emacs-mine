@@ -31,6 +31,9 @@
 
 ;; org-mode
 (unbind-key "<C-tab>" org-mode-map)
+(define-key org-mode-map (kbd "M-n") 'org-forward-heading-same-level)
+(define-key org-mode-map (kbd "M-p") 'org-backward-heading-same-level)
+(define-key org-mode-map (kbd "M-u") 'outline-up-heading)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -42,6 +45,9 @@
 
 ;; misc
 (global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "M-U") 'upcase-word)
+(global-set-key (kbd "M-L") 'downcase-word)
+(global-set-key (kbd "M-C") 'capitalize-word)
 
 (provide 'binding-setup)
 

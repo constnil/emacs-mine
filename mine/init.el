@@ -26,8 +26,9 @@
   (require 'coding-setup)
   (require 'misc-setup)
   (require 'server-setup)
-  (require 'customize-setup)
+  (require 'org-setup)
   (require 'binding-setup)
+  (require 'customize-setup)
 
   (let ((mine-file "~/.mine.el"))
     (when (file-exists-p mine-file)
