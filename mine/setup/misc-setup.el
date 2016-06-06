@@ -39,6 +39,8 @@
 ;; misc
 (setq inhibit-startup-screen t)
 (setq gc-cons-threshold 20000000)
+(setq tramp-default-method "ssh")
+(setq system-time-locale "C")
 
 (provide 'misc-setup)
 
