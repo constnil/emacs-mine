@@ -28,7 +28,7 @@
   (require 'server-setup)
   (require 'org-setup)
   (require 'binding-setup)
-  (require 'customize-setup)
+  (require 'skeleton-setup)
 
   (let ((mine-file "~/.mine.el"))
     (when (file-exists-p mine-file)

@@ -6,6 +6,7 @@ url/
 
 .cask/
 
+bookmarks
 mine.el
 ido.last
 recentf
