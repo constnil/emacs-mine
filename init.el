@@ -29,3 +29,4 @@
   (message "config suit \"%s\" loaded" suit))
 
 ;;; init.el ends here
+

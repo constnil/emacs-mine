@@ -21,6 +21,7 @@
 (setq org-completion-use-ido t)
 (setq org-return-follows-link t)
 (setq org-use-property-inheritance t)
+(setq org-tags-column -83)
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)")
