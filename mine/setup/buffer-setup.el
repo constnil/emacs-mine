@@ -11,13 +11,20 @@
 
 ;; switch to previous/next buffer (skip *[buffer]*)
 ;; from stackoverflow, with some modifications
+(defun scratch-buffer-p ()
+  (equal "*scratch*" (buffer-name)))
+
+(defun non-start-buffer-p (bread-crumb)
+  (and (not (equal bread-crumb (buffer-name)))
+       (and (not (scratch-buffer-p))
+            (string-match-p "^\*.*\*$" (buffer-name)))))
+
 (defun prev-non-start-buffer ()
   "Switch to previous non *[buffer]* buffer."
   (interactive)
   (let ((bread-crumb (buffer-name)))
     (previous-buffer)
-    (while (and (string-match-p "^\*" (buffer-name))
-                (not (equal bread-crumb (buffer-name))))
+    (while (non-start-buffer-p bread-crumb)
       (previous-buffer))))
 
 (defun next-non-start-buffer ()
@@ -25,8 +32,7 @@
   (interactive)
   (let ((bread-crumb (buffer-name)))
     (next-buffer)
-    (while (and (string-match-p "^\*.*\*$" (buffer-name))
-                (not (equal bread-crumb (buffer-name))))
+    (while (non-start-buffer-p bread-crumb)
       (next-buffer))))
 
 (provide 'buffer-setup)
