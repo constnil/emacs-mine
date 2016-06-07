@@ -9,7 +9,9 @@
 
 ;;; Code:
 
-;;
+;; Org mode skeletons
+(add-hook 'org-mode-hook 'abbrev-mode)
+
 (define-skeleton sk-org-exp
   "Input #+BEGIN_EXAMPLE #+END_EXAMPLE in org-mode"
   ""
