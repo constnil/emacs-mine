@@ -16,9 +16,8 @@
 (global-set-key (kbd "M-`") 'kill-buffer-and-window)
 
 ;; window switching
-(global-set-key (kbd "C-M-o") 'other-window)
-(global-set-key (kbd "C-M-,") 'scroll-other-window)
-(global-set-key (kbd "C-M-.") 'scroll-other-window-down)
+(global-set-key (kbd "C-M-.") 'scroll-other-window)
+(global-set-key (kbd "C-M-,") 'scroll-other-window-down)
 (global-set-key (kbd "C-M-/") 'delete-other-windows)
 (global-set-key (kbd "C-M-h") 'windmove-left)
 (global-set-key (kbd "C-M-j") 'windmove-down)
@@ -40,6 +39,9 @@
 (global-set-key (kbd "C-c l") 'org-store-link)
 
 ;; coding
+(global-set-key (kbd "C-x C-r") 'eval-region)
+(global-set-key (kbd "C-x C-d") 'eval-defun)
+(global-set-key (kbd "C-x C-w") 'eval-buffer)
 (global-set-key (kbd "C-c C-c") 'comment-region)
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 

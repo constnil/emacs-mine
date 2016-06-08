@@ -11,12 +11,12 @@
 
 ;; switch to previous/next buffer (skip *[buffer]*)
 ;; from stackoverflow, with some modifications
-(defun scratch-buffer-p ()
-  (equal "*scratch*" (buffer-name)))
+(defun special-star-muffle-buffer-p ()
+  (member (buffer-name) '("*scratch*" "*info*")))
 
 (defun non-start-buffer-p (bread-crumb)
   (and (not (equal bread-crumb (buffer-name)))
-       (and (not (scratch-buffer-p))
+       (and (not (special-star-muffle-buffer-p))
             (string-match-p "^\*.*\*$" (buffer-name)))))
 
 (defun prev-non-start-buffer ()
