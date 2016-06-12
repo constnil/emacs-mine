@@ -25,29 +25,8 @@
   (require 'package)
   (setq package-user-dir (expand-file-name "elpa" root))
   (load (expand-file-name suit-init-file user-emacs-directory) t)
-  (load "~/.personal.el" t)
+  (setq custom-file "~/.personal.el")
+  (load custom-file t)
   (message "config suit \"%s\" loaded" suit))
 
 ;;; init.el ends here
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
- '(fill-column 80)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(org-export-backends (quote (ascii html icalendar latex man md org texinfo)))
- '(projectile-globally-ignored-file-suffixes
-   (quote
-    (".pdb" ".dll" ".exe" ".pch" ".obj" ".manifest" ".preset" ".log")))
- '(projectile-project-root-files-bottom-up
-   (quote
-    (".projectile" ".hg" ".fslckout" ".bzr" "_darcs" ".svn" "CVS" ".git" "Makefile"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
