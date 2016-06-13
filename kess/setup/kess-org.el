@@ -73,10 +73,10 @@
            ("M-p" . org-backward-heading-same-level)
            ("M-u" . outline-up-heading))
 
-(bind-keys* ("C-c a" 'org-agenda)
-            ("C-c b" 'org-iswitchb)
-            ("C-c c" 'org-capture)
-            ("C-c l" 'org-store-link))
+(bind-keys* ("C-c a" . org-agenda)
+            ("C-c b" . org-iswitchb)
+            ("C-c c" . org-capture)
+            ("C-c l" . org-store-link))
 
 (provide 'kess-org)
 
