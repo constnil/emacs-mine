@@ -11,16 +11,25 @@
 
 (require 'kess-package)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Use better-defaults package as start point
+;;
 (use-package better-defaults)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Apperence
+;;
 (load-theme 'tango-dark)
 
 (when window-system
   (menu-bar-mode 1))
 
-;; Settings 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Settings
+;;
 (global-linum-mode t)
 (setq-default tab-width 4)
 (setq scroll-margin 5
@@ -33,7 +42,11 @@
       tramp-default-method "ssh"
       gdb-many-windows t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Bindings
+;;
+
 ;; buffer
 (bind-key* (kbd "M-`") 'kill-buffer-and-window)
 
@@ -50,7 +63,10 @@ otherwise, previous-buffer."
       (funcall fn))))
 (bind-keys*
  ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
- ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil))))
+ ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
+ ("C-M-|" . (lambda ()
+              (interactive)
+              (message "TODO: indent whole buffer"))))
 
 ;; window
 (winner-mode 1)
@@ -59,19 +75,18 @@ otherwise, previous-buffer."
 
 (bind-keys* ("C-M-." . scroll-other-window)
             ("C-M-," . scroll-other-window-down)
-            ("C-M-/" . delete-other-windows)
             ("C-M-h" . windmove-left)
             ("C-M-j" . windmove-down)
             ("C-M-k" . windmove-up)
             ("C-M-l" . windmove-right))
 
-;; search/replace
-(bind-keys* ("M-?" . query-replace)
-            ("C-M-?" . query-replace-regexp))
+;; navigation
+(bind-keys ("M-n" . forward-paragraph)
+           ("M-p" . backward-paragraph))
 
-;; coding
-(bind-keys* ("C-c C-c" . comment-region)
-            ("C-c C-u" . uncomment-region))
+;; search/replace
+(bind-keys* ("C-M-/" . query-replace)
+            ("C-M-?" . query-replace-regexp))
 
 ;; case change
 (bind-keys* ("M-U" . upcase-word)
@@ -80,6 +95,7 @@ otherwise, previous-buffer."
 
 ;; misc
 (bind-keys* ("C-h" . delete-backward-char)
+            ("<backspace>" . delete-backward-char)
             ("C-`" . set-mark-command))
 
 (provide 'kess-defaults)

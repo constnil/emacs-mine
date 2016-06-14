@@ -11,12 +11,22 @@
 
 (require 'kess-package)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; projectile
+;;
 (use-package projectile
   :config
   (projectile-global-mode)
   (setq projectile-indexing-method 'alien
-        projectile-enable-caching t
-        projectile-switch-project-action 'projectile-dired))
+        projectile-enable-caching t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; find file in project
+;;
+(use-package find-file-in-project
+  :ensure ivy)
 
 (provide 'kess-project)
 

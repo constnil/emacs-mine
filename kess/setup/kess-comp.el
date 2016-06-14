@@ -11,7 +11,10 @@
 
 (require 'kess-package)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; ido
+;;
 (ido-mode 1)
 (ido-everywhere 1)
 
@@ -31,15 +34,19 @@
         ido-auto-merge-work-directories-length -1)
   (flx-ido-mode 1))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; smex
+;;
 (use-package smex
   :bind* (("M-x" . smex)
           ("M-X" . smex-major-mode-commands)
-          ("C-c M-x" . execute-extended-command))
-  :config
-  (smex-initialize))
+          ("C-c M-x" . execute-extended-command)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; company
+;;
 (use-package company
   :diminish company-mode
   :demand

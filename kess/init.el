@@ -15,6 +15,7 @@
 (require 'kess-defaults)
 (require 'kess-comp)
 (require 'kess-org)
+(require 'kess-project)
 (require 'kess-coding)
 (require 'kess-evil)
 

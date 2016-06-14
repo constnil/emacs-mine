@@ -9,7 +9,10 @@
 
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; package.el setup
+;;
 (let ((archives
        '((       "melpa" . "http://melpa.org/packages/")
          ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
@@ -24,7 +27,10 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; use-package setup
+;;
 (unless (package-installed-p 'use-package)
   (unless (assoc 'use-package package-archive-contents)
     (package-refresh-contents))
@@ -40,7 +46,10 @@
 (use-package bind-key
   :bind* ("C-c C-." . describe-personal-keybindings))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; some handy packages
+;;
 (use-package popwin
   :config
   (popwin-mode 1))
@@ -54,11 +63,6 @@
           ("M-/" . undo-tree-redo))
   :config
   (global-undo-tree-mode))
-
-(use-package guru-mode
-  :config
-  (setq guru-warn-only t)
-  (guru-global-mode 1))
 
 (use-package goto-chg
   :bind (("C-." . goto-last-change)

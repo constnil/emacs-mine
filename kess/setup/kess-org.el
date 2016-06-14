@@ -9,7 +9,10 @@
 
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; setting
+;;
 (setq org-catch-invisible-edits 'smart
       org-completion-use-ido t
       org-ctrl-k-protect-subtree t
@@ -27,7 +30,10 @@
       '((sequence "TODO(t)" "|" "DONE(d)")
         (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; skeleton
+;;
 (require 'org)
 (add-hook 'org-mode-hook 'abbrev-mode)
 
@@ -65,8 +71,10 @@
   "#+END_HTML\n")
 (define-abbrev org-mode-abbrev-table "ihtml"  "" 'sk-org-html)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; binding
-(unbind-key "<C-tab>" org-mode-map)
+;;
 (bind-keys :map org-mode-map
            ("C-c <C-tab>" . org-force-cycle-archived)
            ("M-n" . org-forward-heading-same-level)

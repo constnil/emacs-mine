@@ -13,7 +13,7 @@
 
 (use-package evil
   :diminish undo-tree-mode
-  :bind (("C-c C-e" . evil-mode)
+  :bind (("C-~" . evil-mode)
          :map evil-normal-state-map
          ("j" . evil-next-visual-line)
          ("k" . evil-previous-visual-line)
@@ -26,28 +26,16 @@
   (unbind-key "C-z" evil-motion-state-map)
   (unbind-key "C-z" evil-insert-state-map)
 
-  (use-package evil-search-highlight-persist
-    :bind* ("C-c C-/" . evil-search-highlight-persist-remove-all)
-    :config
-    (global-evil-search-highlight-persist t))
+  (setq evil-esc-delay 0)
 
-  (use-package evil-surround
+  (use-package evil-visualstar
     :config
-    (global-evil-surround-mode 1))
-
-  (use-package evil-visualstar)
+    (global-evil-visualstar-mode t))
 
   (use-package evil-numbers
     :bind (:map evil-normal-state-map
-           ("+" . evil-numbers/inc-at-pt)
-           ("-" . evil-numbers/dec-at-pt)))
-
-  (use-package powerline-evil
-    :config
-    (powerline-evil-vim-color-theme)
-    (display-time-mode t))
-
-  (setq evil-esc-delay 0))
+                ("+" . evil-numbers/inc-at-pt)
+                ("-" . evil-numbers/dec-at-pt))))
 
 (provide 'kess-evil)
 
