@@ -6,6 +6,7 @@ url/
 
 .cask/
 
+abbrev_defs
 bookmarks
 mine.el
 ido.last
