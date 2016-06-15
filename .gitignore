@@ -8,15 +8,17 @@ url/
 
 abbrev_defs
 bookmarks
+desktop
 mine.el
 ido.last
 recentf
+savehist
 smex-items
 
 helm*
 projectile*
 *places
-
+*lock
 *~
 \#*#
 .#*

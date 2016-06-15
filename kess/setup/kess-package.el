@@ -76,6 +76,10 @@
               (set-fill-column 72)
               (auto-fill-mode 1))))
 
+(use-package dired-k
+  :config
+  (add-hook 'dired-initial-position-hook 'dired-k))
+
 (use-package bookmark+)
 
 (use-package markdown-mode+)

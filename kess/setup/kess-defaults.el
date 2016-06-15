@@ -17,8 +17,9 @@
 ;;
 (use-package better-defaults
   :config
-  (setq save-place-file (concat user-emacs-root "places")
-        backup-directory-alist `(("." . ,(concat user-emacs-root "backups")))))
+  ;; (setq save-place-file (concat user-emacs-directory "places")
+  ;;       backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -33,7 +34,6 @@
 ;;
 ;; Settings
 ;;
-(global-linum-mode t)
 (setq-default tab-width 4)
 (setq scroll-margin 5
       scroll-conservatively 9999
@@ -43,7 +43,46 @@
       highlight-nonselected-windows t
       gc-cons-threshold 20000000
       tramp-default-method "ssh"
-      gdb-many-windows t)
+      gdb-many-windows t
+      linum-format "%4d")
+(global-linum-mode t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Session and History
+;; from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]]
+
+;; desktop
+(require 'desktop)
+
+(desktop-save-mode)
+
+(setq desktop-dirname user-emacs-directory
+      desktop-base-file-name "desktop"
+      desktop-base-lock-name "desktop.lock"
+      desktop-restore-frames t
+      desktop-restore-reuses-frames t
+      desktop-restore-in-current-display t
+      desktop-restore-forces-onscreen t)
+
+(defun save-desktop ()
+  (interactive)
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+
+(defun save-defaults ()
+  (desktop-save desktop-dirname)
+  (savehist-save)
+  (bookmark-save))
+
+(defun save-current-session ()
+  (interactive)
+  (save-desktop)
+  (save-defaults))
+
+;; savehist
+(savehist-mode t)
+(setq savehist-file (concat user-emacs-directory "savehist"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

@@ -12,7 +12,6 @@
 ;; Common setting and variables
 (prefer-coding-system 'utf-8)
 
-(defvar user-emacs-root user-emacs-directory)
 (defvar suit-init-file "init.el")
 
 ;; Load specified config suit from the following list:
