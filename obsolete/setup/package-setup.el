@@ -30,7 +30,11 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package better-defaults)
+(use-package better-defaults
+  :config
+  (setq save-place-file (concat user-emacs-root "places")
+        backup-directory-alist `(("." . ,(concat user-emacs-root "backups")))))
+
 (use-package diminish)
 (use-package bind-key
   :bind* ("C-c C-." . describe-personal-keybindings))

@@ -15,7 +15,10 @@
 ;;
 ;; Use better-defaults package as start point
 ;;
-(use-package better-defaults)
+(use-package better-defaults
+  :config
+  (setq save-place-file (concat user-emacs-root "places")
+        backup-directory-alist `(("." . ,(concat user-emacs-root "backups")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
