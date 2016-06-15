@@ -44,7 +44,7 @@
               ("M-k" . sp-kill-sexp)
               ("M-K" . sp-kill-hybrid-sexp)
               ("<C-M-backspace>" . sp-backward-kill-sexp)
-              
+
               ;; ("C-M-a" . sp-beginning-of-sexp)
               ;; ("C-M-e" . sp-end-of-sexp)
 
