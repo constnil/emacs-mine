@@ -1,15 +1,34 @@
-;;; init.el &#x2014; Init file of "KESS - Keep Emacs Simple, Stupid!" config suit.
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. KESS - Keep Emacs Simple, Stupid</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Setup load pathes</a></li>
+<li><a href="#sec-1-2">1.2. package.el</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 
-;; Copyright (C) 2016, Wu Tiefeng.
+# KESS - Keep Emacs Simple, Stupid<a id="sec-1" name="sec-1"></a>
 
-;; Author: Wu Tiefeng <IcebergWTF@qq.com>
-;; Maintainer: Wu Tiefeng
+## Setup load pathes<a id="sec-1-1" name="sec-1-1"></a>
 
-;;; Commentary:
-;; Simple load kess.org, let org-babel do the real work.
+    ;; Setup modules are placed in setup directory
+    (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
+    (add-to-list 'load-path (concat user-emacs-directory "/setup"))
 
-;;; Code:
+## package.el<a id="sec-1-2" name="sec-1-2"></a>
 
-(org-babel-load-file (concat user-emacs-directory "kess.org"))
-
-;;; init.el ends here
+    (require 'kess-defaults)
+    (require 'kess-comp)
+    (require 'kess-org)
+    (require 'kess-project)
+    (require 'kess-coding)
+    (require 'kess-evil)
+    
+    (require 'server)
+    (when (not (eq (server-running-p) t))
+      (server-start))
