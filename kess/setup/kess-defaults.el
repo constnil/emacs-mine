@@ -90,7 +90,8 @@
 ;;
 
 ;; buffer
-(bind-key* (kbd "M-`") 'kill-buffer-and-window)
+(bind-key* (kbd "M-`")
+           (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
 
 ;; switch to previous/next buffer (skip *[buffer]*), idea from stackoverflow
 (defun switch-non-star-muffle-buffer (next)

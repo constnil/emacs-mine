@@ -1,0 +1,20 @@
+* KESS - Keep Emacs Simple, Stupid
+** Setup load pathes
+#+begin_src emacs-lisp 
+  ;; Setup modules are placed in setup directory
+  (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
+  (add-to-list 'load-path (concat user-emacs-directory "/setup"))
+#+end_src
+** package.el
+#+begin_src emacs-lisp 
+  (require 'kess-defaults)
+  (require 'kess-comp)
+  (require 'kess-org)
+  (require 'kess-project)
+  (require 'kess-coding)
+  (require 'kess-evil)
+
+  (require 'server)
+  (when (not (eq (server-running-p) t))
+    (server-start))
+#+end_src

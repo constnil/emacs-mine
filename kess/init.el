@@ -6,21 +6,10 @@
 ;; Maintainer: Wu Tiefeng
 
 ;;; Commentary:
+;; Simple load kess.org, let org-babel do the real work.
 
 ;;; Code:
 
-;; Setup modules are placed in setup directory
-(add-to-list 'load-path (concat user-emacs-directory "/setup"))
-
-(require 'kess-defaults)
-(require 'kess-comp)
-(require 'kess-org)
-(require 'kess-project)
-(require 'kess-coding)
-(require 'kess-evil)
-
-(require 'server)
-(when (not (eq (server-running-p) t))
-  (server-start))
+(org-babel-load-file (concat user-emacs-directory "kess.org"))
 
 ;;; init.el ends here

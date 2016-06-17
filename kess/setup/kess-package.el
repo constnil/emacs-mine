@@ -77,6 +77,8 @@
               (auto-fill-mode 1))))
 
 (use-package dired-k
+  :bind (:map dired-mode-map
+              ("K" . dired-k))
   :config
   (add-hook 'dired-initial-position-hook 'dired-k))
 
