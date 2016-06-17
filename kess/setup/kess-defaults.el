@@ -137,8 +137,7 @@ otherwise, previous-buffer."
             ("M-C" . capitalize-word))
 
 ;; misc
-(bind-keys* ("C-h" . delete-backward-char)
-            ("<backspace>" . delete-backward-char)
+(bind-keys* ("<backspace>" . delete-backward-char)
             ("C-`" . set-mark-command))
 
 (provide 'kess-defaults)
