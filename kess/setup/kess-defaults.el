@@ -34,7 +34,9 @@
 ;;
 ;; Settings
 ;;
-(setq-default tab-width 4)
+(setq-default tab-width 4
+              show-trailing-whitespace t)
+
 (setq scroll-margin 5
       scroll-conservatively 9999
       scroll-step 1
@@ -135,13 +137,15 @@ otherwise, previous-buffer."
 (bind-keys* ("C-M-/" . query-replace)
             ("C-M-?" . query-replace-regexp))
 
-;; marker
-(define-prefix-command)
-(bind-keys* ("C-` C-`" . set-mark-command))
+;; C-` prefix map (mostly marker related bindings)
+(define-prefix-command 'kess-prefix-map)
+(bind-key* (kbd "C-`") kess-prefix-map)
+(bind-keys :map kess-prefix-map
+           ("C-`" . set-mark-command))
 
 ;; misc
 (bind-keys* ("<backspace>" . delete-backward-char)
-            ("C-c <tab>" . hippie-expand))
+            ("M-\\" . hippie-expand))
 
 (provide 'kess-defaults)
 
