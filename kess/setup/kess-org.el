@@ -78,8 +78,7 @@
 (bind-keys :map org-mode-map
            ("C-c <C-tab>" . org-force-cycle-archived)
            ("M-n" . org-forward-heading-same-level)
-           ("M-p" . org-backward-heading-same-level)
-           ("M-u" . outline-up-heading))
+           ("M-p" . org-backward-heading-same-level))
 
 (bind-keys* ("C-c a" . org-agenda)
             ("C-c b" . org-iswitchb)

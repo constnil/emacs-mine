@@ -111,6 +111,10 @@ otherwise, previous-buffer."
               (interactive)
               (message "TODO: indent whole buffer"))))
 
+;; frame
+(bind-keys* ("C-c o" . other-frame)
+            ("C-c 0 ." delete-frame))
+
 ;; window
 (winner-mode 1)
 (bind-keys* ("C-c ," . winner-undo)
@@ -131,14 +135,13 @@ otherwise, previous-buffer."
 (bind-keys* ("C-M-/" . query-replace)
             ("C-M-?" . query-replace-regexp))
 
-;; case change
-(bind-keys* ("M-U" . upcase-word)
-            ("M-L" . downcase-word)
-            ("M-C" . capitalize-word))
+;; marker
+(define-prefix-command)
+(bind-keys* ("C-` C-`" . set-mark-command))
 
 ;; misc
 (bind-keys* ("<backspace>" . delete-backward-char)
-            ("C-`" . set-mark-command))
+            ("C-c <tab>" . hippie-expand))
 
 (provide 'kess-defaults)
 

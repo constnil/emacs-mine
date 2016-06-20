@@ -1,0 +1,15 @@
+* emacs-mine - An Emacs Study Kit
+This was my emacs config backup git repository.
+
+At first, I discovered some emacs config repositories on github, for study purpose
+
+** 整理现有框架
+*** 不使用submodule管理suits
+*** 默认支持几个知名的配置(prelude、emacs-live、spacemacs、sacha-chua、purcell，starter-kit，etc)
+*** 使用cash和ecukes?
+*** 和学习emacs相关的函数库
+- 根据快捷键插入绑定的函数名
+*** 默认suit为kess
+- C-backspace删除到行首
+- M-backspace删除到词首
+- C-` 做为Mark相关的快捷键前缀 :emacs:kess:
