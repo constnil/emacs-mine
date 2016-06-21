@@ -1,12 +1,11 @@
 * emacs-mine - An Emacs Study Kit
-This was originally my emacs config backup git repository during emacs study.
+/(This was originally my emacs configuration backup repository)/
 
 There are hundreds of emacs config repositories on github (prelude, emacs-live,
-spacemacs, etc). I started my own by includeing them individualy as submodule,
-so called "config suit" and load particular start emacs respect $EMACS_CONFIG environment
-variable.
-
-** TODO More text to describe works
+spacemacs, etc). I started by including them individualy as submodule (so called
+"config suit") and load particular suit specified by environment variable
+$EMACS_CONFIG on emacs startup. Thus I can easily taste and study them, not mess
+up my own configuration.
 
 ** Suit management will not use submodule
 - How to define suit? (name, repos location, ...)
@@ -22,7 +21,6 @@ variable.
 - [ ] M-backspace backward-delete-word
 ** Thoughts
 *** Preview for dired-mode
-
 ** Suit Load
 #+begin_src emacs-lisp
 ;;; emacs-mine.el --- Emacs initial file
