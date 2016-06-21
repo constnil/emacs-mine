@@ -1,0 +1,26 @@
+* Emacs Keymap
+Lisp data structure that specifies key bindings for various key sequences.
+** Key Sequence
+*** Input Event
+- characters
+- function keys
+- mouse actions
+- system events
+*** Prefix Key
+Key sequence bind to a keymap.
+- Standard prefix keys
+  like C-x, C-c, etc.
+- Custom prefix keys
+#+begin_src emacs-lisp
+  (define-prefix-command 'example-prefix-map)
+#+end_src
+*** Complete Key
+Key sequence bind to a command.
+** Keymap
+- minor-mode Keymap
+  Defined in minor mode will shadow local and global keymaps.
+  (Which key binding will be choosed between same minor-mode bindings?)
+- Local (major-mode) Keymap
+  Defined in current buffer's major mode, shadows global keymap.
+- Global Keymap
+  Keymaps that shared between all buffers.

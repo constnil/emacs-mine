@@ -48,7 +48,7 @@
 (define-skeleton sk-org-src
   "Input #+begin_src #+end_src in org-mode"
   ""
-  "#+begin_src emacs-lisp \n"
+  "#+begin_src emacs-lisp\n"
   _ "\n"
   "#+end_src")
 (define-abbrev org-mode-abbrev-table "isrc" "" 'sk-org-src)
