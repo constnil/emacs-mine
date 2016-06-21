@@ -8,19 +8,39 @@ Lisp data structure that specifies key bindings for various key sequences.
 - system events
 *** Prefix Key
 Key sequence bind to a keymap.
-- Standard prefix keys
-  like C-x, C-c, etc.
+- Standard prefix keys, like C-x, C-c, etc.
 - Custom prefix keys
+#+name: example of define custom prefix keymap
 #+begin_src emacs-lisp
-  (define-prefix-command 'example-prefix-map)
+  ;; (define-prefix-command 'example-prefix-map)
+  ;; (global-define-key (kbd "C-?") 'example-prefix-map)
 #+end_src
 *** Complete Key
 Key sequence bind to a command.
 ** Keymap
-- minor-mode Keymap
-  Defined in minor mode will shadow local and global keymaps.
-  (Which key binding will be choosed between same minor-mode bindings?)
-- Local (major-mode) Keymap
-  Defined in current buffer's major mode, shadows global keymap.
-- Global Keymap
-  Keymaps that shared between all buffers.
+*** Minor Mode Keymap
+Defined in minor mode, will shadow local and global keymaps.
+- Q: Which key will be choosed between minor modes?
+- A: When more than one minor mode keymap is active, the earlier one in
+  minor-mode-map-alist takes priority, hence minor mode should be designed to
+  not interfere with each other.
+*** Local Keymap
+  Normally set by buffer's major mode, shadows global keymap.
+*** Global Keymap
+  Keymap which shared between all buffers.
+*** Pseudo code for Emacs key searching (from [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Searching-Keymaps.html#Searching-Keymaps][elisp manual]])
+#+name: key searching pseudo-code
+#+begin_src emacs-lisp
+  (or (if overriding-terminal-local-map
+          (find-in overriding-terminal-local-map))
+      (if overriding-local-map
+          (find-in overriding-local-map)
+        (or (find-in (get-char-property (point) 'keymap))
+            (find-in-any emulation-mode-map-alists)
+            (find-in-any minor-mode-overriding-map-alist)
+            (find-in-any minor-mode-map-alist)
+            (if (get-text-property (point) 'local-map)
+                (find-in (get-char-property (point) 'local-map))
+              (find-in (current-local-map)))))
+      (find-in (current-global-map)))
+#+end_src

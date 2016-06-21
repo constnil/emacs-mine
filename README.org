@@ -16,6 +16,6 @@ and start emacs respect $EMACS_CONFIG environment variable.
 - Insert command name by key press
 ** Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit
 - [X] make kess as default
-- [X] C-` prefix key map, mainly for marker related commands
+- [X] C-` prefix key map, mainly for mark related commands
 - [ ] C-backspace backward-delete-line
 - [ ] M-backspace backward-delete-word

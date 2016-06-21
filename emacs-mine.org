@@ -1,6 +1,32 @@
-;;; init.el --- Emacs initial file
+* emacs-mine - An Emacs Study Kit
+This was originally my emacs config backup git repository during emacs study.
 
-;; Copyright (C) 2016, Wu Tiefeng.
+There are hundreds of emacs config repositories on github (prelude, emacs-live,
+spacemacs, etc). I started my own by includeing them individualy as submodule,
+so called "config suit" and load particular start emacs respect $EMACS_CONFIG environment
+variable.
+
+** TODO More text to describe works
+
+** Suit management will not use submodule
+- How to define suit? (name, repos location, ...)
+- Maybe not use environment variable too?
+- Which famous suits too include by default?
+** Use cask and ecukes for study purpose?
+** Functions for emacs study?
+- Insert command name by key press
+** Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit
+- [X] make kess as default
+- [X] C-` prefix key map, mainly for mark related commands
+- [ ] C-backspace backward-delete-line
+- [ ] M-backspace backward-delete-word
+** Thoughts
+*** Preview for dired-mode
+
+** Suit Load
+#+begin_src emacs-lisp
+;;; emacs-mine.el --- Emacs initial file
+;; Load by init.el use org-babel
 
 ;; Author: Wu Tiefeng <IcebergWTF@qq.com>
 ;; Maintainer: Wu Tiefeng
@@ -55,3 +81,4 @@
   (message "config suit \"%s\" loaded" suit))
 
 ;;; init.el ends here
+#+end_src

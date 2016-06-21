@@ -1,20 +1,527 @@
-* KESS - Keep Emacs Simple, Stupid
-** Setup load pathes
-#+begin_src emacs-lisp 
+#+TITLE: KESS
+#+STARTUP: content
+#+OPTIONS: toc:2
+
+* Keep Emacs Simple, Stupid!
+OK, the following configuration not *simple* at all, but I'm trying achieve this
+goal as I'm getting more comfortable with emacs.
+** Setup load paths
+#+BEGIN_SRC emacs-lisp
   ;; Setup modules are placed in setup directory
   (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
   (add-to-list 'load-path (concat user-emacs-directory "/setup"))
-#+end_src
-** package.el
-#+begin_src emacs-lisp 
-  (require 'kess-defaults)
-  (require 'kess-comp)
-  (require 'kess-org)
-  (require 'kess-project)
-  (require 'kess-coding)
-  (require 'kess-evil)
+#+END_SRC
+** Package Setup
+*** package.el
+Setup archive lists and initialize package.el
+#+BEGIN_SRC emacs-lisp
+  ;; package.el setup
+  (let ((archives
+         '((       "melpa" . "http://melpa.org/packages/")
+           ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+           (   "marmalade" . "http://marmalade-repo.org/packages/")
+           (         "org" . "http://orgmode.org/elpa/"))))
+    (when (< emacs-major-version 24)
+      (add-to-list 'archives
+                   '("gnu" . "http://elpa.gnu.org/packages/")))
+    (dolist (arch archives)
+      (add-to-list 'package-archives arch)))
+  (package-initialize)
+#+END_SRC
+*** use-package
+use-package is very handy for package management, also I use bind-key to define
+my own key bindings.
+#+BEGIN_SRC emacs-lisp
+  ;; use-package setup
+  (unless (package-installed-p 'use-package)
+    (unless (assoc 'use-package package-archive-contents)
+      (package-refresh-contents))
+    (package-install 'use-package))
 
+  (eval-when-compile
+    (require 'use-package)
+    (setq use-package-always-ensure t
+          use-package-verbose t))
+
+  ;; packages that use-package recommend
+  (use-package diminish)
+  (use-package bind-key
+    :bind* ("C-c C-." . describe-personal-keybindings))
+#+END_SRC
+** Default Setup
+*** better-defaults
+Use better-defaults package as start point
+#+BEGIN_SRC emacs-lisp
+(use-package better-defaults)
+#+END_SRC
+*** emacs apperence
+Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
+menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
+#+BEGIN_SRC emacs-lisp
+(load-theme 'tango-dark)
+(when window-system
+  (menu-bar-mode 1))
+#+END_SRC
+*** My defaults
+My perfered settings.
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 4
+                show-trailing-whitespace t)
+
+  (setq gc-cons-threshold 20000000
+        gdb-many-windows t
+        highlight-nonselected-windows t
+        inhibit-startup-screen t
+        linum-format "%4d"
+        scroll-conservatively 9999
+        scroll-margin 5
+        scroll-step 1
+        system-time-locale "C"
+        tramp-default-method "ssh")
+
+  (global-linum-mode t)
+#+END_SRC
+*** Session and history
+Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
+/(Somehow, desktop saving caused error on my MBP, need more deep understanding in desktop.el)/
+#+BEGIN_SRC emacs-lisp
+  ;; desktop
+  (require 'desktop)
+
+  (desktop-save-mode)
+
+  (setq desktop-dirname user-emacs-directory
+        desktop-base-file-name "desktop"
+        desktop-base-lock-name "desktop.lock"
+        desktop-restore-frames t
+        desktop-restore-reuses-frames t
+        desktop-restore-in-current-display t
+        desktop-restore-forces-onscreen t)
+
+  ;; savehist
+  (savehist-mode t)
+  (setq savehist-file (concat user-emacs-directory "savehist"))
+#+END_SRC
+** Orgmode
+*** Variable settings
+#+BEGIN_SRC emacs-lisp
+(setq org-catch-invisible-edits 'smart
+      org-completion-use-ido t
+      org-ctrl-k-protect-subtree t
+      org-enforce-todo-checkbox-dependencies t
+      org-enforce-todo-dependencies t
+      org-log-done 'time
+      org-return-follows-link t
+      org-special-ctrl-a/e t
+      org-special-ctrl-k t
+      org-special-ctrl-o t
+      org-startup-indented t
+      org-tags-column 0
+      org-use-property-inheritance t)
+#+END_SRC
+*** Keywords for todo tasks
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "|" "DONE(d)")
+        (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
+        (sequence "QUESTION(q) | ANSWERED(a)")))
+#+END_SRC
+*** Template skeletons
+/Learn more about skeleton, or use yasnippet instead?/
+#+BEGIN_SRC emacs-lisp
+(require 'org)
+(add-hook 'org-mode-hook 'abbrev-mode)
+
+(define-skeleton sk-org-exp
+  "Input #+BEGIN_EXAMPLE #+END_EXAMPLE in org-mode"
+  ""
+  "#+BEGIN_EXAMPLE\n"
+  _ "\n"
+  "#+END_EXAMPLE")
+  (define-abbrev org-mode-abbrev-table "iexp" "" 'sk-org-exp)
+
+  (define-skeleton sk-org-src
+  "Input #+BEGIN_SRC #+END_SRC in org-mode"
+  ""
+  "#+BEGIN_SRC emacs-lisp\n"
+  _ "\n"
+  "#+END_SRC")
+  (define-abbrev org-mode-abbrev-table "isrc" "" 'sk-org-src)
+
+  (define-skeleton sk-org-prop
+  "Input :PROPERTIES: :END: in org-mode"
+  ""
+  >":PROPERTIES:\n"
+  > _ "\n"
+  >":END:")
+  (define-abbrev org-mode-abbrev-table "iprop" "" 'sk-org-prop)
+
+  (define-skeleton sk-org-html
+  ""
+  ""
+  "#+BEGIN_HTML\n"
+  "<pre lang=\"lisp\" line=\"1\">\n"
+  _"\n"
+  "</pre>\n"
+  "#+END_HTML\n")
+  (define-abbrev org-mode-abbrev-table "ihtml"  "" 'sk-org-html)
+#+END_SRC
+*** Bindings
+#+BEGIN_SRC emacs-lisp
+(bind-keys :map org-mode-map
+           ("C-c <C-tab>" . org-force-cycle-archived)
+           ("M-n" . org-forward-heading-same-level)
+           ("M-p" . org-backward-heading-same-level))
+#+END_SRC
+** Custom prefix keymap
+#+BEGIN_SRC emacs-lisp
+;; C-` prefix map (mainly mark related bindings)
+(define-prefix-command 'kess-prefix-map)
+(bind-key* (kbd "C-`") kess-prefix-map)
+(bind-keys :map kess-prefix-map
+           ("C-`" . set-mark-command))
+#+END_SRC
+** Global bindings
+*** buffer bindings
+#+BEGIN_SRC emacs-lisp
+;; buffer
+(bind-key* (kbd "M-`")
+           (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
+
+;; switch to previous/next buffer (skip *[buffer]*), idea from stackoverflow
+(defun switch-non-star-muffle-buffer (next)
+  "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
+otherwise, previous-buffer."
+  (let ((bread-crumb (buffer-name))
+        (fn (or (and next 'next-buffer) 'previous-buffer)))
+    (funcall fn)
+    (while (and (not (equal bread-crumb (buffer-name)))
+                (and (not (member (buffer-name) '("*scratch*" "*info*")))
+                     (string-match-p "^\*.*\*$" (buffer-name))))
+      (funcall fn))))
+(bind-keys*
+ ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
+ ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
+ ("C-M-|" . (lambda ()
+              (interactive)
+              (message "TODO: indent whole buffer"))))
+#+END_SRC
+*** frame bindings
+#+BEGIN_SRC emacs-lisp
+;; frame
+(bind-keys* ("C-c o" . other-frame)
+            ("C-c 0" . delete-frame))
+#+END_SRC
+*** window bindings
+#+BEGIN_SRC emacs-lisp
+;; window
+(winner-mode 1)
+(bind-keys* ("C-c ," . winner-undo)
+            ("C-c ." . winner-redo))
+
+(bind-keys* ("C-M-." . scroll-other-window)
+            ("C-M-," . scroll-other-window-down)
+            ("C-M-h" . windmove-left)
+            ("C-M-j" . windmove-down)
+            ("C-M-k" . windmove-up)
+            ("C-M-l" . windmove-right))
+#+END_SRC
+*** navigation bindings
+#+BEGIN_SRC emacs-lisp
+;; navigation
+(bind-keys ("M-n" . forward-paragraph)
+           ("M-p" . backward-paragraph))
+#+END_SRC
+*** search and replace bindings
+#+BEGIN_SRC emacs-lisp
+;; search/replace
+(bind-keys* ("C-M-/" . query-replace)
+            ("C-M-?" . query-replace-regexp))
+#+END_SRC
+*** org-mode bindings
+#+BEGIN_SRC emacs-lisp
+(bind-keys* ("C-c a" . org-agenda)
+            ("C-c b" . org-iswitchb)
+            ("C-c c" . org-capture)
+            ("C-c l" . org-store-link))
+#+END_SRC
+*** other bindings
+#+BEGIN_SRC emacs-lisp
+;; misc
+(bind-keys* ("<backspace>" . delete-backward-char)
+            ("M-\\" . hippie-expand))
+#+END_SRC
+** Essential packages
+- undo-tree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :bind* (("C-/" . undo-tree-undo)
+          ("M-/" . undo-tree-redo))
+  :config
+  (global-undo-tree-mode))
+#+END_SRC
+- ido
+#+BEGIN_SRC emacs-lisp
+(ido-mode 1)
+(ido-everywhere 1)
+
+(use-package ido-ubiquitous
+  :config
+  (ido-ubiquitous-mode 1))
+
+(use-package flx-ido
+  :config
+  (setq ido-enable-prefix nil
+        ido-enable-flex-matching t
+        ido-use-faces nil
+        ido-create-new-buffer 'always
+        ido-use-filename-at-point 'guess
+        ido-max-prospects 10
+        ido-default-file-method 'selected-window
+        ido-auto-merge-work-directories-length -1)
+  (flx-ido-mode 1))
+#+END_SRC
+- smex
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+  :bind* (("M-x" . smex)
+          ("M-X" . smex-major-mode-commands)
+          ("C-c M-x" . execute-extended-command)))
+#+END_SRC
+- company
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :diminish company-mode
+  :demand
+  :bind (:map company-active-map
+              ("M-n" . company-next-page)
+              ("M-p" . company-previous-page)
+              ("C-n" . company-select-next-or-abort)
+              ("C-p" . company-select-previous-or-abort))
+  :config
+  (setq company-idle-delay 0.3
+        company-tooltip-limit 12
+        company-minimum-prefix-length 2)
+  (global-company-mode 1))
+#+END_SRC
+** Project management
+- projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :bind* (("M-o" . projectile-find-file-dwim)
+            ("M-O" . projectile-find-file-dwim-other-window))
+    :config
+    (projectile-global-mode)
+    (setq projectile-indexing-method 'alien
+          projectile-enable-caching t)
+    (use-package ag))
+#+END_SRC
+- find-file-in-project
+#+BEGIN_SRC emacs-lisp
+(use-package find-file-in-project
+  :ensure ivy)
+#+END_SRC
+** Useful handy packages
+#+BEGIN_SRC emacs-lisp
+(use-package popwin
+  :config
+  (popwin-mode 1))
+#+END_SRC
+** Evil-mode
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :diminish undo-tree-mode
+  :bind (("C-~" . evil-mode)
+         :map evil-normal-state-map
+         ("j" . evil-next-visual-line)
+         ("k" . evil-previous-visual-line)
+         ("C-a" . evil-beginning-of-line)
+         ("C-e" . evil-end-of-line)
+         ([escape] . keyboard-quit)
+         :map evil-emacs-state-map
+         ([escape] . evil-normal-state))
+  :config
+  (unbind-key "C-z" evil-motion-state-map)
+  (unbind-key "C-z" evil-insert-state-map)
+
+  (setq evil-esc-delay 0)
+
+  (use-package evil-visualstar
+    :config
+    (global-evil-visualstar-mode t))
+
+  (use-package evil-numbers
+    :bind (:map evil-normal-state-map
+                ("+" . evil-numbers/inc-at-pt)
+                ("-" . evil-numbers/dec-at-pt))))
+#+END_SRC
+** Coding Setup
+** Common coding setup
+*** Binding
+#+BEGIN_SRC emacs-lisp
+(bind-keys ("C-c C-c" . comment-region)
+           ("C-c C-u" . uncomment-region))
+#+END_SRC
+*** Parens
+I'm confusing about parens related packages, for now my simple understanding is:
+- use smartparens for common coding parens and pair management (there still
+  another variations like autopair, wrapper-region, electric-pair-mode).
+- use paredit for lisp language, see blew [[#paredit][Lisp coding setup]].
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+(use-package smartparens-config
+  :ensure smartparens
+  :demand
+  :bind (:map smartparens-mode-map
+              ("M-k" . sp-kill-sexp)
+              ("M-K" . sp-kill-hybrid-sexp)
+              ("<C-M-backspace>" . sp-backward-kill-sexp)
+
+              ;; ("C-M-a" . sp-beginning-of-sexp)
+              ;; ("C-M-e" . sp-end-of-sexp)
+
+              ;; ("C-<down>" . sp-down-sexp)
+              ;; ("C-<up>"   . sp-up-sexp)
+              ;; ("M-<down>" . sp-backward-down-sexp)
+              ;; ("M-<up>"   . sp-backward-up-sexp)
+
+              ;; ("C-M-f" . sp-forward-sexp)
+              ;; ("C-M-b" . sp-backward-sexp)
+
+              ;; ("C-M-n" . sp-next-sexp)
+              ;; ("C-M-p" . sp-previous-sexp)
+
+              ;; ("C-S-f" . sp-forward-symbol)
+              ;; ("C-S-b" . sp-backward-symbol)
+
+              ;; ("C-<right>" . sp-forward-slurp-sexp)
+              ;; ("M-<right>" . sp-forward-barf-sexp)
+              ;; ("C-<left>"  . sp-backward-slurp-sexp)
+              ;; ("M-<left>"  . sp-backward-barf-sexp)
+
+              ;; ("C-M-t" . sp-transpose-sexp)
+              ;; ("C-M-w" . sp-copy-sexp)
+
+              ;; ("C-M-d" . delete-sexp)
+
+              ;; ("M-<backspace>" . backward-kill-word)
+              ;; ("C-<backspace>" . sp-backward-kill-word)
+              ;; ([remap sp-backward-kill-word] . backward-kill-word)
+
+              ;; ("M-[" . sp-backward-unwrap-sexp)
+              ;; ("M-]" . sp-unwrap-sexp)
+
+              ;; ("C-x C-t" . sp-transpose-hybrid-sexp)
+
+              ;; ("C-c ("  . wrap-with-parens)
+              ;; ("C-c ["  . wrap-with-brackets)
+              ;; ("C-c {"  . wrap-with-braces)
+              ;; ("C-c '"  . wrap-with-single-quotes)
+              ;; ("C-c \"" . wrap-with-double-quotes)
+              ;; ("C-c _"  . wrap-with-underscores)
+              ;; ("C-c `"  . wrap-with-back-quotes))
+              )
+  :config
+  (show-smartparens-global-mode t)
+  (smartparens-strict-mode 1)
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+#+END_SRC
+*** Syntax
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :diminish flycheck-mode
+  :bind* ("C-c C-f" . flycheck-mode)
+  :config
+  (use-package flycheck-pos-tip)
+  (when (display-graphic-p (selected-frame))
+    (eval-after-load 'flycheck
+      '(custom-set-variables
+        '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
+#+END_SRC
+*** Templating
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :config
+  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  (yas-global-mode 1))
+#+END_SRC
+** Programming language setup
+*** Lisp coding setup
+:PROPERTIES:
+:CUSTOM_ID: paredit
+:END:
+- paredit
+#+BEGIN_SRC emacs-lisp
+(use-package paredit
+  :demand
+  :bind (:map paredit-mode-map
+              ("C-\>" . paredit-forward-slurp-sexp)
+              ("C-\<" . paredit-forward-barf-sexp)
+              ("C-M-\>" . paredit-backward-barf-sexp)
+              ("C-M-\<" . paredit-backward-slurp-sexp))
+  :config
+  (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
+    (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)))
+#+END_SRC
+- emacs-lisp
+#+BEGIN_SRC emacs-lisp
+(use-package eldoc
+  :diminish eldoc-mode
+  :config
+  (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'eldoc-mode))
+
+(bind-keys* ("C-x C-r" . eval-region)
+            ("C-x C-d" . eval-defun)
+            ("C-x C-w" . eval-buffer))
+#+END_SRC
+- clojure
+#+BEGIN_SRC emacs-lisp
+(use-package clojure-mode)
+(use-package cider)
+#+END_SRC
+- common lisp
+#+BEGIN_SRC emacs-lisp
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "clisp")
+#+END_SRC
+*** C# coding setup
+More dig into omnisharp-emacs.
+#+BEGIN_SRC emacs-lisp
+(use-package csharp-mode)
+;; (use-package omnisharp
+;;   :config
+;;   (setq omnisharp-server-executable-path "~/warehouse/builds/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"
+;;         ;;        "~/warehouse/builds/omnisharp-roslyn/artifacts/publish/OmniSharp/default/net451/OmniSharp.exe"
+;;         )
+;;   (when (file-exists-p omnisharp-server-executable-path)
+;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
+;;     (add-to-list 'company-backends 'company-omnisharp)))
+#+END_SRC
+** Study and bring-in packages
+#+BEGIN_SRC emacs-lisp
+;; (use-package ack)
+;; (use-package bookmark+)
+;; (use-package markdown-mode+)
+;; (use-package magit
+;;   :config
+;;   (setq magit-last-seen-setup-instructions "1.4.0")
+;;   (add-hook 'magit-log-edit-mode-hook
+;;             (lambda ()
+;;               (set-fill-column 72)
+;;               (auto-fill-mode 1))))
+#+END_SRC
+** Emacs server
+Start server if not already running.
+#+BEGIN_SRC emacs-lisp
   (require 'server)
   (when (not (eq (server-running-p) t))
-    (server-start))
-#+end_src
+    (add-hook 'after-init-hook 'server-start))
+#+END_SRC
