@@ -104,17 +104,18 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
 #+END_SRC
 *** Spell check
 #+BEGIN_SRC emacs-lisp
-  (setq ispell-local-dictionary "en_US")
-  (setq ispell-local-dictionary-alist
-        '(("en_US"
-           "[[:alpha:]]"
-           "[^[:alpha:]]"
-           "[']"
-           nil
-           nil
-           nil
-           utf-8)))
-  (ispell-change-dictionary "en_US" t)
+  ;; (require 'ispell)
+  ;; (setq ispell-local-dictionary "en_US")
+  ;; (setq ispell-local-dictionary-alist
+  ;;       '(("en_US"
+  ;;          "[[:alpha:]]"
+  ;;          "[^[:alpha:]]"
+  ;;          "[']"
+  ;;          nil
+  ;;          nil
+  ;;          nil
+  ;;          utf-8)))
+  ;; (ispell-change-dictionary "en_US" t)
 #+END_SRC
 ** Orgmode
 *** Variable settings
