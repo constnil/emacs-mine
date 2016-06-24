@@ -1,15 +1,20 @@
-#+TITLE: KESS
+#+TITLE: KESS - Keep Emacs Simple, Stupid!
 #+STARTUP: content
-#+OPTIONS: toc:2
+#+OPTIONS: toc:4 h:4
 
-* Keep Emacs Simple, Stupid!
+* KESS - Keep Emacs Simple, Stupid!
 OK, the following configuration not *simple* at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
+** Personal information
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Tiefeng Wu"
+        user-mail-address "icebergwtf@qq.com")
+#+END_SRC
 ** Setup load paths
 #+BEGIN_SRC emacs-lisp
   ;; Setup modules are placed in setup directory
-  (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
-  (add-to-list 'load-path (concat user-emacs-directory "/setup"))
+  ;; (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
+  ;; (add-to-list 'load-path (concat user-emacs-directory "/setup"))
 #+END_SRC
 ** Package Setup
 *** package.el
@@ -77,7 +82,8 @@ My perfered settings.
         scroll-margin 5
         scroll-step 1
         system-time-locale "C"
-        tramp-default-method "ssh")
+        tramp-default-method "ssh"
+        diff-switches "-u")
 
   (global-linum-mode t)
 #+END_SRC
@@ -199,27 +205,30 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
 ** Global bindings
 *** buffer bindings
 #+BEGIN_SRC emacs-lisp
-;; buffer
-(bind-key* (kbd "M-`")
-           (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
+  ;; buffer
+  (bind-key* (kbd "M-`")
+             (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
 
-;; switch to previous/next buffer (skip *[buffer]*), idea from stackoverflow
-(defun switch-non-star-muffle-buffer (next)
-  "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
-otherwise, previous-buffer."
-  (let ((bread-crumb (buffer-name))
-        (fn (or (and next 'next-buffer) 'previous-buffer)))
-    (funcall fn)
-    (while (and (not (equal bread-crumb (buffer-name)))
-                (and (not (member (buffer-name) '("*scratch*" "*info*")))
-                     (string-match-p "^\*.*\*$" (buffer-name))))
-      (funcall fn))))
-(bind-keys*
- ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
- ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
- ("C-M-|" . (lambda ()
-              (interactive)
-              (message "TODO: indent whole buffer"))))
+  ;; switch to previous/next buffer (skip *[buffer]*), idea from stackoverflow
+  (defun switch-non-star-muffle-buffer (next)
+    "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
+  otherwise, previous-buffer."
+    (let ((bread-crumb (buffer-name))
+          (fn (or (and next 'next-buffer) 'previous-buffer)))
+      (funcall fn)
+      (while (and (not (equal bread-crumb (buffer-name)))
+                  (and (not (member (buffer-name) '("*scratch*" "*info*")))
+                       (string-match-p "^\*.*\*$" (buffer-name))))
+        (funcall fn))))
+  (bind-keys*
+   ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
+   ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
+   ("C-M-|" . (lambda ()
+                (interactive)
+                (indent-region (point-min) (point-max) nil)))
+   ("C-x s" . write-file)
+   ("C-S" . save-some-buffers))
+
 #+END_SRC
 *** frame bindings
 #+BEGIN_SRC emacs-lisp
@@ -255,10 +264,11 @@ otherwise, previous-buffer."
 #+END_SRC
 *** org-mode bindings
 #+BEGIN_SRC emacs-lisp
-(bind-keys* ("C-c a" . org-agenda)
-            ("C-c b" . org-iswitchb)
-            ("C-c c" . org-capture)
-            ("C-c l" . org-store-link))
+  (bind-keys* ("C-c a" . org-agenda)
+              ("C-c b" . org-iswitchb)
+              ("C-c c" . org-capture)
+              ("C-c l" . org-store-link)
+              ("C-c t" . org-tags-view))
 #+END_SRC
 *** other bindings
 #+BEGIN_SRC emacs-lisp
@@ -375,8 +385,8 @@ otherwise, previous-buffer."
 ** Common coding setup
 *** Binding
 #+BEGIN_SRC emacs-lisp
-  (bind-keys* ("C-c C-c" . comment-region)
-              ("C-c C-u" . uncomment-region))
+  (bind-keys* ("C-c r" . comment-region)
+              ("C-c u" . uncomment-region))
 #+END_SRC
 *** Parens
 I'm confusing about parens related packages, for now my simple understanding is:
