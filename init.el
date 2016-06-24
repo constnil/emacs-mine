@@ -34,7 +34,7 @@
 
   ;; Load suit preset file if exists
   ;; Opportunity for adjusting given suit, such as change suit-init-file, etc.
-  (load (concat user-emacs-directory "suits/" "suit" ".el") 'noerror)
+  (load (concat user-emacs-directory "suits/" suit ".el") 'noerror)
 
   ;; HACK: Change user-emacs-directory to suit directory
   (setq user-emacs-directory (concat user-emacs-directory suit "/"))
