@@ -19,9 +19,9 @@
 ;; prelude - "prelude" (git://github.com/bbatsov/prelude.git)
 ;;   space - "spacemacs" (git://github.com/syl20bnr/spacemacs.git)
 ;;   bling - "bling's KISS dotemacs" (git://github.com/bling/dotemacs.git)
-;;obsolete - "my first config suit 'mine' which is obsolete now"
+;;  sachac - "sacha chua s .emacs.d (git://github.com/sachac/.emacs.d.git)"
 ;;    kess - "my 'Keep Emacs Simple, Stupid' config suit" (default)
-(let* ((suits '("live" "prelude" "space" "bling" "obsolete" "kess"))
+(let* ((suits '("live" "prelude" "space" "bling" "sachac" "kess"))
        (env (getenv "EMACS_CONFIG"))
        (suit (or (and (member env suits) env) "kess")))
   (setenv "EMACS_CONFIG" suit) ; In case environment variable not set

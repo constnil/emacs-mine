@@ -323,6 +323,7 @@ otherwise, previous-buffer."
 - projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :demand
     :bind* (("M-o" . projectile-find-file-dwim)
             ("M-O" . projectile-find-file-dwim-other-window))
     :config

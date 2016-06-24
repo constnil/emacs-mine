@@ -10,3 +10,6 @@
 [submodule "bling"]
 	path = bling
 	url = git://github.com/bling/dotemacs.git
+[submodule "sachac"]
+	path = sachac
+	url = git://github.com/sachac/.emacs.d.git
