@@ -23,7 +23,7 @@
 </li>
 <li><a href="#sec-1-5">1.5. Orgmode</a>
 <ul>
-<li><a href="#sec-1-5-1">1.5.1. Variable settings</a></li>
+<li><a href="#sec-1-5-1">1.5.1. Perfered settings</a></li>
 <li><a href="#sec-1-5-2">1.5.2. Keywords for todo tasks</a></li>
 <li><a href="#sec-1-5-3">1.5.3. Template skeletons</a></li>
 <li><a href="#sec-1-5-4">1.5.4. Bindings</a></li>
@@ -98,7 +98,16 @@
 OK, the following configuration not **simple** at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
 
+Also, I'm trying to make KESS work as I expect on all my OSs:
+-   Win7/Win10 (chocolatey emacs package, tried compile emacs on msys2, but no
+    success)
+-   Ubuntu (apt-get emacs package)
+-   Arch Linux (pacman emacs package)
+
 ## Personal information<a id="sec-1-1" name="sec-1-1"></a>
+
+I'm doing this because [Sacha Chua](https://github.com/sachac) doing this. I got this [org-babel config](https://github.com/sachac/.emacs.d) idea
+from her [amazing blog](http://sachachua.com/blog/). Thanks Sacha!
 
     (setq user-full-name "Tiefeng Wu"
           user-mail-address "icebergwtf@qq.com")
@@ -211,6 +220,10 @@ Borrowed from [Emacs and Hacks II](https://ebzzry.github.io/emacs-hacks-2.html),
 
 ### Spell check<a id="sec-1-4-5" name="sec-1-4-5"></a>
 
+I'm using choco emacs package, there's only hunspell available on chocolatey. I
+copied following code from internet, but still cannot get it work. Will dig in
+spell check use hunspell on all my OSs later.
+
     ;; (require 'ispell)
     ;; (setq ispell-local-dictionary "en_US")
     ;; (setq ispell-local-dictionary-alist
@@ -226,7 +239,7 @@ Borrowed from [Emacs and Hacks II](https://ebzzry.github.io/emacs-hacks-2.html),
 
 ## Orgmode<a id="sec-1-5" name="sec-1-5"></a>
 
-### Variable settings<a id="sec-1-5-1" name="sec-1-5-1"></a>
+### Perfered settings<a id="sec-1-5-1" name="sec-1-5-1"></a>
 
     (setq org-catch-invisible-edits 'smart
           org-completion-use-ido t
