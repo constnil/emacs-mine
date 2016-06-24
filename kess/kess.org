@@ -499,8 +499,8 @@ I'm confusing about parens related packages, for now my simple understanding is:
 #+END_SRC
 - clojure
 #+BEGIN_SRC emacs-lisp
-(use-package clojure-mode)
-(use-package cider)
+(use-package clojure-mode :defer t)
+(use-package cider :defer t)
 #+END_SRC
 - common lisp
 #+BEGIN_SRC emacs-lisp
