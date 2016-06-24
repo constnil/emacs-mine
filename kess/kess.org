@@ -374,8 +374,8 @@ otherwise, previous-buffer."
 ** Common coding setup
 *** Binding
 #+BEGIN_SRC emacs-lisp
-(bind-keys ("C-c C-c" . comment-region)
-           ("C-c C-u" . uncomment-region))
+  (bind-keys* ("C-c C-c" . comment-region)
+              ("C-c C-u" . uncomment-region))
 #+END_SRC
 *** Parens
 I'm confusing about parens related packages, for now my simple understanding is:
