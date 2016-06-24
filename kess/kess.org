@@ -2,7 +2,6 @@
 #+STARTUP: content
 #+OPTIONS: toc:4 h:4
 
-* KESS - Keep Emacs Simple, Stupid!
 OK, the following configuration not *simple* at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
 
@@ -12,22 +11,22 @@ Also, I'm trying to make KESS work as I expect on all my OSs:
 - Ubuntu (apt-get emacs package)
 - Arch Linux (pacman emacs package)
 
-** Personal information
+* Personal information
 I'm doing this because [[https://github.com/sachac][Sacha Chua]] doing this. I got this [[https://github.com/sachac/.emacs.d][org-babel config]] idea
 from her [[http://sachachua.com/blog/][amazing blog]]. Thanks Sacha!
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Tiefeng Wu"
         user-mail-address "icebergwtf@qq.com")
 #+END_SRC
-** Setup load paths
+* Setup load paths
 Comment out old path settings, will change when needed.
 #+BEGIN_SRC emacs-lisp
   ;; Setup modules are placed in setup directory
   ;; (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
   ;; (add-to-list 'load-path (concat user-emacs-directory "/setup"))
 #+END_SRC
-** Package Setup
-*** package.el
+* Package Setup
+** package.el
 Setup archive lists and initialize package.el
 #+BEGIN_SRC emacs-lisp
   ;; package.el setup
@@ -43,7 +42,7 @@ Setup archive lists and initialize package.el
       (add-to-list 'package-archives arch)))
   (package-initialize)
 #+END_SRC
-*** use-package
+** use-package
 [[https://github.com/jwiegley/use-package][use-package]] is very handy for package management, also I use bind-key to define
 my own key bindings.
 #+BEGIN_SRC emacs-lisp
@@ -63,13 +62,13 @@ my own key bindings.
   (use-package bind-key
     :bind* ("C-c C-." . describe-personal-keybindings))
 #+END_SRC
-** Default Setup
-*** better-defaults
+* Default Setup
+** better-defaults
 Use [[https://github.com/technomancy/better-defaults][better-defaults]] package as start point
 #+BEGIN_SRC emacs-lisp
 (use-package better-defaults)
 #+END_SRC
-*** emacs apperence
+** emacs apperence
 Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
 menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
 #+BEGIN_SRC emacs-lisp
@@ -77,7 +76,7 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
 (when window-system
   (menu-bar-mode 1))
 #+END_SRC
-*** My defaults
+** My defaults
 My perfered settings.
 #+BEGIN_SRC emacs-lisp
   (setq-default tab-width 4
@@ -97,7 +96,7 @@ My perfered settings.
 
   (global-linum-mode t)
 #+END_SRC
-*** Session and history
+** Session and history
 Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
 /(Somehow, desktop saving caused error on my MBP, need more deep understanding in desktop.el)/
 #+BEGIN_SRC emacs-lisp
@@ -118,7 +117,7 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
   (savehist-mode t)
   (setq savehist-file (concat user-emacs-directory "savehist"))
 #+END_SRC
-*** Spell check
+** Spell check
 I'm using choco emacs package, there's only hunspell available on chocolatey. I
 copied following code from internet, but still cannot get it work. Will dig in
 spell check use hunspell on all my OSs later.
@@ -136,8 +135,8 @@ spell check use hunspell on all my OSs later.
   ;;          utf-8)))
   ;; (ispell-change-dictionary "en_US" t)
 #+END_SRC
-** Orgmode
-*** Perfered settings
+* Orgmode
+** Perfered settings
 #+BEGIN_SRC emacs-lisp
 (setq org-catch-invisible-edits 'smart
       org-completion-use-ido t
@@ -153,16 +152,16 @@ spell check use hunspell on all my OSs later.
       org-tags-column 0
       org-use-property-inheritance t)
 #+END_SRC
-*** Keywords for todo tasks
+** Keywords for todo tasks
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)")
         (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
         (sequence "QUESTION(q) | ANSWERED(a)")))
 #+END_SRC
-*** Template skeletons
+** Template skeletons
 /Learn more about skeleton, or use yasnippet instead?/
-This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html][cnblog]], with some modification.
+This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html][cnblogs]], with some modification.
 #+BEGIN_SRC emacs-lisp
 (require 'org)
 (add-hook 'org-mode-hook 'abbrev-mode)
@@ -201,14 +200,14 @@ This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.htm
   "#+END_HTML\n")
   (define-abbrev org-mode-abbrev-table "ihtml"  "" 'sk-org-html)
 #+END_SRC
-*** Bindings
+** Bindings
 #+BEGIN_SRC emacs-lisp
 (bind-keys :map org-mode-map
            ("C-c <C-tab>" . org-force-cycle-archived)
            ("M-n" . org-forward-heading-same-level)
            ("M-p" . org-backward-heading-same-level))
 #+END_SRC
-** Custom prefix keymap
+* Custom prefix keymap
 To not mess up with emacs's own prefix maps, my custom prefix binding use C-`,
 which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
@@ -218,8 +217,8 @@ which I think very easy to reach.
 (bind-keys :map kess-prefix-map
            ("C-`" . set-mark-command))
 #+END_SRC
-** Global bindings
-*** buffer bindings
+* Global bindings
+** buffer bindings
 #+BEGIN_SRC emacs-lisp
   ;; buffer
   (bind-key* (kbd "M-`")
@@ -246,13 +245,13 @@ which I think very easy to reach.
    ("C-S-s" . save-some-buffers))
 
 #+END_SRC
-*** frame bindings
+** frame bindings
 #+BEGIN_SRC emacs-lisp
 ;; frame
 (bind-keys* ("C-c o" . other-frame)
             ("C-c 0" . delete-frame))
 #+END_SRC
-*** window bindings
+** window bindings
 #+BEGIN_SRC emacs-lisp
 ;; window
 (winner-mode 1)
@@ -266,19 +265,19 @@ which I think very easy to reach.
             ("C-M-k" . windmove-up)
             ("C-M-l" . windmove-right))
 #+END_SRC
-*** navigation bindings
+** navigation bindings
 #+BEGIN_SRC emacs-lisp
 ;; navigation
 (bind-keys ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph))
 #+END_SRC
-*** search and replace bindings
+** search and replace bindings
 #+BEGIN_SRC emacs-lisp
 ;; search/replace
 (bind-keys* ("C-M-/" . query-replace)
             ("C-M-?" . query-replace-regexp))
 #+END_SRC
-*** org-mode bindings
+** org-mode bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys* ("C-c a" . org-agenda)
               ("C-c b" . org-iswitchb)
@@ -286,15 +285,15 @@ which I think very easy to reach.
               ("C-c l" . org-store-link)
               ("C-c t" . org-tags-view))
 #+END_SRC
-*** other bindings
+** other bindings
 #+BEGIN_SRC emacs-lisp
 ;; misc
 (bind-keys* ("<backspace>" . delete-backward-char)
             ("M-\\" . hippie-expand))
 #+END_SRC
-** Essential packages
+* Essential packages
 These're packages I think is essential.
-*** undo-tree
+** undo-tree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :bind* (("C-/" . undo-tree-undo)
@@ -302,14 +301,14 @@ These're packages I think is essential.
   :config
   (global-undo-tree-mode))
 #+END_SRC
-*** smex
+** smex
 #+BEGIN_SRC emacs-lisp
 (use-package smex
   :bind* (("M-x" . smex)
           ("M-X" . smex-major-mode-commands)
           ("C-c M-x" . execute-extended-command)))
 #+END_SRC
-*** company
+** company
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :diminish company-mode
@@ -325,7 +324,7 @@ These're packages I think is essential.
         company-minimum-prefix-length 2)
   (global-company-mode 1))
 #+END_SRC
-*** ido related
+** ido related
 #+BEGIN_SRC emacs-lisp
   (ido-mode 1)
   (ido-everywhere 1)
@@ -346,10 +345,10 @@ These're packages I think is essential.
           ido-auto-merge-work-directories-length -1)
     (flx-ido-mode 1))
 #+END_SRC
-** Project management
+* Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
-*** projectile
+** projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :demand
@@ -361,12 +360,12 @@ to benefit from both? (Another tough task)
           projectile-enable-caching t)
     (use-package ag))
 #+END_SRC
-*** find-file-in-project
+** find-file-in-project
 #+BEGIN_SRC emacs-lisp
 (use-package find-file-in-project
   :ensure ivy)
 #+END_SRC
-** Useful handy packages
+* Useful handy packages
 In order to be KESS, I'll only choose some little packages besides essential
 packages loaded above.
 #+BEGIN_SRC emacs-lisp
@@ -374,15 +373,15 @@ packages loaded above.
   :config
   (popwin-mode 1))
 #+END_SRC
-** Evil-mode
+* Evil-mode
 Maybe I can totally discard later?  And I'm think about create a minor mode like
 [[https://github.com/chrisdone/god-mode][god-mode]] and evil-mode, but just a thin layer to provide vim's normal state and
 visual state. =Of course, this will be a tough task for me now.=
-*** Features & thoughts
+** Features & thoughts
 - use CapsLock to switch
 - insert state is pure emacs
 - normal state + visual state = view state (or browse state?)
-*** Evil setup
+** Evil setup
 #+BEGIN_SRC emacs-lisp
 (use-package evil
   :diminish undo-tree-mode
@@ -410,13 +409,13 @@ visual state. =Of course, this will be a tough task for me now.=
                 ("+" . evil-numbers/inc-at-pt)
                 ("-" . evil-numbers/dec-at-pt))))
 #+END_SRC
-** Common coding setup
-*** Parens
+* Common coding setup
+** Parens
 I'm confusing about parens related packages, for now my simple understanding is:
 - use smartparens for common coding parens and pair management (there still
   another variations like autopair, wrapper-region, electric-pair-mode).
 - use paredit for lisp language, see blew [[#paredit][Lisp coding setup]].
-**** smartparens
+*** smartparens
 #+BEGIN_SRC emacs-lisp
 (show-paren-mode 1)
 (use-package rainbow-delimiters
@@ -481,7 +480,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 #+END_SRC
-*** Syntax
+** Syntax
 Flycheck is a bit annoying when enabled globally, so I use it only when needed.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
@@ -494,7 +493,7 @@ Flycheck is a bit annoying when enabled globally, so I use it only when needed.
       '(custom-set-variables
         '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 #+END_SRC
-*** Templating
+** Templating
 Learn more and get used to it.
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
@@ -503,17 +502,17 @@ Learn more and get used to it.
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode 1))
 #+END_SRC
-*** Binding
+** Binding
 #+BEGIN_SRC emacs-lisp
   (bind-keys* ("C-c r" . comment-region)
               ("C-c u" . uncomment-region))
 #+END_SRC
-** Programming language setup
-*** Lisp coding setup
+* Programming language setup
+** Lisp coding setup
 :PROPERTIES:
 :CUSTOM_ID: paredit
 :END:
-**** paredit
+*** paredit
 #+BEGIN_SRC emacs-lisp
 (use-package paredit
   :demand
@@ -526,7 +525,7 @@ Learn more and get used to it.
   (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
     (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)))
 #+END_SRC
-**** emacs-lisp
+*** emacs-lisp
 #+BEGIN_SRC emacs-lisp
 (use-package eldoc
   :diminish eldoc-mode
@@ -539,17 +538,17 @@ Learn more and get used to it.
             ("C-x C-d" . eval-defun)
             ("C-x C-w" . eval-buffer))
 #+END_SRC
-**** clojure
+*** clojure
 #+BEGIN_SRC emacs-lisp
 (use-package clojure-mode :defer t)
 (use-package cider :defer t)
 #+END_SRC
-**** common lisp
+*** common lisp
 #+BEGIN_SRC emacs-lisp
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "clisp")
 #+END_SRC
-*** C# coding setup
+** C# coding setup
 More dig into omnisharp-emacs.
 #+BEGIN_SRC emacs-lisp
 (use-package csharp-mode)
@@ -562,7 +561,7 @@ More dig into omnisharp-emacs.
 ;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
 ;;     (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
-** Study and 'maybe' packages
+* Study and 'maybe' packages
 Comment out for now, and learn more about them sometime.
 #+BEGIN_SRC emacs-lisp
 ;; (use-package ack)
@@ -576,7 +575,7 @@ Comment out for now, and learn more about them sometime.
 ;;               (set-fill-column 72)
 ;;               (auto-fill-mode 1))))
 #+END_SRC
-** Emacs server
+* Emacs server
 Start server if not already running. Properly set server to work on MSWin is
 painful.
 #+BEGIN_SRC emacs-lisp
