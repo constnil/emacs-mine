@@ -2,94 +2,98 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. Personal information</a></li>
-<li><a href="#sec-2">2. Setup load paths</a></li>
-<li><a href="#sec-3">3. Package Setup</a>
+<li><a href="#sec-1">1. KESS - Keep Emacs Simple, Stupid!</a></li>
+<li><a href="#sec-2">2. Personal information</a></li>
+<li><a href="#sec-3">3. Setup load paths</a></li>
+<li><a href="#sec-4">4. Package Setup</a>
 <ul>
-<li><a href="#sec-3-1">3.1. package.el</a></li>
-<li><a href="#sec-3-2">3.2. use-package</a></li>
+<li><a href="#sec-4-1">4.1. package.el</a></li>
+<li><a href="#sec-4-2">4.2. use-package</a></li>
 </ul>
 </li>
-<li><a href="#sec-4">4. Default Setup</a>
+<li><a href="#sec-5">5. Default Setup</a>
 <ul>
-<li><a href="#sec-4-1">4.1. better-defaults</a></li>
-<li><a href="#sec-4-2">4.2. emacs apperence</a></li>
-<li><a href="#sec-4-3">4.3. My defaults</a></li>
-<li><a href="#sec-4-4">4.4. Session and history</a></li>
-<li><a href="#sec-4-5">4.5. Spell check</a></li>
+<li><a href="#sec-5-1">5.1. better-defaults</a></li>
+<li><a href="#sec-5-2">5.2. emacs apperence</a></li>
+<li><a href="#sec-5-3">5.3. My defaults</a></li>
+<li><a href="#sec-5-4">5.4. Session and history</a></li>
+<li><a href="#sec-5-5">5.5. Spell check</a></li>
 </ul>
 </li>
-<li><a href="#sec-5">5. Orgmode</a>
+<li><a href="#sec-6">6. Orgmode</a>
 <ul>
-<li><a href="#sec-5-1">5.1. Perfered settings</a></li>
-<li><a href="#sec-5-2">5.2. Keywords for todo tasks</a></li>
-<li><a href="#sec-5-3">5.3. Template skeletons</a></li>
-<li><a href="#sec-5-4">5.4. Bindings</a></li>
+<li><a href="#sec-6-1">6.1. Perfered settings</a></li>
+<li><a href="#sec-6-2">6.2. Keywords for todo tasks</a></li>
+<li><a href="#sec-6-3">6.3. Template skeletons</a></li>
+<li><a href="#sec-6-4">6.4. Bindings</a></li>
 </ul>
 </li>
-<li><a href="#sec-6">6. Custom prefix keymap</a></li>
-<li><a href="#sec-7">7. Global bindings</a>
+<li><a href="#sec-7">7. Custom prefix keymap</a></li>
+<li><a href="#sec-8">8. Global bindings</a>
 <ul>
-<li><a href="#sec-7-1">7.1. buffer bindings</a></li>
-<li><a href="#sec-7-2">7.2. frame bindings</a></li>
-<li><a href="#sec-7-3">7.3. window bindings</a></li>
-<li><a href="#sec-7-4">7.4. navigation bindings</a></li>
-<li><a href="#sec-7-5">7.5. search and replace bindings</a></li>
-<li><a href="#sec-7-6">7.6. org-mode bindings</a></li>
-<li><a href="#sec-7-7">7.7. other bindings</a></li>
+<li><a href="#sec-8-1">8.1. buffer bindings</a></li>
+<li><a href="#sec-8-2">8.2. frame bindings</a></li>
+<li><a href="#sec-8-3">8.3. window bindings</a></li>
+<li><a href="#sec-8-4">8.4. navigation bindings</a></li>
+<li><a href="#sec-8-5">8.5. search and replace bindings</a></li>
+<li><a href="#sec-8-6">8.6. org-mode bindings</a></li>
+<li><a href="#sec-8-7">8.7. other bindings</a></li>
 </ul>
 </li>
-<li><a href="#sec-8">8. Essential packages</a>
+<li><a href="#sec-9">9. Essential packages</a>
 <ul>
-<li><a href="#sec-8-1">8.1. undo-tree</a></li>
-<li><a href="#sec-8-2">8.2. smex</a></li>
-<li><a href="#sec-8-3">8.3. company</a></li>
-<li><a href="#sec-8-4">8.4. ido related</a></li>
+<li><a href="#sec-9-1">9.1. undo-tree</a></li>
+<li><a href="#sec-9-2">9.2. smex</a></li>
+<li><a href="#sec-9-3">9.3. company</a></li>
+<li><a href="#sec-9-4">9.4. ido related</a></li>
 </ul>
 </li>
-<li><a href="#sec-9">9. Project management</a>
+<li><a href="#sec-10">10. Project management</a>
 <ul>
-<li><a href="#sec-9-1">9.1. projectile</a></li>
-<li><a href="#sec-9-2">9.2. find-file-in-project</a></li>
+<li><a href="#sec-10-1">10.1. projectile</a></li>
+<li><a href="#sec-10-2">10.2. find-file-in-project</a></li>
 </ul>
 </li>
-<li><a href="#sec-10">10. Useful handy packages</a></li>
-<li><a href="#sec-11">11. Evil-mode</a>
+<li><a href="#sec-11">11. Useful handy packages</a></li>
+<li><a href="#sec-12">12. Evil-mode</a>
 <ul>
-<li><a href="#sec-11-1">11.1. Features &amp; thoughts</a></li>
-<li><a href="#sec-11-2">11.2. Evil setup</a></li>
+<li><a href="#sec-12-1">12.1. Features &amp; thoughts</a></li>
+<li><a href="#sec-12-2">12.2. Evil setup</a></li>
 </ul>
 </li>
-<li><a href="#sec-12">12. Common coding setup</a>
+<li><a href="#sec-13">13. Common coding setup</a>
 <ul>
-<li><a href="#sec-12-1">12.1. Parens</a>
+<li><a href="#sec-13-1">13.1. Parens</a>
 <ul>
-<li><a href="#sec-12-1-1">12.1.1. smartparens</a></li>
+<li><a href="#sec-13-1-1">13.1.1. smartparens</a></li>
 </ul>
 </li>
-<li><a href="#sec-12-2">12.2. Syntax</a></li>
-<li><a href="#sec-12-3">12.3. Templating</a></li>
-<li><a href="#sec-12-4">12.4. Binding</a></li>
+<li><a href="#sec-13-2">13.2. Syntax</a></li>
+<li><a href="#sec-13-3">13.3. Templating</a></li>
+<li><a href="#sec-13-4">13.4. Binding</a></li>
 </ul>
 </li>
-<li><a href="#sec-13">13. Programming language setup</a>
+<li><a href="#sec-14">14. Programming language setup</a>
 <ul>
-<li><a href="#paredit">13.1. Lisp coding setup</a>
+<li><a href="#paredit">14.1. Lisp coding setup</a>
 <ul>
-<li><a href="#sec-13-1-1">13.1.1. paredit</a></li>
-<li><a href="#sec-13-1-2">13.1.2. emacs-lisp</a></li>
-<li><a href="#sec-13-1-3">13.1.3. clojure</a></li>
-<li><a href="#sec-13-1-4">13.1.4. common lisp</a></li>
+<li><a href="#sec-14-1-1">14.1.1. paredit</a></li>
+<li><a href="#sec-14-1-2">14.1.2. emacs-lisp</a></li>
+<li><a href="#sec-14-1-3">14.1.3. clojure</a></li>
+<li><a href="#sec-14-1-4">14.1.4. common lisp</a></li>
 </ul>
 </li>
-<li><a href="#sec-13-2">13.2. C# coding setup</a></li>
+<li><a href="#sec-14-2">14.2. C# coding setup</a></li>
 </ul>
 </li>
-<li><a href="#sec-14">14. Study and 'maybe' packages</a></li>
-<li><a href="#sec-15">15. Emacs server</a></li>
+<li><a href="#sec-15">15. Study and 'maybe' packages</a></li>
+<li><a href="#sec-16">16. Emacs server</a></li>
 </ul>
 </div>
 </div>
+
+
+# KESS - Keep Emacs Simple, Stupid!<a id="sec-1" name="sec-1"></a>
 
 OK, the following configuration not **simple** at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
@@ -100,7 +104,7 @@ Also, I'm trying to make KESS work as I expect on all my OSs:
 -   Ubuntu (apt-get emacs package)
 -   Arch Linux (pacman emacs package)
 
-# Personal information<a id="sec-1" name="sec-1"></a>
+# Personal information<a id="sec-2" name="sec-2"></a>
 
 I'm doing this because [Sacha Chua](https://github.com/sachac) doing this. I got this [org-babel config](https://github.com/sachac/.emacs.d) idea
 from her [amazing blog](http://sachachua.com/blog/). Thanks Sacha!
@@ -108,7 +112,7 @@ from her [amazing blog](http://sachachua.com/blog/). Thanks Sacha!
     (setq user-full-name "Tiefeng Wu"
           user-mail-address "icebergwtf@qq.com")
 
-# Setup load paths<a id="sec-2" name="sec-2"></a>
+# Setup load paths<a id="sec-3" name="sec-3"></a>
 
 Comment out old path settings, will change when needed.
 
@@ -116,9 +120,9 @@ Comment out old path settings, will change when needed.
     ;; (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
     ;; (add-to-list 'load-path (concat user-emacs-directory "/setup"))
 
-# Package Setup<a id="sec-3" name="sec-3"></a>
+# Package Setup<a id="sec-4" name="sec-4"></a>
 
-## package.el<a id="sec-3-1" name="sec-3-1"></a>
+## package.el<a id="sec-4-1" name="sec-4-1"></a>
 
 Setup archive lists and initialize package.el
 
@@ -135,7 +139,7 @@ Setup archive lists and initialize package.el
         (add-to-list 'package-archives arch)))
     (package-initialize)
 
-## use-package<a id="sec-3-2" name="sec-3-2"></a>
+## use-package<a id="sec-4-2" name="sec-4-2"></a>
 
 [use-package](https://github.com/jwiegley/use-package) is very handy for package management, also I use bind-key to define
 my own key bindings.
@@ -156,15 +160,15 @@ my own key bindings.
     (use-package bind-key
       :bind* ("C-c C-." . describe-personal-keybindings))
 
-# Default Setup<a id="sec-4" name="sec-4"></a>
+# Default Setup<a id="sec-5" name="sec-5"></a>
 
-## better-defaults<a id="sec-4-1" name="sec-4-1"></a>
+## better-defaults<a id="sec-5-1" name="sec-5-1"></a>
 
 Use [better-defaults](https://github.com/technomancy/better-defaults) package as start point
 
     (use-package better-defaults)
 
-## emacs apperence<a id="sec-4-2" name="sec-4-2"></a>
+## emacs apperence<a id="sec-5-2" name="sec-5-2"></a>
 
 Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
 menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
@@ -173,7 +177,7 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
     (when window-system
       (menu-bar-mode 1))
 
-## My defaults<a id="sec-4-3" name="sec-4-3"></a>
+## My defaults<a id="sec-5-3" name="sec-5-3"></a>
 
 My perfered settings.
 
@@ -194,7 +198,7 @@ My perfered settings.
     
     (global-linum-mode t)
 
-## Session and history<a id="sec-4-4" name="sec-4-4"></a>
+## Session and history<a id="sec-5-4" name="sec-5-4"></a>
 
 Borrowed from [Emacs and Hacks II](https://ebzzry.github.io/emacs-hacks-2.html), with my changes.
 *(Somehow, desktop saving caused error on my MBP, need more deep understanding in desktop.el)*
@@ -216,7 +220,7 @@ Borrowed from [Emacs and Hacks II](https://ebzzry.github.io/emacs-hacks-2.html),
     (savehist-mode t)
     (setq savehist-file (concat user-emacs-directory "savehist"))
 
-## Spell check<a id="sec-4-5" name="sec-4-5"></a>
+## Spell check<a id="sec-5-5" name="sec-5-5"></a>
 
 I'm using choco emacs package, there's only hunspell available on chocolatey. I
 copied following code from internet, but still cannot get it work. Will dig in
@@ -235,9 +239,9 @@ spell check use hunspell on all my OSs later.
     ;;          utf-8)))
     ;; (ispell-change-dictionary "en_US" t)
 
-# Orgmode<a id="sec-5" name="sec-5"></a>
+# Orgmode<a id="sec-6" name="sec-6"></a>
 
-## Perfered settings<a id="sec-5-1" name="sec-5-1"></a>
+## Perfered settings<a id="sec-6-1" name="sec-6-1"></a>
 
     (setq org-catch-invisible-edits 'smart
           org-completion-use-ido t
@@ -253,14 +257,14 @@ spell check use hunspell on all my OSs later.
           org-tags-column 0
           org-use-property-inheritance t)
 
-## Keywords for todo tasks<a id="sec-5-2" name="sec-5-2"></a>
+## Keywords for todo tasks<a id="sec-6-2" name="sec-6-2"></a>
 
     (setq org-todo-keywords
           '((sequence "TODO(t)" "|" "DONE(d)")
             (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
             (sequence "QUESTION(q) | ANSWERED(a)")))
 
-## Template skeletons<a id="sec-5-3" name="sec-5-3"></a>
+## Template skeletons<a id="sec-6-3" name="sec-6-3"></a>
 
 *Learn more about skeleton, or use yasnippet instead?*
 This is copied from [cnblogs](http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html), with some modification.
@@ -302,14 +306,14 @@ This is copied from [cnblogs](http://www.cnblogs.com/babe/archive/2012/04/11/244
       "#+END_HTML\n")
       (define-abbrev org-mode-abbrev-table "ihtml"  "" 'sk-org-html)
 
-## Bindings<a id="sec-5-4" name="sec-5-4"></a>
+## Bindings<a id="sec-6-4" name="sec-6-4"></a>
 
     (bind-keys :map org-mode-map
                ("C-c <C-tab>" . org-force-cycle-archived)
                ("M-n" . org-forward-heading-same-level)
                ("M-p" . org-backward-heading-same-level))
 
-# Custom prefix keymap<a id="sec-6" name="sec-6"></a>
+# Custom prefix keymap<a id="sec-7" name="sec-7"></a>
 
 To not mess up with emacs's own prefix maps, my custom prefix binding use C-\`,
 which I think very easy to reach.
@@ -320,9 +324,9 @@ which I think very easy to reach.
     (bind-keys :map kess-prefix-map
                ("C-`" . set-mark-command))
 
-# Global bindings<a id="sec-7" name="sec-7"></a>
+# Global bindings<a id="sec-8" name="sec-8"></a>
 
-## buffer bindings<a id="sec-7-1" name="sec-7-1"></a>
+## buffer bindings<a id="sec-8-1" name="sec-8-1"></a>
 
     ;; buffer
     (bind-key* (kbd "M-`")
@@ -348,13 +352,13 @@ which I think very easy to reach.
      ("C-x s" . write-file)
      ("C-S-s" . save-some-buffers))
 
-## frame bindings<a id="sec-7-2" name="sec-7-2"></a>
+## frame bindings<a id="sec-8-2" name="sec-8-2"></a>
 
     ;; frame
     (bind-keys* ("C-c o" . other-frame)
                 ("C-c 0" . delete-frame))
 
-## window bindings<a id="sec-7-3" name="sec-7-3"></a>
+## window bindings<a id="sec-8-3" name="sec-8-3"></a>
 
     ;; window
     (winner-mode 1)
@@ -368,19 +372,19 @@ which I think very easy to reach.
                 ("C-M-k" . windmove-up)
                 ("C-M-l" . windmove-right))
 
-## navigation bindings<a id="sec-7-4" name="sec-7-4"></a>
+## navigation bindings<a id="sec-8-4" name="sec-8-4"></a>
 
     ;; navigation
     (bind-keys ("M-n" . forward-paragraph)
                ("M-p" . backward-paragraph))
 
-## search and replace bindings<a id="sec-7-5" name="sec-7-5"></a>
+## search and replace bindings<a id="sec-8-5" name="sec-8-5"></a>
 
     ;; search/replace
     (bind-keys* ("C-M-/" . query-replace)
                 ("C-M-?" . query-replace-regexp))
 
-## org-mode bindings<a id="sec-7-6" name="sec-7-6"></a>
+## org-mode bindings<a id="sec-8-6" name="sec-8-6"></a>
 
     (bind-keys* ("C-c a" . org-agenda)
                 ("C-c b" . org-iswitchb)
@@ -388,17 +392,17 @@ which I think very easy to reach.
                 ("C-c l" . org-store-link)
                 ("C-c t" . org-tags-view))
 
-## other bindings<a id="sec-7-7" name="sec-7-7"></a>
+## other bindings<a id="sec-8-7" name="sec-8-7"></a>
 
     ;; misc
     (bind-keys* ("<backspace>" . delete-backward-char)
                 ("M-\\" . hippie-expand))
 
-# Essential packages<a id="sec-8" name="sec-8"></a>
+# Essential packages<a id="sec-9" name="sec-9"></a>
 
 These're packages I think is essential.
 
-## undo-tree<a id="sec-8-1" name="sec-8-1"></a>
+## undo-tree<a id="sec-9-1" name="sec-9-1"></a>
 
     (use-package undo-tree
       :bind* (("C-/" . undo-tree-undo)
@@ -406,14 +410,14 @@ These're packages I think is essential.
       :config
       (global-undo-tree-mode))
 
-## smex<a id="sec-8-2" name="sec-8-2"></a>
+## smex<a id="sec-9-2" name="sec-9-2"></a>
 
     (use-package smex
       :bind* (("M-x" . smex)
               ("M-X" . smex-major-mode-commands)
               ("C-c M-x" . execute-extended-command)))
 
-## company<a id="sec-8-3" name="sec-8-3"></a>
+## company<a id="sec-9-3" name="sec-9-3"></a>
 
     (use-package company
       :diminish company-mode
@@ -429,7 +433,7 @@ These're packages I think is essential.
             company-minimum-prefix-length 2)
       (global-company-mode 1))
 
-## ido related<a id="sec-8-4" name="sec-8-4"></a>
+## ido related<a id="sec-9-4" name="sec-9-4"></a>
 
     (ido-mode 1)
     (ido-everywhere 1)
@@ -450,12 +454,12 @@ These're packages I think is essential.
             ido-auto-merge-work-directories-length -1)
       (flx-ido-mode 1))
 
-# Project management<a id="sec-9" name="sec-9"></a>
+# Project management<a id="sec-10" name="sec-10"></a>
 
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
 
-## projectile<a id="sec-9-1" name="sec-9-1"></a>
+## projectile<a id="sec-10-1" name="sec-10-1"></a>
 
     (use-package projectile
       :demand
@@ -467,12 +471,12 @@ to benefit from both? (Another tough task)
             projectile-enable-caching t)
       (use-package ag))
 
-## find-file-in-project<a id="sec-9-2" name="sec-9-2"></a>
+## find-file-in-project<a id="sec-10-2" name="sec-10-2"></a>
 
     (use-package find-file-in-project
       :ensure ivy)
 
-# Useful handy packages<a id="sec-10" name="sec-10"></a>
+# Useful handy packages<a id="sec-11" name="sec-11"></a>
 
 In order to be KESS, I'll only choose some little packages besides essential
 packages loaded above.
@@ -481,19 +485,19 @@ packages loaded above.
       :config
       (popwin-mode 1))
 
-# Evil-mode<a id="sec-11" name="sec-11"></a>
+# Evil-mode<a id="sec-12" name="sec-12"></a>
 
 Maybe I can totally discard later?  And I'm think about create a minor mode like
 [god-mode](https://github.com/chrisdone/god-mode) and evil-mode, but just a thin layer to provide vim's normal state and
 visual state. `Of course, this will be a tough task for me now.`
 
-## Features & thoughts<a id="sec-11-1" name="sec-11-1"></a>
+## Features & thoughts<a id="sec-12-1" name="sec-12-1"></a>
 
 -   use CapsLock to switch
 -   insert state is pure emacs
 -   normal state + visual state = view state (or browse state?)
 
-## Evil setup<a id="sec-11-2" name="sec-11-2"></a>
+## Evil setup<a id="sec-12-2" name="sec-12-2"></a>
 
     (use-package evil
       :diminish undo-tree-mode
@@ -521,16 +525,16 @@ visual state. `Of course, this will be a tough task for me now.`
                     ("+" . evil-numbers/inc-at-pt)
                     ("-" . evil-numbers/dec-at-pt))))
 
-# Common coding setup<a id="sec-12" name="sec-12"></a>
+# Common coding setup<a id="sec-13" name="sec-13"></a>
 
-## Parens<a id="sec-12-1" name="sec-12-1"></a>
+## Parens<a id="sec-13-1" name="sec-13-1"></a>
 
 I'm confusing about parens related packages, for now my simple understanding is:
 -   use smartparens for common coding parens and pair management (there still
     another variations like autopair, wrapper-region, electric-pair-mode).
--   use paredit for lisp language, see blew Lisp coding setup (See section 13.1).
+-   use paredit for lisp language, see blew Lisp coding setup (See section 14.1).
 
-### smartparens<a id="sec-12-1-1" name="sec-12-1-1"></a>
+### smartparens<a id="sec-13-1-1" name="sec-13-1-1"></a>
 
     (show-paren-mode 1)
     (use-package rainbow-delimiters
@@ -595,7 +599,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
       (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
       (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 
-## Syntax<a id="sec-12-2" name="sec-12-2"></a>
+## Syntax<a id="sec-13-2" name="sec-13-2"></a>
 
 Flycheck is a bit annoying when enabled globally, so I use it only when needed.
 
@@ -609,7 +613,7 @@ Flycheck is a bit annoying when enabled globally, so I use it only when needed.
           '(custom-set-variables
             '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 
-## Templating<a id="sec-12-3" name="sec-12-3"></a>
+## Templating<a id="sec-13-3" name="sec-13-3"></a>
 
 Learn more and get used to it.
 
@@ -619,18 +623,18 @@ Learn more and get used to it.
       (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
       (yas-global-mode 1))
 
-## Binding<a id="sec-12-4" name="sec-12-4"></a>
+## Binding<a id="sec-13-4" name="sec-13-4"></a>
 
     (bind-keys* ("C-c r" . comment-region)
                 ("C-c u" . uncomment-region))
 
-# Programming language setup<a id="sec-13" name="sec-13"></a>
+# Programming language setup<a id="sec-14" name="sec-14"></a>
 
 ## Lisp coding setup<a id="paredit" name="paredit"></a>
 
 
 
-### paredit<a id="sec-13-1-1" name="sec-13-1-1"></a>
+### paredit<a id="sec-14-1-1" name="sec-14-1-1"></a>
 
     (use-package paredit
       :demand
@@ -643,7 +647,7 @@ Learn more and get used to it.
       (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
         (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)))
 
-### emacs-lisp<a id="sec-13-1-2" name="sec-13-1-2"></a>
+### emacs-lisp<a id="sec-14-1-2" name="sec-14-1-2"></a>
 
     (use-package eldoc
       :diminish eldoc-mode
@@ -656,17 +660,17 @@ Learn more and get used to it.
                 ("C-x C-d" . eval-defun)
                 ("C-x C-w" . eval-buffer))
 
-### clojure<a id="sec-13-1-3" name="sec-13-1-3"></a>
+### clojure<a id="sec-14-1-3" name="sec-14-1-3"></a>
 
     (use-package clojure-mode :defer t)
     (use-package cider :defer t)
 
-### common lisp<a id="sec-13-1-4" name="sec-13-1-4"></a>
+### common lisp<a id="sec-14-1-4" name="sec-14-1-4"></a>
 
     (load (expand-file-name "~/quicklisp/slime-helper.el"))
     (setq inferior-lisp-program "clisp")
 
-## C# coding setup<a id="sec-13-2" name="sec-13-2"></a>
+## C# coding setup<a id="sec-14-2" name="sec-14-2"></a>
 
 More dig into omnisharp-emacs.
 
@@ -680,7 +684,7 @@ More dig into omnisharp-emacs.
     ;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
     ;;     (add-to-list 'company-backends 'company-omnisharp)))
 
-# Study and 'maybe' packages<a id="sec-14" name="sec-14"></a>
+# Study and 'maybe' packages<a id="sec-15" name="sec-15"></a>
 
 Comment out for now, and learn more about them sometime.
 
@@ -695,7 +699,7 @@ Comment out for now, and learn more about them sometime.
     ;;               (set-fill-column 72)
     ;;               (auto-fill-mode 1))))
 
-# Emacs server<a id="sec-15" name="sec-15"></a>
+# Emacs server<a id="sec-16" name="sec-16"></a>
 
 Start server if not already running. Properly set server to work on MSWin is
 painful.

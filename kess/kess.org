@@ -2,6 +2,7 @@
 #+STARTUP: content
 #+OPTIONS: toc:4 h:4
 
+* KESS - Keep Emacs Simple, Stupid!
 OK, the following configuration not *simple* at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
 
