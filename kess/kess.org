@@ -20,6 +20,7 @@ from her [[http://sachachua.com/blog/][amazing blog]]. Thanks Sacha!
         user-mail-address "icebergwtf@qq.com")
 #+END_SRC
 ** Setup load paths
+Comment out old path settings, will change when needed.
 #+BEGIN_SRC emacs-lisp
   ;; Setup modules are placed in setup directory
   ;; (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
@@ -43,7 +44,7 @@ Setup archive lists and initialize package.el
   (package-initialize)
 #+END_SRC
 *** use-package
-use-package is very handy for package management, also I use bind-key to define
+[[https://github.com/jwiegley/use-package][use-package]] is very handy for package management, also I use bind-key to define
 my own key bindings.
 #+BEGIN_SRC emacs-lisp
   ;; use-package setup
@@ -64,7 +65,7 @@ my own key bindings.
 #+END_SRC
 ** Default Setup
 *** better-defaults
-Use better-defaults package as start point
+Use [[https://github.com/technomancy/better-defaults][better-defaults]] package as start point
 #+BEGIN_SRC emacs-lisp
 (use-package better-defaults)
 #+END_SRC
@@ -161,6 +162,7 @@ spell check use hunspell on all my OSs later.
 #+END_SRC
 *** Template skeletons
 /Learn more about skeleton, or use yasnippet instead?/
+This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html][cnblog]], with some modification.
 #+BEGIN_SRC emacs-lisp
 (require 'org)
 (add-hook 'org-mode-hook 'abbrev-mode)
@@ -207,6 +209,8 @@ spell check use hunspell on all my OSs later.
            ("M-p" . org-backward-heading-same-level))
 #+END_SRC
 ** Custom prefix keymap
+To not mess up with emacs's own prefix maps, my custom prefix binding use C-`,
+which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
 ;; C-` prefix map (mainly mark related bindings)
 (define-prefix-command 'kess-prefix-map)
@@ -289,6 +293,7 @@ spell check use hunspell on all my OSs later.
             ("M-\\" . hippie-expand))
 #+END_SRC
 ** Essential packages
+These're packages I think is essential.
 *** undo-tree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
@@ -296,27 +301,6 @@ spell check use hunspell on all my OSs later.
           ("M-/" . undo-tree-redo))
   :config
   (global-undo-tree-mode))
-#+END_SRC
-*** ido
-#+BEGIN_SRC emacs-lisp
-(ido-mode 1)
-(ido-everywhere 1)
-
-(use-package ido-ubiquitous
-  :config
-  (ido-ubiquitous-mode 1))
-
-(use-package flx-ido
-  :config
-  (setq ido-enable-prefix nil
-        ido-enable-flex-matching t
-        ido-use-faces nil
-        ido-create-new-buffer 'always
-        ido-use-filename-at-point 'guess
-        ido-max-prospects 10
-        ido-default-file-method 'selected-window
-        ido-auto-merge-work-directories-length -1)
-  (flx-ido-mode 1))
 #+END_SRC
 *** smex
 #+BEGIN_SRC emacs-lisp
@@ -341,7 +325,30 @@ spell check use hunspell on all my OSs later.
         company-minimum-prefix-length 2)
   (global-company-mode 1))
 #+END_SRC
+*** ido related
+#+BEGIN_SRC emacs-lisp
+  (ido-mode 1)
+  (ido-everywhere 1)
+
+  (use-package ido-ubiquitous
+    :config
+    (ido-ubiquitous-mode 1))
+
+  (use-package flx-ido
+    :config
+    (setq ido-enable-prefix nil
+          ido-enable-flex-matching t
+          ido-use-faces nil
+          ido-create-new-buffer 'always
+          ido-use-filename-at-point 'guess
+          ido-max-prospects 10
+          ido-default-file-method 'selected-window
+          ido-auto-merge-work-directories-length -1)
+    (flx-ido-mode 1))
+#+END_SRC
 ** Project management
+Just start to use them, maybe one of both is enough? Or maybe a wrapper package
+to benefit from both? (Another tough task)
 *** projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -360,15 +367,17 @@ spell check use hunspell on all my OSs later.
   :ensure ivy)
 #+END_SRC
 ** Useful handy packages
+In order to be KESS, I'll only choose some little packages besides essential
+packages loaded above.
 #+BEGIN_SRC emacs-lisp
 (use-package popwin
   :config
   (popwin-mode 1))
 #+END_SRC
 ** Evil-mode
-Maybe I can totally discard later?  And I'm think about develop a minor mode
-like [[https://github.com/chrisdone/god-mode][god-mode]] and evil-mode, but just a thin layer to provide vim's normal state
-and visual state.
+Maybe I can totally discard later?  And I'm think about create a minor mode like
+[[https://github.com/chrisdone/god-mode][god-mode]] and evil-mode, but just a thin layer to provide vim's normal state and
+visual state. =Of course, this will be a tough task for me now.=
 *** Features & thoughts
 - use CapsLock to switch
 - insert state is pure emacs
@@ -402,11 +411,6 @@ and visual state.
                 ("-" . evil-numbers/dec-at-pt))))
 #+END_SRC
 ** Common coding setup
-*** Binding
-#+BEGIN_SRC emacs-lisp
-  (bind-keys* ("C-c r" . comment-region)
-              ("C-c u" . uncomment-region))
-#+END_SRC
 *** Parens
 I'm confusing about parens related packages, for now my simple understanding is:
 - use smartparens for common coding parens and pair management (there still
@@ -478,6 +482,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 #+END_SRC
 *** Syntax
+Flycheck is a bit annoying when enabled globally, so I use it only when needed.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :diminish flycheck-mode
@@ -490,6 +495,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
         '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 #+END_SRC
 *** Templating
+Learn more and get used to it.
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -497,12 +503,17 @@ I'm confusing about parens related packages, for now my simple understanding is:
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode 1))
 #+END_SRC
+*** Binding
+#+BEGIN_SRC emacs-lisp
+  (bind-keys* ("C-c r" . comment-region)
+              ("C-c u" . uncomment-region))
+#+END_SRC
 ** Programming language setup
 *** Lisp coding setup
 :PROPERTIES:
 :CUSTOM_ID: paredit
 :END:
-*** paredit
+**** paredit
 #+BEGIN_SRC emacs-lisp
 (use-package paredit
   :demand
@@ -515,7 +526,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
   (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
     (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)))
 #+END_SRC
-*** emacs-lisp
+**** emacs-lisp
 #+BEGIN_SRC emacs-lisp
 (use-package eldoc
   :diminish eldoc-mode
@@ -528,12 +539,12 @@ I'm confusing about parens related packages, for now my simple understanding is:
             ("C-x C-d" . eval-defun)
             ("C-x C-w" . eval-buffer))
 #+END_SRC
-*** clojure
+**** clojure
 #+BEGIN_SRC emacs-lisp
 (use-package clojure-mode :defer t)
 (use-package cider :defer t)
 #+END_SRC
-*** common lisp
+**** common lisp
 #+BEGIN_SRC emacs-lisp
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "clisp")
@@ -551,7 +562,8 @@ More dig into omnisharp-emacs.
 ;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
 ;;     (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
-** Study and bring-in packages
+** Study and 'maybe' packages
+Comment out for now, and learn more about them sometime.
 #+BEGIN_SRC emacs-lisp
 ;; (use-package ack)
 ;; (use-package bookmark+)
@@ -565,7 +577,8 @@ More dig into omnisharp-emacs.
 ;;               (auto-fill-mode 1))))
 #+END_SRC
 ** Emacs server
-Start server if not already running.
+Start server if not already running. Properly set server to work on MSWin is
+painful.
 #+BEGIN_SRC emacs-lisp
   (require 'server)
   (when (not (eq (server-running-p) t))

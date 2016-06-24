@@ -44,9 +44,9 @@
 <li><a href="#sec-1-8">1.8. Essential packages</a>
 <ul>
 <li><a href="#sec-1-8-1">1.8.1. undo-tree</a></li>
-<li><a href="#sec-1-8-2">1.8.2. ido</a></li>
-<li><a href="#sec-1-8-3">1.8.3. smex</a></li>
-<li><a href="#sec-1-8-4">1.8.4. company</a></li>
+<li><a href="#sec-1-8-2">1.8.2. smex</a></li>
+<li><a href="#sec-1-8-3">1.8.3. company</a></li>
+<li><a href="#sec-1-8-4">1.8.4. ido related</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-9">1.9. Project management</a>
@@ -64,27 +64,30 @@
 </li>
 <li><a href="#sec-1-12">1.12. Common coding setup</a>
 <ul>
-<li><a href="#sec-1-12-1">1.12.1. Binding</a></li>
-<li><a href="#sec-1-12-2">1.12.2. Parens</a>
+<li><a href="#sec-1-12-1">1.12.1. Parens</a>
 <ul>
-<li><a href="#sec-1-12-2-1">1.12.2.1. smartparens</a></li>
+<li><a href="#sec-1-12-1-1">1.12.1.1. smartparens</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-12-3">1.12.3. Syntax</a></li>
-<li><a href="#sec-1-12-4">1.12.4. Templating</a></li>
+<li><a href="#sec-1-12-2">1.12.2. Syntax</a></li>
+<li><a href="#sec-1-12-3">1.12.3. Templating</a></li>
+<li><a href="#sec-1-12-4">1.12.4. Binding</a></li>
 </ul>
 </li>
 <li><a href="#sec-1-13">1.13. Programming language setup</a>
 <ul>
-<li><a href="#paredit">1.13.1. Lisp coding setup</a></li>
-<li><a href="#sec-1-13-2">1.13.2. paredit</a></li>
-<li><a href="#sec-1-13-3">1.13.3. emacs-lisp</a></li>
-<li><a href="#sec-1-13-4">1.13.4. clojure</a></li>
-<li><a href="#sec-1-13-5">1.13.5. common lisp</a></li>
-<li><a href="#sec-1-13-6">1.13.6. C# coding setup</a></li>
+<li><a href="#paredit">1.13.1. Lisp coding setup</a>
+<ul>
+<li><a href="#sec-1-13-1-1">1.13.1.1. paredit</a></li>
+<li><a href="#sec-1-13-1-2">1.13.1.2. emacs-lisp</a></li>
+<li><a href="#sec-1-13-1-3">1.13.1.3. clojure</a></li>
+<li><a href="#sec-1-13-1-4">1.13.1.4. common lisp</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-14">1.14. Study and bring-in packages</a></li>
+<li><a href="#sec-1-13-2">1.13.2. C# coding setup</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-14">1.14. Study and 'maybe' packages</a></li>
 <li><a href="#sec-1-15">1.15. Emacs server</a></li>
 </ul>
 </li>
@@ -114,6 +117,8 @@ from her [amazing blog](http://sachachua.com/blog/). Thanks Sacha!
 
 ## Setup load paths<a id="sec-1-2" name="sec-1-2"></a>
 
+Comment out old path settings, will change when needed.
+
     ;; Setup modules are placed in setup directory
     ;; (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
     ;; (add-to-list 'load-path (concat user-emacs-directory "/setup"))
@@ -139,7 +144,7 @@ Setup archive lists and initialize package.el
 
 ### use-package<a id="sec-1-3-2" name="sec-1-3-2"></a>
 
-use-package is very handy for package management, also I use bind-key to define
+[use-package](https://github.com/jwiegley/use-package) is very handy for package management, also I use bind-key to define
 my own key bindings.
 
     ;; use-package setup
@@ -162,7 +167,7 @@ my own key bindings.
 
 ### better-defaults<a id="sec-1-4-1" name="sec-1-4-1"></a>
 
-Use better-defaults package as start point
+Use [better-defaults](https://github.com/technomancy/better-defaults) package as start point
 
     (use-package better-defaults)
 
@@ -265,6 +270,7 @@ spell check use hunspell on all my OSs later.
 ### Template skeletons<a id="sec-1-5-3" name="sec-1-5-3"></a>
 
 *Learn more about skeleton, or use yasnippet instead?*
+This is copied from [cnblog](http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html), with some modification.
 
     (require 'org)
     (add-hook 'org-mode-hook 'abbrev-mode)
@@ -311,6 +317,9 @@ spell check use hunspell on all my OSs later.
                ("M-p" . org-backward-heading-same-level))
 
 ## Custom prefix keymap<a id="sec-1-6" name="sec-1-6"></a>
+
+To not mess up with emacs's own prefix maps, my custom prefix binding use C-\`,
+which I think very easy to reach.
 
     ;; C-` prefix map (mainly mark related bindings)
     (define-prefix-command 'kess-prefix-map)
@@ -394,6 +403,8 @@ spell check use hunspell on all my OSs later.
 
 ## Essential packages<a id="sec-1-8" name="sec-1-8"></a>
 
+These're packages I think is essential.
+
 ### undo-tree<a id="sec-1-8-1" name="sec-1-8-1"></a>
 
     (use-package undo-tree
@@ -402,7 +413,30 @@ spell check use hunspell on all my OSs later.
       :config
       (global-undo-tree-mode))
 
-### ido<a id="sec-1-8-2" name="sec-1-8-2"></a>
+### smex<a id="sec-1-8-2" name="sec-1-8-2"></a>
+
+    (use-package smex
+      :bind* (("M-x" . smex)
+              ("M-X" . smex-major-mode-commands)
+              ("C-c M-x" . execute-extended-command)))
+
+### company<a id="sec-1-8-3" name="sec-1-8-3"></a>
+
+    (use-package company
+      :diminish company-mode
+      :demand
+      :bind (:map company-active-map
+                  ("M-n" . company-next-page)
+                  ("M-p" . company-previous-page)
+                  ("C-n" . company-select-next-or-abort)
+                  ("C-p" . company-select-previous-or-abort))
+      :config
+      (setq company-idle-delay 0.3
+            company-tooltip-limit 12
+            company-minimum-prefix-length 2)
+      (global-company-mode 1))
+
+### ido related<a id="sec-1-8-4" name="sec-1-8-4"></a>
 
     (ido-mode 1)
     (ido-everywhere 1)
@@ -423,30 +457,10 @@ spell check use hunspell on all my OSs later.
             ido-auto-merge-work-directories-length -1)
       (flx-ido-mode 1))
 
-### smex<a id="sec-1-8-3" name="sec-1-8-3"></a>
-
-    (use-package smex
-      :bind* (("M-x" . smex)
-              ("M-X" . smex-major-mode-commands)
-              ("C-c M-x" . execute-extended-command)))
-
-### company<a id="sec-1-8-4" name="sec-1-8-4"></a>
-
-    (use-package company
-      :diminish company-mode
-      :demand
-      :bind (:map company-active-map
-                  ("M-n" . company-next-page)
-                  ("M-p" . company-previous-page)
-                  ("C-n" . company-select-next-or-abort)
-                  ("C-p" . company-select-previous-or-abort))
-      :config
-      (setq company-idle-delay 0.3
-            company-tooltip-limit 12
-            company-minimum-prefix-length 2)
-      (global-company-mode 1))
-
 ## Project management<a id="sec-1-9" name="sec-1-9"></a>
+
+Just start to use them, maybe one of both is enough? Or maybe a wrapper package
+to benefit from both? (Another tough task)
 
 ### projectile<a id="sec-1-9-1" name="sec-1-9-1"></a>
 
@@ -467,15 +481,18 @@ spell check use hunspell on all my OSs later.
 
 ## Useful handy packages<a id="sec-1-10" name="sec-1-10"></a>
 
+In order to be KESS, I'll only choose some little packages besides essential
+packages loaded above.
+
     (use-package popwin
       :config
       (popwin-mode 1))
 
 ## Evil-mode<a id="sec-1-11" name="sec-1-11"></a>
 
-Maybe I can totally discard later?  And I'm think about develop a minor mode
-like [god-mode](https://github.com/chrisdone/god-mode) and evil-mode, but just a thin layer to provide vim's normal state
-and visual state.
+Maybe I can totally discard later?  And I'm think about create a minor mode like
+[god-mode](https://github.com/chrisdone/god-mode) and evil-mode, but just a thin layer to provide vim's normal state and
+visual state. `Of course, this will be a tough task for me now.`
 
 ### Features & thoughts<a id="sec-1-11-1" name="sec-1-11-1"></a>
 
@@ -513,19 +530,14 @@ and visual state.
 
 ## Common coding setup<a id="sec-1-12" name="sec-1-12"></a>
 
-### Binding<a id="sec-1-12-1" name="sec-1-12-1"></a>
-
-    (bind-keys* ("C-c r" . comment-region)
-                ("C-c u" . uncomment-region))
-
-### Parens<a id="sec-1-12-2" name="sec-1-12-2"></a>
+### Parens<a id="sec-1-12-1" name="sec-1-12-1"></a>
 
 I'm confusing about parens related packages, for now my simple understanding is:
 -   use smartparens for common coding parens and pair management (there still
     another variations like autopair, wrapper-region, electric-pair-mode).
 -   use paredit for lisp language, see blew Lisp coding setup (See section 1.13.1).
 
-#### smartparens<a id="sec-1-12-2-1" name="sec-1-12-2-1"></a>
+#### smartparens<a id="sec-1-12-1-1" name="sec-1-12-1-1"></a>
 
     (show-paren-mode 1)
     (use-package rainbow-delimiters
@@ -590,7 +602,9 @@ I'm confusing about parens related packages, for now my simple understanding is:
       (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
       (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 
-### Syntax<a id="sec-1-12-3" name="sec-1-12-3"></a>
+### Syntax<a id="sec-1-12-2" name="sec-1-12-2"></a>
+
+Flycheck is a bit annoying when enabled globally, so I use it only when needed.
 
     (use-package flycheck
       :diminish flycheck-mode
@@ -602,7 +616,9 @@ I'm confusing about parens related packages, for now my simple understanding is:
           '(custom-set-variables
             '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 
-### Templating<a id="sec-1-12-4" name="sec-1-12-4"></a>
+### Templating<a id="sec-1-12-3" name="sec-1-12-3"></a>
+
+Learn more and get used to it.
 
     (use-package yasnippet
       :diminish yas-minor-mode
@@ -610,11 +626,18 @@ I'm confusing about parens related packages, for now my simple understanding is:
       (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
       (yas-global-mode 1))
 
+### Binding<a id="sec-1-12-4" name="sec-1-12-4"></a>
+
+    (bind-keys* ("C-c r" . comment-region)
+                ("C-c u" . uncomment-region))
+
 ## Programming language setup<a id="sec-1-13" name="sec-1-13"></a>
 
 ### Lisp coding setup<a id="paredit" name="paredit"></a>
 
-### paredit<a id="sec-1-13-2" name="sec-1-13-2"></a>
+
+
+#### paredit<a id="sec-1-13-1-1" name="sec-1-13-1-1"></a>
 
     (use-package paredit
       :demand
@@ -627,7 +650,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
       (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
         (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)))
 
-### emacs-lisp<a id="sec-1-13-3" name="sec-1-13-3"></a>
+#### emacs-lisp<a id="sec-1-13-1-2" name="sec-1-13-1-2"></a>
 
     (use-package eldoc
       :diminish eldoc-mode
@@ -640,17 +663,17 @@ I'm confusing about parens related packages, for now my simple understanding is:
                 ("C-x C-d" . eval-defun)
                 ("C-x C-w" . eval-buffer))
 
-### clojure<a id="sec-1-13-4" name="sec-1-13-4"></a>
+#### clojure<a id="sec-1-13-1-3" name="sec-1-13-1-3"></a>
 
     (use-package clojure-mode :defer t)
     (use-package cider :defer t)
 
-### common lisp<a id="sec-1-13-5" name="sec-1-13-5"></a>
+#### common lisp<a id="sec-1-13-1-4" name="sec-1-13-1-4"></a>
 
     (load (expand-file-name "~/quicklisp/slime-helper.el"))
     (setq inferior-lisp-program "clisp")
 
-### C# coding setup<a id="sec-1-13-6" name="sec-1-13-6"></a>
+### C# coding setup<a id="sec-1-13-2" name="sec-1-13-2"></a>
 
 More dig into omnisharp-emacs.
 
@@ -664,7 +687,9 @@ More dig into omnisharp-emacs.
     ;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
     ;;     (add-to-list 'company-backends 'company-omnisharp)))
 
-## Study and bring-in packages<a id="sec-1-14" name="sec-1-14"></a>
+## Study and 'maybe' packages<a id="sec-1-14" name="sec-1-14"></a>
+
+Comment out for now, and learn more about them sometime.
 
     ;; (use-package ack)
     ;; (use-package bookmark+)
@@ -679,7 +704,8 @@ More dig into omnisharp-emacs.
 
 ## Emacs server<a id="sec-1-15" name="sec-1-15"></a>
 
-Start server if not already running.
+Start server if not already running. Properly set server to work on MSWin is
+painful.
 
     (require 'server)
     (when (not (eq (server-running-p) t))
