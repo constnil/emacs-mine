@@ -11,20 +11,20 @@ spacemacs, etc). I started by including them individualy as submodule (so called
 $EMACS_CONFIG on emacs startup. Thus I can easily taste and study them, not mess
 up my own configuration.
 
-** Suit management will not use submodule
+* Suit management will not use submodule
 - How to define suit? (name, repos location, ...)
 - Maybe not use environment variable too?
 - Which famous suits too include by default?
-** Use cask and ecukes for study purpose?
-** Functions for emacs study?
+* Use cask and ecukes for study purpose?
+* Functions for emacs study?
 - Insert command name by key press
-** Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit
+* Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit
 - [X] make kess as default
 - [X] C-` prefix key map, mainly for mark related commands
 - [ ] C-backspace backward-delete-line
 - [ ] M-backspace backward-delete-word
-** Thoughts
-*** Preview for dired-mode
+* Thoughts
+** Preview for dired-mode
 ** Suit Load
 #+BEGIN_SRC emacs-lisp
   ;; Common setting and variables
@@ -37,7 +37,7 @@ up my own configuration.
   ;; prelude - "prelude" (git://github.com/bbatsov/prelude.git)
   ;;   space - "spacemacs" (git://github.com/syl20bnr/spacemacs.git)
   ;;   bling - "bling's KISS dotemacs" (git://github.com/bling/dotemacs.git)
-  ;;  sachac - "sacha chua s .emacs.d (git://github.com/sachac/.emacs.d.git)"
+  ;;  sachac - "sacha chua's .emacs.d (git://github.com/sachac/.emacs.d.git)"
   ;;    kess - "my 'Keep Emacs Simple, Stupid' config suit" (default)
   (let* ((suits '("live" "prelude" "space" "bling" "sachac" "kess"))
          (env (getenv "EMACS_CONFIG"))
@@ -45,7 +45,7 @@ up my own configuration.
     (setenv "EMACS_CONFIG" suit) ; In case environment variable not set
     (message "start config suit \"%s\" loading on %s" suit system-type)
 
-    ;; Set common package 'elpa' directory to share packages between packages
+    ;; Set common package 'elpa' directory to share packages between suits
     ;; NOTE: some suits (like prelude) might change it to their own directory
     (require 'package)
     (setq package-user-dir (concat user-emacs-directory "elpa"))
