@@ -2,7 +2,7 @@
 #+STARTUP: content
 #+OPTIONS: toc:4 h:4
 
-* emacs-mine - An Emacs Study Kit
+* Preface
 /(This was originally my emacs configuration backup repository)/
 
 There are hundreds of emacs config repositories on github (prelude, emacs-live,
