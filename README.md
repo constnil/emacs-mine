@@ -2,18 +2,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. emacs-mine - An Emacs Study Kit</a>
+<li><a href="#sec-1">1. Preface</a></li>
+<li><a href="#sec-2">2. Suit management will not use submodule</a></li>
+<li><a href="#sec-3">3. Use cask and ecukes for study purpose?</a></li>
+<li><a href="#sec-4">4. Functions for emacs study?</a></li>
+<li><a href="#sec-5">5. Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit</a></li>
+<li><a href="#sec-6">6. Thoughts</a>
 <ul>
-<li><a href="#sec-1-1">1.1. Suit management will not use submodule</a></li>
-<li><a href="#sec-1-2">1.2. Use cask and ecukes for study purpose?</a></li>
-<li><a href="#sec-1-3">1.3. Functions for emacs study?</a></li>
-<li><a href="#sec-1-4">1.4. Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit</a></li>
-<li><a href="#sec-1-5">1.5. Thoughts</a>
-<ul>
-<li><a href="#sec-1-5-1">1.5.1. Preview for dired-mode</a></li>
-</ul>
-</li>
-<li><a href="#sec-1-6">1.6. Suit Load</a></li>
+<li><a href="#sec-6-1">6.1. Preview for dired-mode</a></li>
+<li><a href="#sec-6-2">6.2. Suit Load</a></li>
 </ul>
 </li>
 </ul>
@@ -21,7 +18,7 @@
 </div>
 
 
-# emacs-mine - An Emacs Study Kit<a id="sec-1" name="sec-1"></a>
+# Preface<a id="sec-1" name="sec-1"></a>
 
 *(This was originally my emacs configuration backup repository)*
 
@@ -31,30 +28,30 @@ spacemacs, etc). I started by including them individualy as submodule (so called
 $EMACS<sub>CONFIG</sub> on emacs startup. Thus I can easily taste and study them, not mess
 up my own configuration.
 
-## Suit management will not use submodule<a id="sec-1-1" name="sec-1-1"></a>
+# Suit management will not use submodule<a id="sec-2" name="sec-2"></a>
 
 -   How to define suit? (name, repos location, &#x2026;)
 -   Maybe not use environment variable too?
 -   Which famous suits too include by default?
 
-## Use cask and ecukes for study purpose?<a id="sec-1-2" name="sec-1-2"></a>
+# Use cask and ecukes for study purpose?<a id="sec-3" name="sec-3"></a>
 
-## Functions for emacs study?<a id="sec-1-3" name="sec-1-3"></a>
+# Functions for emacs study?<a id="sec-4" name="sec-4"></a>
 
 -   Insert command name by key press
 
-## Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit<a id="sec-1-4" name="sec-1-4"></a>
+# Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit<a id="sec-5" name="sec-5"></a>
 
 -   [X] make kess as default
 -   [X] C-\` prefix key map, mainly for mark related commands
 -   [ ] C-backspace backward-delete-line
 -   [ ] M-backspace backward-delete-word
 
-## Thoughts<a id="sec-1-5" name="sec-1-5"></a>
+# Thoughts<a id="sec-6" name="sec-6"></a>
 
-### Preview for dired-mode<a id="sec-1-5-1" name="sec-1-5-1"></a>
+## Preview for dired-mode<a id="sec-6-1" name="sec-6-1"></a>
 
-## Suit Load<a id="sec-1-6" name="sec-1-6"></a>
+## Suit Load<a id="sec-6-2" name="sec-6-2"></a>
 
     ;; Common setting and variables
     (prefer-coding-system 'utf-8)
@@ -66,7 +63,7 @@ up my own configuration.
     ;; prelude - "prelude" (git://github.com/bbatsov/prelude.git)
     ;;   space - "spacemacs" (git://github.com/syl20bnr/spacemacs.git)
     ;;   bling - "bling's KISS dotemacs" (git://github.com/bling/dotemacs.git)
-    ;;  sachac - "sacha chua s .emacs.d (git://github.com/sachac/.emacs.d.git)"
+    ;;  sachac - "sacha chua's .emacs.d (git://github.com/sachac/.emacs.d.git)"
     ;;    kess - "my 'Keep Emacs Simple, Stupid' config suit" (default)
     (let* ((suits '("live" "prelude" "space" "bling" "sachac" "kess"))
            (env (getenv "EMACS_CONFIG"))
@@ -74,7 +71,7 @@ up my own configuration.
       (setenv "EMACS_CONFIG" suit) ; In case environment variable not set
       (message "start config suit \"%s\" loading on %s" suit system-type)
     
-      ;; Set common package 'elpa' directory to share packages between packages
+      ;; Set common package 'elpa' directory to share packages between suits
       ;; NOTE: some suits (like prelude) might change it to their own directory
       (require 'package)
       (setq package-user-dir (concat user-emacs-directory "elpa"))

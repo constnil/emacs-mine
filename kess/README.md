@@ -2,7 +2,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. KESS - Keep Emacs Simple, Stupid!</a></li>
+<li><a href="#sec-1">1. Preface</a></li>
 <li><a href="#sec-2">2. Personal information</a></li>
 <li><a href="#sec-3">3. Setup load paths</a></li>
 <li><a href="#sec-4">4. Package Setup</a>
@@ -93,7 +93,7 @@
 </div>
 
 
-# KESS - Keep Emacs Simple, Stupid!<a id="sec-1" name="sec-1"></a>
+# Preface<a id="sec-1" name="sec-1"></a>
 
 OK, the following configuration not **simple** at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
@@ -340,12 +340,14 @@ which I think very easy to reach.
             (fn (or (and next 'next-buffer) 'previous-buffer)))
         (funcall fn)
         (while (and (not (equal bread-crumb (buffer-name)))
-                    (and (not (member (buffer-name) '("*scratch*" "*info*")))
+                    (and (not (member (buffer-name)
+                                      '("*scratch*" "*info*" "*eshell*")))
                          (string-match-p "^\*.*\*$" (buffer-name))))
           (funcall fn))))
     (bind-keys*
      ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
      ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
+     ("<C-iso-lefttab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
      ("C-M-|" . (lambda ()
                   (interactive)
                   (indent-region (point-min) (point-max) nil)))
