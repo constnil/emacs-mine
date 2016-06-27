@@ -233,7 +233,8 @@ which I think very easy to reach.
           (fn (or (and next 'next-buffer) 'previous-buffer)))
       (funcall fn)
       (while (and (not (equal bread-crumb (buffer-name)))
-                  (and (not (member (buffer-name) '("*scratch*" "*info*")))
+                  (and (not (member (buffer-name)
+                                    '("*scratch*" "*info*" "*eshell*")))
                        (string-match-p "^\*.*\*$" (buffer-name))))
         (funcall fn))))
   (bind-keys*
