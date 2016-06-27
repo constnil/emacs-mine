@@ -2,7 +2,7 @@
 #+STARTUP: content
 #+OPTIONS: toc:4 h:4
 
-* KESS - Keep Emacs Simple, Stupid!
+* Preface
 OK, the following configuration not *simple* at all, but I'm trying achieve this
 goal as I'm getting more comfortable with emacs.
 
@@ -240,6 +240,7 @@ which I think very easy to reach.
   (bind-keys*
    ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
    ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
+   ("<C-iso-lefttab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
    ("C-M-|" . (lambda ()
                 (interactive)
                 (indent-region (point-min) (point-max) nil)))
