@@ -255,6 +255,12 @@ which I think very easy to reach.
             ("C-c 0" . delete-frame))
 #+END_SRC
 ** window bindings
+*** Thoughts
+In old Turbo C/Pascal code editor has a window size edit behavior. C-F5 start
+change window size, then use S-left, S-Right, S-Up and S-Down to change current
+window respect to the direction, press Enter to accept and leave size change
+mode. Maybe write a minor mode to provide this?
+*** Binding
 #+BEGIN_SRC emacs-lisp
 ;; window
 (winner-mode 1)

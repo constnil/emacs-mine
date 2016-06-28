@@ -29,6 +29,8 @@ up my own configuration.
 #+BEGIN_SRC emacs-lisp
   ;; Common setting and variables
   (prefer-coding-system 'utf-8)
+  (set-language-environment 'utf-8)
+  (set-locale-environment "utf-8")
 
   (defvar suit-init-file "init.el")
 
