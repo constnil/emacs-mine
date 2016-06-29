@@ -221,7 +221,6 @@ which I think very easy to reach.
 * Global bindings
 ** buffer bindings
 #+BEGIN_SRC emacs-lisp
-  ;; buffer
   (bind-key* (kbd "M-`")
              (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
 
@@ -237,6 +236,7 @@ which I think very easy to reach.
                                     '("*scratch*" "*info*" "*eshell*")))
                        (string-match-p "^\*.*\*$" (buffer-name))))
         (funcall fn))))
+
   (bind-keys*
    ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
    ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
@@ -250,7 +250,6 @@ which I think very easy to reach.
 #+END_SRC
 ** frame bindings
 #+BEGIN_SRC emacs-lisp
-;; frame
 (bind-keys* ("C-c o" . other-frame)
             ("C-c 0" . delete-frame))
 #+END_SRC
@@ -262,7 +261,6 @@ window respect to the direction, press Enter to accept and leave size change
 mode. Maybe write a minor mode to provide this?
 *** Binding
 #+BEGIN_SRC emacs-lisp
-;; window
 (winner-mode 1)
 (bind-keys* ("C-c ," . winner-undo)
             ("C-c ." . winner-redo))
@@ -276,13 +274,11 @@ mode. Maybe write a minor mode to provide this?
 #+END_SRC
 ** navigation bindings
 #+BEGIN_SRC emacs-lisp
-;; navigation
 (bind-keys ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph))
 #+END_SRC
 ** search and replace bindings
 #+BEGIN_SRC emacs-lisp
-;; search/replace
 (bind-keys* ("C-M-/" . query-replace)
             ("C-M-?" . query-replace-regexp))
 #+END_SRC
@@ -296,9 +292,9 @@ mode. Maybe write a minor mode to provide this?
 #+END_SRC
 ** other bindings
 #+BEGIN_SRC emacs-lisp
-;; misc
-(bind-keys* ("<backspace>" . delete-backward-char)
-            ("M-\\" . hippie-expand))
+  (bind-keys* ("<backspace>" . delete-backward-char)
+              ("M-\\" . hippie-expand)
+              ("C-S-g" . occur))
 #+END_SRC
 * Essential packages
 These're packages I think is essential.
@@ -489,7 +485,7 @@ I'm confusing about parens related packages, for now my simple understanding is:
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 #+END_SRC
-** Syntax
+** Syntax Check
 Flycheck is a bit annoying when enabled globally, so I use it only when needed.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
