@@ -23,6 +23,71 @@ up my own configuration.
 - [X] C-` prefix key map, mainly for mark related commands
 - [ ] C-backspace backward-delete-line
 - [ ] M-backspace backward-delete-word
+* Learning Plan
+** As text editor
+*** global search (grep/ack/ag)
+*** open recent file
+** As system management tool
+*** eshell-mode
+*** shell-mode
+*** term-mode
+*** package management
+**** el-get
+**** package.el
+**** use-package
+** As personal task management tool
+*** OrgMode
+** As programming IDE
+*** project management
+**** projectile
+***** Register for known project?
+- 0-9，total 10 registers
+- C-u 0..9 C-c p p switch project and record to register
+- C-u 0..9 followed by projectile commands to operate agaitest register recorded
+  project
+**** find-file-in-project
+*** pair wrapping
+- smartparens
+- wrap-region
+- autopair
+*** comment management
+** As elisp IDE
+*** paredit
+*** emacs-lisp-mode
+*** lisp-interaction-mode
+*** cask
+*** ecukes
+** As ruby IDE
+** As clojure IDE
+*** clojure-mode
+*** cider
+** As C# IDE
+*** csharp-mode
+*** omnisharp-emacs
+** Dig into
+*** [[file+emacs:~/warehouse/projects/references/emacs/][emacs source code]]
+**** TODO Build Emacs under Msys2 [[https://chriszheng.science/2015/03/19/Chinese-version-of-Emacs-building-guideline/][reference]]
+***** Install Msys2 packages
+pacman -S base-devel mingw-w64-x86_64-toolchain \
+mingw-w64-x86_64-xpm-nox mingw-w64-x86_64-libtiff \
+mingw-w64-x86_64-giflib mingw-w64-x86_64-libpng \
+mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-librsvg \
+mingw-w64-x86_64-libxml2 mingw-w64-x86_64-gnutls --needed
+***** Run autogen
+./autogen.sh
+***** Configure
+PKG_CONFIG_PATH=/mingw64/lib/pkgconfig ./configure --host=x86_64-w64-mingw32 \
+--target=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --prefix=/usr/bin --with-wide-int \
+--with-jpeg --with-xpm --with-png --with-tiff --with-rsvg --with-xml2 \
+--with-gnutls --without-imagemagick
+***** Make
+make && make install
+***** progress
+configure failure: no socklen_t
+*** how emacs key binding works
+- [[file:~/.emacs.d/notes/keymap.org][notes]] after reading emacs lisp manual
+*** find key binding's original and current value in all minor/major modes
+
 * Thoughts
 ** Preview for dired-mode
 ** Suit Load
