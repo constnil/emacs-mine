@@ -96,6 +96,7 @@ My perfered settings.
         diff-switches "-u")
 
   (global-linum-mode t)
+  (column-number-mode t)
 #+END_SRC
 ** Session and history
 Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.

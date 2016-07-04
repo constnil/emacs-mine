@@ -18,7 +18,7 @@ up my own configuration.
 * Use cask and ecukes for study purpose?
 * Functions for emacs study?
 - Insert command name by key press
-* Change "mine" suit to "kess - Keep Emacs Simple, Stupid" suit
+* Change "mine" suit to "[[file:kess/kess.org][kess - Keep Emacs Simple, Stupid]]" suit
 - [X] make kess as default
 - [X] C-` prefix key map, mainly for mark related commands
 - [ ] C-backspace backward-delete-line
