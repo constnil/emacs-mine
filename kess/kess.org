@@ -103,17 +103,17 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
 /(Somehow, desktop saving caused error on my MBP, need more deep understanding in desktop.el)/
 #+BEGIN_SRC emacs-lisp
   ;; desktop
-  (require 'desktop)
+  ;; (require 'desktop)
 
-  (desktop-save-mode)
+  ;; (desktop-save-mode)
 
-  (setq desktop-dirname user-emacs-directory
-        desktop-base-file-name "desktop"
-        desktop-base-lock-name "desktop.lock"
-        desktop-restore-frames t
-        desktop-restore-reuses-frames t
-        desktop-restore-in-current-display t
-        desktop-restore-forces-onscreen t)
+  ;; (setq desktop-dirname user-emacs-directory
+  ;;       desktop-base-file-name "desktop"
+  ;;       desktop-base-lock-name "desktop.lock"
+  ;;       desktop-restore-frames t
+  ;;       desktop-restore-reuses-frames t
+  ;;       desktop-restore-in-current-display t
+  ;;       desktop-restore-forces-onscreen t)
 
   ;; savehist
   (savehist-mode t)
