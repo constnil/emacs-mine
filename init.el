@@ -9,6 +9,7 @@
 
 ;;; Code:
 
+(package-initialize)
 (org-babel-load-file (concat user-emacs-directory "emacs-mine.org"))
 
 ;;; init.el ends here

@@ -123,18 +123,18 @@ configure failure: no socklen_t
 
     ;; HACK: Change user-emacs-directory to suit directory
     (setq user-emacs-directory (concat user-emacs-directory suit "/"))
-    (add-to-list 'load-path user-emacs-directory)
 
     ;; Load config suit
     (load (concat user-emacs-directory suit-init-file))
 
-    ;; Set emacs customize file and load, personal settings can load through
-    ;; .personal.el file as well
-    (setq custom-file "~/.personal.el")
-    (load custom-file 'noerror)
+    ;; Personal settings can be set in ~/.personal.el file, if exists.
+    (load "~/.personal.el" 'noerror)
 
-    ;; Since this emacs configuration is used on other computers, load local
-    ;; setting such as font size, frame size through .local.el file, if exists.
+    ;; Set emacs customize file to ~/.local.el and try to load it.  Since this
+    ;; emacs configuration is used on my multiple computers, load local setting
+    ;; such as emacs customize, font size, frame size etc., per machine through
+    ;; .local.el file, if exists.
+    (setq custom-file "~/.local.el")
     (load "~/.local.el" 'noerror)
 
     (message "config suit \"%s\" loaded" suit))
