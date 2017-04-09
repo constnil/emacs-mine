@@ -542,15 +542,13 @@ Learn more and get used to it.
 ** C# coding setup
 More dig into omnisharp-emacs.
 #+BEGIN_SRC emacs-lisp
-(use-package csharp-mode)
-;; (use-package omnisharp
-;;   :config
-;;   (setq omnisharp-server-executable-path "~/warehouse/builds/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"
-;;         ;;        "~/warehouse/builds/omnisharp-roslyn/artifacts/publish/OmniSharp/default/net451/OmniSharp.exe"
-;;         )
-;;   (when (file-exists-p omnisharp-server-executable-path)
-;;     (add-hook 'csharp-mode-hook 'omnisharp-mode)
-;;     (add-to-list 'company-backends 'company-omnisharp)))
+  (use-package csharp-mode)
+  (use-package omnisharp
+    :config
+    (setq omnisharp-server-executable-path "~/bin/omnisharp-roslyn/OmniSharp")
+    (when (file-exists-p omnisharp-server-executable-path)
+      (add-hook 'csharp-mode-hook 'omnisharp-mode)
+      (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
 * Study and 'maybe' packages
 Comment out for now, and learn more about them sometime.
