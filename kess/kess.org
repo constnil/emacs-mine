@@ -358,9 +358,13 @@ to benefit from both? (Another tough task)
 In order to be KESS, I'll only choose some little packages besides essential
 packages loaded above.
 #+BEGIN_SRC emacs-lisp
-(use-package popwin
-  :config
-  (popwin-mode 1))
+  (use-package popwin
+    :config
+    (popwin-mode 1))
+
+  (use-package ace-jump-mode
+    :bind (:map kess-prefix-map
+                ("j" . ace-jump-mode)))
 #+END_SRC
 * Evil-mode
 Maybe I can totally discard later?  And I'm think about create a minor mode like
