@@ -377,32 +377,32 @@ visual state. =Of course, this will be a tough task for me now.=
 - normal state + visual state = view state (or browse state?)
 ** Evil setup
 #+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :diminish undo-tree-mode
-    :bind (:map kess-prefix-map
-                ("C-e" . evil-mode)
-           :map evil-normal-state-map
-                ("j" . evil-next-visual-line)
-                ("k" . evil-previous-visual-line)
-                ("C-a" . evil-beginning-of-line)
-                ("C-e" . evil-end-of-line)
-                ([escape] . keyboard-quit)
-           :map evil-emacs-state-map
-                ([escape] . evil-normal-state))
-    :config
-    (unbind-key "C-z" evil-motion-state-map)
-    (unbind-key "C-z" evil-insert-state-map)
-
-    (setq evil-esc-delay 0)
-
-    (use-package evil-visualstar
+    (use-package evil
+      :diminish undo-tree-mode
+      :bind (:map kess-prefix-map
+                  ("C-e" . evil-mode)
+             :map evil-normal-state-map
+                  ("j" . evil-next-visual-line)
+                  ("k" . evil-previous-visual-line)
+                  ("C-a" . evil-beginning-of-line)
+                  ("C-e" . evil-end-of-line)
+                  ([escape] . keyboard-quit)
+             :map evil-emacs-state-map
+                  ([escape] . evil-normal-state))
       :config
-      (global-evil-visualstar-mode t))
+      (unbind-key "C-z" evil-motion-state-map)
+      (unbind-key "C-z" evil-insert-state-map)
 
-    (use-package evil-numbers
-      :bind (:map evil-normal-state-map
-                  ("+" . evil-numbers/inc-at-pt)
-                  ("-" . evil-numbers/dec-at-pt))))
+      (setq evil-esc-delay 0)
+
+      (use-package evil-visualstar
+        :config
+        (global-evil-visualstar-mode t))
+
+      (use-package evil-numbers
+        :bind (:map evil-normal-state-map
+                    ("+" . evil-numbers/inc-at-pt)
+                    ("-" . evil-numbers/dec-at-pt))))
 #+END_SRC
 * Common coding setup
 ** Parens
@@ -542,7 +542,7 @@ Learn more and get used to it.
 *** common lisp
 #+BEGIN_SRC emacs-lisp
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "clisp")
+(setq inferior-lisp-program "sbcl")
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
