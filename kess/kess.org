@@ -300,6 +300,7 @@ packages loaded above.
     :bind (:map kess-prefix-map
                 ("C-\\" . ace-jump-mode)))
 
+  (use-package ag)
   (use-package ack)
   (use-package bookmark+)
 #+END_SRC
@@ -502,8 +503,7 @@ to benefit from both? (Another tough task)
     :config
     (projectile-global-mode)
     (setq projectile-indexing-method 'alien
-          projectile-enable-caching t)
-    (use-package ag))
+          projectile-enable-caching t))
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
