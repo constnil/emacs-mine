@@ -299,6 +299,9 @@ packages loaded above.
   (use-package ace-jump-mode
     :bind (:map kess-prefix-map
                 ("C-\\" . ace-jump-mode)))
+
+  (use-package ack)
+  (use-package bookmark+)
 #+END_SRC
 * Evil-mode
 Maybe I can totally discard later?  And I'm think about create a minor mode like
@@ -473,6 +476,9 @@ Learn more and get used to it.
     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
     (add-lisp-hook (lambda () (eldoc-mode 1))))
 #+END_SRC
+** Ruby coding setup
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
 #+BEGIN_SRC emacs-lisp
@@ -503,20 +509,6 @@ to benefit from both? (Another tough task)
 #+BEGIN_SRC emacs-lisp
 (use-package find-file-in-project
   :ensure ivy)
-#+END_SRC
-* Study and 'maybe' packages
-Comment out for now, and learn more about them sometime.
-#+BEGIN_SRC emacs-lisp
-;; (use-package ack)
-;; (use-package bookmark+)
-;; (use-package markdown-mode+)
-;; (use-package magit
-;;   :config
-;;   (setq magit-last-seen-setup-instructions "1.4.0")
-;;   (add-hook 'magit-log-edit-mode-hook
-;;             (lambda ()
-;;               (set-fill-column 72)
-;;               (auto-fill-mode 1))))
 #+END_SRC
 * Emacs server
 Start server if not already running. Properly set server to work on MSWin is
