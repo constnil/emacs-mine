@@ -96,23 +96,6 @@ My perfered settings.
   (global-linum-mode t)
   (column-number-mode t)
 #+END_SRC
-** Session and history
-Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
-#+BEGIN_SRC emacs-lisp
-  ;; desktop
-  (require 'desktop)
-  (desktop-save-mode)
-  (setq desktop-dirname user-emacs-directory
-        desktop-base-file-name "desktop"
-        desktop-base-lock-name "desktop.lock"
-        desktop-restore-frames t
-        desktop-restore-reuses-frames t
-        desktop-restore-in-current-display t
-        desktop-restore-forces-onscreen t)
-  ;; savehist
-  (savehist-mode t)
-  (setq savehist-file (concat user-emacs-directory "savehist"))
-#+END_SRC
 * Custom prefix keymap
 To not mess up with emacs's own prefix maps, my custom prefix binding use C-\,
 which I think very easy to reach.
@@ -509,6 +492,23 @@ to benefit from both? (Another tough task)
 #+BEGIN_SRC emacs-lisp
 (use-package find-file-in-project
   :ensure ivy)
+#+END_SRC
+* Session and history
+Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
+#+BEGIN_SRC emacs-lisp
+  ;; desktop
+  (require 'desktop)
+  (desktop-save-mode)
+  (setq desktop-dirname user-emacs-directory
+        desktop-base-file-name "desktop"
+        desktop-base-lock-name "desktop.lock"
+        desktop-restore-frames t
+        desktop-restore-reuses-frames t
+        desktop-restore-in-current-display t
+        desktop-restore-forces-onscreen t)
+  ;; savehist
+  (savehist-mode t)
+  (setq savehist-file (concat user-emacs-directory "savehist"))
 #+END_SRC
 * Emacs server
 Start server if not already running. Properly set server to work on MSWin is
