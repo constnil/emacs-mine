@@ -56,22 +56,8 @@ my own key bindings.
 
   ;; packages that use-package recommend
   (use-package diminish)
-  (use-package bind-key)
-#+END_SRC
-* Custom prefix keymap
-To not mess up with emacs's own prefix maps, my custom prefix binding use C-`,
-which I think very easy to reach.
-#+BEGIN_SRC emacs-lisp
-  ;; C-` prefix map for nearly all my custom bindings
-  (define-prefix-command 'kess-prefix-map)
-  (bind-key* (kbd "C-`") kess-prefix-map)
-  (bind-key* (kbd "C-^") kess-prefix-map) ; my ipad with keyboard interprete C-` to C-^
-  (bind-keys :map kess-prefix-map
-             ("`" . set-mark-command)
-             ("u" . undo-tree-undo) ; my ipad with keyboard interprete C-\ to n
-             ("r" . undo-tree-redo)
-             ("d" . delete-region)
-             ("C-." . describe-personal-keybindings))
+  (use-package bind-key
+  :bind* (("C-`" . describe-personal-keybindings)))
 #+END_SRC
 * Default Setup
 ** better-defaults
@@ -105,13 +91,13 @@ My perfered settings.
         tramp-default-method "ssh"
         diff-switches "-u")
 
+  (winner-mode 1)
+  (show-paren-mode 1)
   (global-linum-mode t)
   (column-number-mode t)
 #+END_SRC
 ** Session and history
 Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
-/(Somehow, desktop saving caused error on my MBP, need more deep understanding in desktop.el)/
-/(Well, since my MBP was stolen, then desktop.el now is enabled:()/
 #+BEGIN_SRC emacs-lisp
   ;; desktop
   (require 'desktop)
@@ -126,6 +112,23 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
   ;; savehist
   (savehist-mode t)
   (setq savehist-file (concat user-emacs-directory "savehist"))
+#+END_SRC
+* Custom prefix keymap
+To not mess up with emacs's own prefix maps, my custom prefix binding use C-\,
+which I think very easy to reach.
+#+BEGIN_SRC emacs-lisp
+  ;; C-\ prefix map for nearly all my custom bindings, to not mess up
+  ;; default or other installed package's bindings
+  (define-prefix-command 'kess-prefix-map)
+  (bind-key* (kbd "C-\\") kess-prefix-map)
+  (bind-keys :map kess-prefix-map
+             ("`" . set-mark-command)
+             ("o" . other-frame)
+             ("0" . delete-frame)
+             ("," . winner-undo)
+             ("." . winner-redo)
+             ("r" . comment-region)
+             ("u" . uncomment-region))
 #+END_SRC
 * Orgmode
 ** Perfered settings
@@ -151,47 +154,6 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
         (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
         (sequence "QUESTION(q) | ANSWERED(a)")))
 #+END_SRC
-** Template skeletons
-/Learn more about skeleton, or use yasnippet instead?/
-This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.html][cnblogs]], with some modification.
-#+BEGIN_SRC emacs-lisp
-  (require 'org)
-  (add-hook 'org-mode-hook 'abbrev-mode)
-
-  (define-skeleton sk-org-exp
-    "Input #+BEGIN_EXAMPLE #+END_EXAMPLE in org-mode"
-    ""
-    "#+BEGIN_EXAMPLE\n"
-    _ "\n"
-    "#+END_EXAMPLE")
-    (define-abbrev org-mode-abbrev-table "iexp" "" 'sk-org-exp)
-
-    (define-skeleton sk-org-src
-    "Input #+BEGIN_SRC #+END_SRC in org-mode"
-    ""
-    "#+BEGIN_SRC emacs-lisp\n"
-    _ "\n"
-    "#+END_SRC")
-    (define-abbrev org-mode-abbrev-table "isrc" "" 'sk-org-src)
-
-    (define-skeleton sk-org-prop
-    "Input :PROPERTIES: :END: in org-mode"
-    ""
-    >":PROPERTIES:\n"
-    > _ "\n"
-    >":END:")
-    (define-abbrev org-mode-abbrev-table "iprop" "" 'sk-org-prop)
-
-    (define-skeleton sk-org-html
-    ""
-    ""
-    "#+BEGIN_HTML\n"
-    "<pre lang=\"lisp\" line=\"1\">\n"
-    _"\n"
-    "</pre>\n"
-    "#+END_HTML\n")
-    (define-abbrev org-mode-abbrev-table "ihtml"  "" 'sk-org-html)
-#+END_SRC
 ** Bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys :map kess-prefix-map
@@ -200,17 +162,23 @@ This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.htm
              :map org-mode-map
              ("M-n" . org-forward-heading-same-level)
              ("M-p" . org-backward-heading-same-level))
+  ;; org-mode global bindings
+  (bind-keys* ("C-c a" . org-agenda)
+              ("C-c b" . org-iswitchb)
+              ("C-c c" . org-capture)
+              ("C-c l" . org-store-link)
+              ("C-c t" . org-tags-view))
 #+END_SRC
 * Global bindings
 ** buffer bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-key* (kbd "M-`")
-             (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
+  (bind-keys* ("M-`" . (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
+              ("C-x S" . write-file)
+              ("C-S-s" . save-some-buffers))
 
-  ;; switch to previous/next buffer (skip *[buffer]*), idea from stackoverflow
-  (defun switch-non-star-muffle-buffer (next)
+  (defun kess-switch-buffer (next)
     "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
-  otherwise, previous-buffer."
+    otherwise, previous-buffer. (idea from stackoverflow)"
     (let ((bread-crumb (buffer-name))
           (fn (or (and next 'next-buffer) 'previous-buffer))
           (allowed-buffers '("*scratch*" "*info*" "*eshell*")))
@@ -221,20 +189,18 @@ This is copied from [[http://www.cnblogs.com/babe/archive/2012/04/11/2441633.htm
         (funcall fn))))
 
   (bind-keys*
-   ("<C-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer t)))
-   ("<C-S-tab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
-   ("<C-iso-lefttab>" . (lambda () (interactive) (switch-non-star-muffle-buffer nil)))
-   ("C-M-|" . (lambda ()
-                (interactive)
-                (indent-region (point-min) (point-max) nil)))
-   ("C-x s" . write-file)
-   ("C-S-s" . save-some-buffers))
-#+END_SRC
-** frame bindings
-#+BEGIN_SRC emacs-lisp
-  (bind-keys :map kess-prefix-map
-             ("o" . other-frame)
-             ("0" . delete-frame))
+   ("<C-tab>" . (lambda () (interactive) (kess-switch-buffer t)))
+   ("<C-S-tab>" . (lambda () (interactive) (kess-switch-buffer nil)))
+   ("<C-iso-lefttab>" . (lambda () (interactive) (kess-switch-buffer t)))
+   ("<C-S-iso-lefttab>" . (lambda () (interactive) (kess-switch-buffer nil))))
+
+  (defun kess-indent-buffer ()
+    "Indent whole buffer."
+    (interactive)
+    (indent-region (point-min) (point-max) nil))
+
+  ;; Ctrl+Alt+Shift+\ indent whole buffer
+  (bind-key* (kbd "C-M-|") 'kess-indent-buffer)
 #+END_SRC
 ** window bindings
 *** Thoughts
@@ -244,11 +210,6 @@ window respect to the direction, press Enter to accept and leave size change
 mode. Maybe write a minor mode to provide this?
 *** Binding
 #+BEGIN_SRC emacs-lisp
-  (winner-mode 1)
-  (bind-keys :map kess-prefix-map
-             ("," . winner-undo)
-             ("." . winner-redo))
-
   (bind-keys* ("C-M-." . scroll-other-window)
               ("C-M-," . scroll-other-window-down)
               ("C-M-h" . windmove-left)
@@ -266,14 +227,6 @@ mode. Maybe write a minor mode to provide this?
 (bind-keys* ("C-M-/" . query-replace)
             ("C-M-?" . query-replace-regexp))
 #+END_SRC
-** org-mode bindings
-#+BEGIN_SRC emacs-lisp
-  (bind-keys* ("C-c a" . org-agenda)
-              ("C-c b" . org-iswitchb)
-              ("C-c c" . org-capture)
-              ("C-c l" . org-store-link)
-              ("C-c t" . org-tags-view))
-#+END_SRC
 ** other bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys* ("<backspace>" . delete-backward-char)
@@ -285,8 +238,8 @@ These're packages I think is essential.
 ** undo-tree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :bind* (("C-/" . undo-tree-undo)
-          ("M-/" . undo-tree-redo))
+  :bind* (("C-z" . undo-tree-undo)
+          ("C-/" . undo-tree-redo))
   :config
   (global-undo-tree-mode))
 #+END_SRC
@@ -335,26 +288,6 @@ These're packages I think is essential.
           ido-auto-merge-work-directories-length -1)
     (flx-ido-mode 1))
 #+END_SRC
-* Project management
-Just start to use them, maybe one of both is enough? Or maybe a wrapper package
-to benefit from both? (Another tough task)
-** projectile
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :demand
-    :bind* (("M-o" . projectile-find-file-dwim)
-            ("M-O" . projectile-find-file-dwim-other-window))
-    :config
-    (projectile-global-mode)
-    (setq projectile-indexing-method 'alien
-          projectile-enable-caching t)
-    (use-package ag))
-#+END_SRC
-** find-file-in-project
-#+BEGIN_SRC emacs-lisp
-(use-package find-file-in-project
-  :ensure ivy)
-#+END_SRC
 * Useful handy packages
 In order to be KESS, I'll only choose some little packages besides essential
 packages loaded above.
@@ -365,7 +298,7 @@ packages loaded above.
 
   (use-package ace-jump-mode
     :bind (:map kess-prefix-map
-                ("j" . ace-jump-mode)))
+                ("C-\\" . ace-jump-mode)))
 #+END_SRC
 * Evil-mode
 Maybe I can totally discard later?  And I'm think about create a minor mode like
@@ -373,36 +306,36 @@ Maybe I can totally discard later?  And I'm think about create a minor mode like
 visual state. =Of course, this will be a tough task for me now.=
 ** Features & thoughts
 - use CapsLock to switch
-- insert state is pure emacs
+- insert state as pure emacs
 - normal state + visual state = view state (or browse state?)
 ** Evil setup
 #+BEGIN_SRC emacs-lisp
-    (use-package evil
-      :diminish undo-tree-mode
-      :bind (:map kess-prefix-map
-                  ("C-e" . evil-mode)
-             :map evil-normal-state-map
-                  ("j" . evil-next-visual-line)
-                  ("k" . evil-previous-visual-line)
-                  ("C-a" . evil-beginning-of-line)
-                  ("C-e" . evil-end-of-line)
-                  ([escape] . keyboard-quit)
-             :map evil-emacs-state-map
-                  ([escape] . evil-normal-state))
+  (use-package evil
+    :diminish undo-tree-mode
+    :bind (:map kess-prefix-map
+                ("C-e" . evil-mode))
+    :bind (:map evil-normal-state-map
+                ("j" . evil-next-visual-line)
+                ("k" . evil-previous-visual-line)
+                ("C-a" . evil-beginning-of-line)
+                ("C-e" . evil-end-of-line)
+                ([escape] . keyboard-quit))
+    :bind (:map evil-emacs-state-map
+                ([escape] . evil-normal-state))
+    :config
+    (unbind-key "C-z" evil-motion-state-map)
+    (unbind-key "C-z" evil-insert-state-map)
+
+    (setq evil-esc-delay 0)
+
+    (use-package evil-visualstar
       :config
-      (unbind-key "C-z" evil-motion-state-map)
-      (unbind-key "C-z" evil-insert-state-map)
+      (global-evil-visualstar-mode t))
 
-      (setq evil-esc-delay 0)
-
-      (use-package evil-visualstar
-        :config
-        (global-evil-visualstar-mode t))
-
-      (use-package evil-numbers
-        :bind (:map evil-normal-state-map
-                    ("+" . evil-numbers/inc-at-pt)
-                    ("-" . evil-numbers/dec-at-pt))))
+    (use-package evil-numbers
+      :bind (:map evil-normal-state-map
+                  ("+" . evil-numbers/inc-at-pt)
+                  ("-" . evil-numbers/dec-at-pt))))
 #+END_SRC
 * Common coding setup
 ** Parens
@@ -410,70 +343,72 @@ I'm confusing about parens related packages, for now my simple understanding is:
 - use smartparens for common coding parens and pair management (there still
   another variations like autopair, wrapper-region, electric-pair-mode).
 - use paredit for lisp language, see blew [[#paredit][Lisp coding setup]].
-*** smartparens
+- disable smartparens until I get time to learn it
+*** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
-(show-paren-mode 1)
 (use-package rainbow-delimiters
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+*** smartparens
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package smartparens-config
+  ;;   :ensure smartparens
+  ;;   :demand
+  ;;   :bind (:map smartparens-mode-map
+  ;;               ("M-k" . sp-kill-sexp)
+  ;;               ("M-K" . sp-kill-hybrid-sexp)
+  ;;               ("<C-M-backspace>" . sp-backward-kill-sexp)
 
-(use-package smartparens-config
-  :ensure smartparens
-  :demand
-  :bind (:map smartparens-mode-map
-              ("M-k" . sp-kill-sexp)
-              ("M-K" . sp-kill-hybrid-sexp)
-              ("<C-M-backspace>" . sp-backward-kill-sexp)
+  ;;               ;; ("C-M-a" . sp-beginning-of-sexp)
+  ;;               ;; ("C-M-e" . sp-end-of-sexp)
 
-              ;; ("C-M-a" . sp-beginning-of-sexp)
-              ;; ("C-M-e" . sp-end-of-sexp)
+  ;;               ;; ("C-<down>" . sp-down-sexp)
+  ;;               ;; ("C-<up>"   . sp-up-sexp)
+  ;;               ;; ("M-<down>" . sp-backward-down-sexp)
+  ;;               ;; ("M-<up>"   . sp-backward-up-sexp)
 
-              ;; ("C-<down>" . sp-down-sexp)
-              ;; ("C-<up>"   . sp-up-sexp)
-              ;; ("M-<down>" . sp-backward-down-sexp)
-              ;; ("M-<up>"   . sp-backward-up-sexp)
+  ;;               ;; ("C-M-f" . sp-forward-sexp)
+  ;;               ;; ("C-M-b" . sp-backward-sexp)
 
-              ;; ("C-M-f" . sp-forward-sexp)
-              ;; ("C-M-b" . sp-backward-sexp)
+  ;;               ;; ("C-M-n" . sp-next-sexp)
+  ;;               ;; ("C-M-p" . sp-previous-sexp)
 
-              ;; ("C-M-n" . sp-next-sexp)
-              ;; ("C-M-p" . sp-previous-sexp)
+  ;;               ;; ("C-S-f" . sp-forward-symbol)
+  ;;               ;; ("C-S-b" . sp-backward-symbol)
 
-              ;; ("C-S-f" . sp-forward-symbol)
-              ;; ("C-S-b" . sp-backward-symbol)
+  ;;               ;; ("C-<right>" . sp-forward-slurp-sexp)
+  ;;               ;; ("M-<right>" . sp-forward-barf-sexp)
+  ;;               ;; ("C-<left>"  . sp-backward-slurp-sexp)
+  ;;               ;; ("M-<left>"  . sp-backward-barf-sexp)
 
-              ;; ("C-<right>" . sp-forward-slurp-sexp)
-              ;; ("M-<right>" . sp-forward-barf-sexp)
-              ;; ("C-<left>"  . sp-backward-slurp-sexp)
-              ;; ("M-<left>"  . sp-backward-barf-sexp)
+  ;;               ;; ("C-M-t" . sp-transpose-sexp)
+  ;;               ;; ("C-M-w" . sp-copy-sexp)
 
-              ;; ("C-M-t" . sp-transpose-sexp)
-              ;; ("C-M-w" . sp-copy-sexp)
+  ;;               ;; ("C-M-d" . delete-sexp)
 
-              ;; ("C-M-d" . delete-sexp)
+  ;;               ;; ("M-<backspace>" . backward-kill-word)
+  ;;               ;; ("C-<backspace>" . sp-backward-kill-word)
+  ;;               ;; ([remap sp-backward-kill-word] . backward-kill-word)
 
-              ;; ("M-<backspace>" . backward-kill-word)
-              ;; ("C-<backspace>" . sp-backward-kill-word)
-              ;; ([remap sp-backward-kill-word] . backward-kill-word)
+  ;;               ;; ("M-[" . sp-backward-unwrap-sexp)
+  ;;               ;; ("M-]" . sp-unwrap-sexp)
 
-              ;; ("M-[" . sp-backward-unwrap-sexp)
-              ;; ("M-]" . sp-unwrap-sexp)
+  ;;               ;; ("C-x C-t" . sp-transpose-hybrid-sexp)
 
-              ;; ("C-x C-t" . sp-transpose-hybrid-sexp)
-
-              ;; ("C-c ("  . wrap-with-parens)
-              ;; ("C-c ["  . wrap-with-brackets)
-              ;; ("C-c {"  . wrap-with-braces)
-              ;; ("C-c '"  . wrap-with-single-quotes)
-              ;; ("C-c \"" . wrap-with-double-quotes)
-              ;; ("C-c _"  . wrap-with-underscores)
-              ;; ("C-c `"  . wrap-with-back-quotes))
-              )
-  :config
-  (show-smartparens-global-mode t)
-  (smartparens-strict-mode 1)
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+  ;;               ;; ("C-c ("  . wrap-with-parens)
+  ;;               ;; ("C-c ["  . wrap-with-brackets)
+  ;;               ;; ("C-c {"  . wrap-with-braces)
+  ;;               ;; ("C-c '"  . wrap-with-single-quotes)
+  ;;               ;; ("C-c \"" . wrap-with-double-quotes)
+  ;;               ;; ("C-c _"  . wrap-with-underscores)
+  ;;               ;; ("C-c `"  . wrap-with-back-quotes))
+  ;;               )
+  ;;   :config
+  ;;   (show-smartparens-global-mode t)
+  ;;   (smartparens-strict-mode 1)
+  ;;   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  ;;   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 #+END_SRC
 ** Syntax Check
 Flycheck is a bit annoying when enabled globally, so I use it only when needed.
@@ -497,11 +432,6 @@ Learn more and get used to it.
   :config
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode 1))
-#+END_SRC
-** Binding
-#+BEGIN_SRC emacs-lisp
-  (bind-keys* ("C-c r" . comment-region)
-              ("C-c u" . uncomment-region))
 #+END_SRC
 * Programming language setup
 ** Lisp coding setup
@@ -553,10 +483,30 @@ More dig into omnisharp-emacs.
   (use-package csharp-mode)
   (use-package omnisharp
     :config
-    (setq omnisharp-server-executable-path "~/bin/omnisharp-roslyn/OmniSharp")
+    (setq omnisharp-server-executable-path "~/bin/omnisharp/OmniSharp")
     (when (file-exists-p omnisharp-server-executable-path)
       (add-hook 'csharp-mode-hook 'omnisharp-mode)
       (add-to-list 'company-backends 'company-omnisharp)))
+#+END_SRC
+* Project management
+Just start to use them, maybe one of both is enough? Or maybe a wrapper package
+to benefit from both? (Another tough task)
+** projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :demand
+    :bind* (("M-o" . projectile-find-file-dwim)
+            ("M-O" . projectile-find-file-dwim-other-window))
+    :config
+    (projectile-global-mode)
+    (setq projectile-indexing-method 'alien
+          projectile-enable-caching t)
+    (use-package ag))
+#+END_SRC
+** find-file-in-project
+#+BEGIN_SRC emacs-lisp
+(use-package find-file-in-project
+  :ensure ivy)
 #+END_SRC
 * Study and 'maybe' packages
 Comment out for now, and learn more about them sometime.
