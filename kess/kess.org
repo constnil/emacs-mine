@@ -57,7 +57,7 @@ my own key bindings.
   ;; packages that use-package recommend
   (use-package diminish)
   (use-package bind-key
-  :bind* (("C-`" . describe-personal-keybindings)))
+    :bind* (("C-`" . describe-personal-keybindings)))
 #+END_SRC
 * Default Setup
 ** better-defaults
@@ -278,11 +278,6 @@ packages loaded above.
   (use-package popwin
     :config
     (popwin-mode 1))
-
-  (use-package ace-jump-mode
-    :bind (:map kess-prefix-map
-                ("C-\\" . ace-jump-mode)))
-
   (use-package ag)
   (use-package ack)
   (use-package bookmark+)
@@ -299,17 +294,10 @@ visual state. =Of course, this will be a tough task for me now.=
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :diminish undo-tree-mode
-    :bind (:map kess-prefix-map
-                ("C-e" . evil-mode))
-    :bind (:map evil-normal-state-map
-                ("j" . evil-next-visual-line)
-                ("k" . evil-previous-visual-line)
-                ("C-a" . evil-beginning-of-line)
-                ("C-e" . evil-end-of-line)
-                ([escape] . keyboard-quit))
-    :bind (:map evil-emacs-state-map
-                ([escape] . evil-normal-state))
+    :bind* (("C-:" . evil-ex)
+            :map kess-prefix-map ("C-\\" . evil-mode))
     :config
+    (unbind-key "C-z" evil-normal-state-map)
     (unbind-key "C-z" evil-motion-state-map)
     (unbind-key "C-z" evil-insert-state-map)
 
@@ -324,7 +312,85 @@ visual state. =Of course, this will be a tough task for me now.=
                   ("+" . evil-numbers/inc-at-pt)
                   ("-" . evil-numbers/dec-at-pt))))
 #+END_SRC
-* Common coding setup
+* Coding setup
+** Syntax Check
+Flycheck is a bit annoying when enabled globally, so I use it only when needed.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :diminish flycheck-mode
+    :bind (:map kess-prefix-map
+                ("f" . flycheck-mode))
+    :config
+    (use-package flycheck-pos-tip)
+    (when (display-graphic-p (selected-frame))
+      (eval-after-load 'flycheck
+        '(custom-set-variables
+          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
+#+END_SRC
+** Templating
+Learn more and get used to it.
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :config
+  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  (yas-global-mode 1))
+#+END_SRC
+** Lisp coding setup
+:PROPERTIES:
+:CUSTOM_ID: paredit
+:END:
+#+BEGIN_SRC emacs-lisp
+  (defun add-lisp-hook (func)
+    (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
+      (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
+#+END_SRC
+*** clojure
+#+BEGIN_SRC emacs-lisp
+  (use-package clojure-mode :defer t)
+  (use-package cider :defer t)
+#+END_SRC
+*** common lisp
+#+BEGIN_SRC emacs-lisp
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+#+END_SRC
+*** paredit
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :demand
+    :bind (:map paredit-mode-map
+                ("C-." . paredit-forward-slurp-sexp)
+                ("C-," . paredit-forward-barf-sexp)
+                ("C-\>" . paredit-backward-barf-sexp)
+                ("C-\<" . paredit-backward-slurp-sexp)
+                ("M-n" . paredit-forward)
+                ("M-p" . paredit-backward))
+    :config
+    (add-lisp-hook 'enable-paredit-mode))
+#+END_SRC
+*** emacs-lisp
+#+BEGIN_SRC emacs-lisp
+  (use-package eldoc
+    :diminish eldoc-mode
+    :config
+    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+    (add-lisp-hook (lambda () (eldoc-mode 1))))
+#+END_SRC
+** Ruby coding setup
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+** C# coding setup
+More dig into omnisharp-emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package csharp-mode)
+  (use-package omnisharp
+    :config
+    (setq omnisharp-server-executable-path "~/bin/omnisharp/OmniSharp")
+    (when (file-exists-p omnisharp-server-executable-path)
+      (add-hook 'csharp-mode-hook 'omnisharp-mode)
+      (add-to-list 'company-backends 'company-omnisharp)))
+#+END_SRC
 ** Parens
 I'm confusing about parens related packages, for now my simple understanding is:
 - use smartparens for common coding parens and pair management (there still
@@ -333,9 +399,10 @@ I'm confusing about parens related packages, for now my simple understanding is:
 - disable smartparens until I get time to learn it
 *** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
-(use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+    (add-lisp-hook 'rainbow-delimiters-mode))
 #+END_SRC
 *** smartparens
 #+BEGIN_SRC emacs-lisp
@@ -396,83 +463,6 @@ I'm confusing about parens related packages, for now my simple understanding is:
   ;;   (smartparens-strict-mode 1)
   ;;   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   ;;   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
-#+END_SRC
-** Syntax Check
-Flycheck is a bit annoying when enabled globally, so I use it only when needed.
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :diminish flycheck-mode
-    :bind (:map kess-prefix-map
-                ("f" . flycheck-mode))
-    :config
-    (use-package flycheck-pos-tip)
-    (when (display-graphic-p (selected-frame))
-      (eval-after-load 'flycheck
-        '(custom-set-variables
-          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
-#+END_SRC
-** Templating
-Learn more and get used to it.
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :config
-  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-  (yas-global-mode 1))
-#+END_SRC
-* Programming language setup
-** Lisp coding setup
-:PROPERTIES:
-:CUSTOM_ID: paredit
-:END:
-#+BEGIN_SRC emacs-lisp
-  (defun add-lisp-hook (func)
-    (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
-      (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
-#+END_SRC
-*** clojure
-#+BEGIN_SRC emacs-lisp
-  (use-package clojure-mode :defer t)
-  (use-package cider :defer t)
-#+END_SRC
-*** common lisp
-#+BEGIN_SRC emacs-lisp
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
-#+END_SRC
-*** paredit
-#+BEGIN_SRC emacs-lisp
-  (use-package paredit
-    :demand
-    :bind (:map paredit-mode-map
-                ("C-\>" . paredit-forward-slurp-sexp)
-                ("C-\<" . paredit-forward-barf-sexp)
-                ("C-M-\>" . paredit-backward-barf-sexp)
-                ("C-M-\<" . paredit-backward-slurp-sexp))
-    :config
-    (add-lisp-hook 'enable-paredit-mode))
-#+END_SRC
-*** emacs-lisp
-#+BEGIN_SRC emacs-lisp
-  (use-package eldoc
-    :diminish eldoc-mode
-    :config
-    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-    (add-lisp-hook (lambda () (eldoc-mode 1))))
-#+END_SRC
-** Ruby coding setup
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
-** C# coding setup
-More dig into omnisharp-emacs.
-#+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode)
-  (use-package omnisharp
-    :config
-    (setq omnisharp-server-executable-path "~/bin/omnisharp/OmniSharp")
-    (when (file-exists-p omnisharp-server-executable-path)
-      (add-hook 'csharp-mode-hook 'omnisharp-mode)
-      (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
