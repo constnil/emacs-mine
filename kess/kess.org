@@ -77,6 +77,7 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
 My perfered settings.
 #+BEGIN_SRC emacs-lisp
   (setq-default tab-width 4
+                indent-tabs-mode nil
                 show-trailing-whitespace t)
 
   (setq gc-cons-threshold 20000000
@@ -93,8 +94,9 @@ My perfered settings.
 
   (winner-mode 1)
   (show-paren-mode 1)
-  (global-linum-mode t)
-  (column-number-mode t)
+  (recentf-mode 1)
+  (global-linum-mode 1)
+  (column-number-mode 1)
 #+END_SRC
 * Custom prefix keymap
 To not mess up with emacs's own prefix maps, my custom prefix binding use C-\,
@@ -281,6 +283,9 @@ packages loaded above.
   (use-package ag)
   (use-package ack)
   (use-package bookmark+)
+  (use-package dtrt-indent
+    :config
+    (dtrt-indent-mode 1))
 #+END_SRC
 * Evil-mode
 Maybe I can totally discard later?  And I'm think about create a minor mode like
@@ -297,9 +302,21 @@ visual state. =Of course, this will be a tough task for me now.=
     :bind* (("C-:" . evil-ex)
             :map kess-prefix-map ("C-\\" . evil-mode))
     :config
+    (use-package powerline-evil
+      :config
+      (powerline-evil-vim-color-theme)
+      (display-time-mode t))
+
     (unbind-key "C-z" evil-normal-state-map)
     (unbind-key "C-z" evil-motion-state-map)
     (unbind-key "C-z" evil-insert-state-map)
+
+    ;; (setq evil-emacs-state-cursor '("red" box))
+    ;; (setq evil-normal-state-cursor '("green" box))
+    ;; (setq evil-visual-state-cursor '("orange" box))
+    ;; (setq evil-insert-state-cursor '("red" bar))
+    ;; (setq evil-replace-state-cursor '("red" bar))
+    ;; (setq evil-operator-state-cursor '("red" hollow))
 
     (setq evil-esc-delay 0)
 
@@ -310,7 +327,19 @@ visual state. =Of course, this will be a tough task for me now.=
     (use-package evil-numbers
       :bind (:map evil-normal-state-map
                   ("+" . evil-numbers/inc-at-pt)
-                  ("-" . evil-numbers/dec-at-pt))))
+                  ("-" . evil-numbers/dec-at-pt)))
+
+    (use-package evil-search-highlight-persist
+      :bind (:map kess-prefix-map ("/" . evil-search-highlight-persist-remove-all))
+      :config
+      (global-evil-search-highlight-persist t))
+
+    (use-package evil-leader
+      :config
+      (setq evil-leader/in-all-states 1)
+      (evil-leader/set-leader ",")
+      (global-evil-leader-mode)
+      (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)))
 #+END_SRC
 * Coding setup
 ** Syntax Check
@@ -391,78 +420,16 @@ More dig into omnisharp-emacs.
       (add-hook 'csharp-mode-hook 'omnisharp-mode)
       (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
-** Parens
-I'm confusing about parens related packages, for now my simple understanding is:
-- use smartparens for common coding parens and pair management (there still
-  another variations like autopair, wrapper-region, electric-pair-mode).
-- use paredit for lisp language, see blew [[#paredit][Lisp coding setup]].
-- disable smartparens until I get time to learn it
-*** rainbow-delimiters
+** Misc
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
     (add-lisp-hook 'rainbow-delimiters-mode))
-#+END_SRC
-*** smartparens
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package smartparens-config
-  ;;   :ensure smartparens
-  ;;   :demand
-  ;;   :bind (:map smartparens-mode-map
-  ;;               ("M-k" . sp-kill-sexp)
-  ;;               ("M-K" . sp-kill-hybrid-sexp)
-  ;;               ("<C-M-backspace>" . sp-backward-kill-sexp)
 
-  ;;               ;; ("C-M-a" . sp-beginning-of-sexp)
-  ;;               ;; ("C-M-e" . sp-end-of-sexp)
-
-  ;;               ;; ("C-<down>" . sp-down-sexp)
-  ;;               ;; ("C-<up>"   . sp-up-sexp)
-  ;;               ;; ("M-<down>" . sp-backward-down-sexp)
-  ;;               ;; ("M-<up>"   . sp-backward-up-sexp)
-
-  ;;               ;; ("C-M-f" . sp-forward-sexp)
-  ;;               ;; ("C-M-b" . sp-backward-sexp)
-
-  ;;               ;; ("C-M-n" . sp-next-sexp)
-  ;;               ;; ("C-M-p" . sp-previous-sexp)
-
-  ;;               ;; ("C-S-f" . sp-forward-symbol)
-  ;;               ;; ("C-S-b" . sp-backward-symbol)
-
-  ;;               ;; ("C-<right>" . sp-forward-slurp-sexp)
-  ;;               ;; ("M-<right>" . sp-forward-barf-sexp)
-  ;;               ;; ("C-<left>"  . sp-backward-slurp-sexp)
-  ;;               ;; ("M-<left>"  . sp-backward-barf-sexp)
-
-  ;;               ;; ("C-M-t" . sp-transpose-sexp)
-  ;;               ;; ("C-M-w" . sp-copy-sexp)
-
-  ;;               ;; ("C-M-d" . delete-sexp)
-
-  ;;               ;; ("M-<backspace>" . backward-kill-word)
-  ;;               ;; ("C-<backspace>" . sp-backward-kill-word)
-  ;;               ;; ([remap sp-backward-kill-word] . backward-kill-word)
-
-  ;;               ;; ("M-[" . sp-backward-unwrap-sexp)
-  ;;               ;; ("M-]" . sp-unwrap-sexp)
-
-  ;;               ;; ("C-x C-t" . sp-transpose-hybrid-sexp)
-
-  ;;               ;; ("C-c ("  . wrap-with-parens)
-  ;;               ;; ("C-c ["  . wrap-with-brackets)
-  ;;               ;; ("C-c {"  . wrap-with-braces)
-  ;;               ;; ("C-c '"  . wrap-with-single-quotes)
-  ;;               ;; ("C-c \"" . wrap-with-double-quotes)
-  ;;               ;; ("C-c _"  . wrap-with-underscores)
-  ;;               ;; ("C-c `"  . wrap-with-back-quotes))
-  ;;               )
-  ;;   :config
-  ;;   (show-smartparens-global-mode t)
-  ;;   (smartparens-strict-mode 1)
-  ;;   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-  ;;   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+  (use-package color-identifiers-mode
+    :config
+    (global-color-identifiers-mode))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
@@ -496,6 +463,7 @@ Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]
         desktop-restore-reuses-frames t
         desktop-restore-in-current-display t
         desktop-restore-forces-onscreen t)
+
   ;; savehist
   (savehist-mode t)
   (setq savehist-file (concat user-emacs-directory "savehist"))
