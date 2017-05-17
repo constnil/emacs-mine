@@ -10,6 +10,7 @@
 ;;; Code:
 
 (package-initialize)
+(require 'ob-tangle)
 (org-babel-load-file (concat user-emacs-directory "emacs-mine.org"))
 
 ;;; init.el ends here
