@@ -92,7 +92,7 @@ My perfered settings.
         tramp-default-method "ssh"
         diff-switches "-u"
         split-width-threshold 120
-        split-height-threshold 60)
+        split-height-threshold 40)
 
   (winner-mode 1)
   (show-paren-mode 1)
