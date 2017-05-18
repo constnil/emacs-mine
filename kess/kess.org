@@ -91,8 +91,8 @@ My perfered settings.
         system-time-locale "C"
         tramp-default-method "ssh"
         diff-switches "-u"
-        split-width-threshold 100
-        split-height-threshold nil)
+        split-width-threshold 120
+        split-height-threshold 60)
 
   (winner-mode 1)
   (show-paren-mode 1)
@@ -427,7 +427,7 @@ More dig into omnisharp-emacs.
       (add-hook 'csharp-mode-hook 'omnisharp-mode)
       (add-to-list 'company-backends 'company-omnisharp)))
 #+END_SRC
-** Misc
+** Common coding setup
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :config
@@ -457,20 +457,8 @@ to benefit from both? (Another tough task)
 (use-package find-file-in-project
   :ensure ivy)
 #+END_SRC
-* Session and history
-Borrowed from [[https://ebzzry.github.io/emacs-hacks-2.html][Emacs and Hacks II]], with my changes.
+* Misc setup
 #+BEGIN_SRC emacs-lisp
-  ;; desktop
-  (require 'desktop)
-  (desktop-save-mode)
-  (setq desktop-dirname user-emacs-directory
-        desktop-base-file-name "desktop"
-        desktop-base-lock-name "desktop.lock"
-        desktop-restore-frames t
-        desktop-restore-reuses-frames t
-        desktop-restore-in-current-display t
-        desktop-restore-forces-onscreen t)
-
   ;; savehist
   (savehist-mode t)
   (setq savehist-file (concat user-emacs-directory "savehist"))
