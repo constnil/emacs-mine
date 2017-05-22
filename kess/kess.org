@@ -3,13 +3,13 @@
 #+OPTIONS: toc:4 h:4
 
 * Preface
-OK, the following configuration not *simple* at all, but I'm trying achieve this
-goal as I'm getting more comfortable with emacs.
+OK, the following configuration not *simple* at all, but I'm trying
+achieve this goal as I'm getting more comfortable with emacs.
 
 Also, I'm trying to make KESS work as I expect on all my OSs:
-- Win7/Win10 (chocolatey emacs package, tried compile emacs on msys2, but no
-  success)
-- Ubuntu (apt-get emacs package)
+- Win7/Win10 (chocolatey emacs package, tried compile emacs on msys2,
+  but no success)
+- Debian/Ubuntu (apt-get emacs package)
 - Arch Linux (pacman emacs package)
 * Personal information
 I'm doing this because [[https://github.com/sachac][Sacha Chua]] doing this. I got this [[https://github.com/sachac/.emacs.d][org-babel config]] idea
