@@ -69,9 +69,10 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
 Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
 menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
 #+BEGIN_SRC emacs-lisp
-(load-theme 'tango-dark)
-(when window-system
-  (menu-bar-mode 1))
+  (load-theme 'tango-dark)
+  (when window-system
+    (menu-bar-mode 1)
+    (add-hook 'after-init-hook 'toggle-frame-maximized))
 #+END_SRC
 ** My defaults
 My perfered settings.
