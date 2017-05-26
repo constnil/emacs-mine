@@ -112,8 +112,8 @@ which I think very easy to reach.
   (define-prefix-command 'kess-prefix-map)
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
-             ("`" . set-mark-command)
-             ("o" . other-frame)
+             ("C-\\" . set-mark-command)
+             ("\\" . other-frame)
              ("0" . delete-frame)
              ("," . winner-undo)
              ("." . winner-redo)
@@ -305,7 +305,7 @@ visual state. =Of course, this will be a tough task for me now.=
   (use-package evil
     :diminish undo-tree-mode
     :bind* (("C-:" . evil-ex)
-            :map kess-prefix-map ("C-\\" . evil-mode))
+            :map kess-prefix-map ("ESC" . evil-mode))
     :config
     (use-package powerline-evil
       :config
