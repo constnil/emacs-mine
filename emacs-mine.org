@@ -33,10 +33,9 @@ up my own configuration.
     (setenv "EMACS_CONFIG" suit) ; In case environment variable not set
     (message "start config suit \"%s\" loading on %s" suit system-type)
 
-    ;; Set common package 'elpa' directory to share packages between suits
-    ;; NOTE: some suits (like prelude) might change it to their own directory
+    ;; Set package.el 'elpa' directory to suit's own elpa directory
     (require 'package)
-    (setq package-user-dir (concat user-emacs-directory "elpa"))
+    (setq package-user-dir (concat user-emacs-directory suit "/elpa"))
 
     ;; Load suit preset file if exists
     ;; Opportunity for adjusting given suit, such as change suit-init-file, etc.
