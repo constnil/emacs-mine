@@ -60,6 +60,22 @@ up my own configuration.
 
     (message "config suit \"%s\" loaded" suit))
 #+END_SRC
+* My custom aliases
+** Suit prefix aliases
+- alias prelude='export EMACS_CONFIG="prelude" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias live='export EMACS_CONFIG="live" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias space='export EMACS_CONFIG="space" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias bling='export EMACS_CONFIG="bling" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias sachac='export EMACS_CONFIG="sachac" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias purcell='export EMACS_CONFIG="purcell" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+- alias kess='export EMACS_CONFIG="kess" && echo "launch emacs using config: $EMACS_CONFIG" &&'
+** Emacs command aliases, they can be used follow above suit prefixes, like 'prelude emacw'
+- alias vanilla='emacs -nw -q'
+- alias emacn='emacs -nw'
+- alias emacd='emacs -nw --debug-init'
+- alias emawd='emacs --debug-init &'
+- alias emact='emacsclient -t'
+- alias emacw='emacsclient -c &'
 * Suit management will not use submodule
 - How to define suit? (name, repos location, ...)
 - Maybe not use environment variable too?
