@@ -10,7 +10,6 @@
 ;;; Code:
 
 (require 'package)
-(setq user-emacs-directory (concat user-emacs-directory "/"))
 (add-to-list 'package-archives
              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/"))
 
