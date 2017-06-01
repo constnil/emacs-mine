@@ -256,14 +256,39 @@ These're packages I think is essential.
           company-minimum-prefix-length 2)
     (global-company-mode 1))
 #+END_SRC
+** ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :diminish ivy-mode
+    :bind (:map ivy-minibuffer-map
+                ("C-j" . ivy-immediate-done)
+                ("RET" . ivy-alt-done))
+    :config
+    (setq-default ivy-use-virtual-buffers t
+                  ivy-count-format ""
+                  ivy-initial-inputs-alist '((man . "^") (woman . "^"))
+                  projectile-completion-system 'ivy)
+
+    (use-package flx
+      :config
+      (setq-default ivy-re-builders-alist
+                    '((t . ivy--regex-fuzzy))))
+
+    (use-package ivy-historian
+      :config
+      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
+
+    (add-hook 'after-init-hook
+              (lambda ()
+                (when (bound-and-true-p ido-ubiquitous-mode)
+                  (ido-ubiquitous-mode -1))
+                (when (bound-and-true-p ido-mode)
+                  (ido-mode -1))
+                (ivy-mode 1))))
+#+END_SRC
 ** ido related
 #+BEGIN_SRC emacs-lisp
-  (ido-mode 1)
-  (ido-everywhere 1)
-
-  (use-package ido-ubiquitous
-    :config
-    (ido-ubiquitous-mode 1))
+  (use-package ido-ubiquitous)
 
   (use-package flx-ido
     :config
@@ -410,13 +435,67 @@ Learn more and get used to it.
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
-  (use-package robe
+  ;;; Basic ruby setup
+  (use-package ruby-mode
+    :bind (:map ruby-mode-map
+                ("TAB" . indent-for-tab-command))
     :config
-    ;; (defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
-    ;;   (rvm-activate-corresponding-ruby))
-    (add-hook 'robe-mode-hook 'ac-robe-setup)
-    (add-hook 'ruby-mode-hook 'robe-mode)
-    (eval-after-load 'company  '(push 'company-robe company-backends)))
+    (use-package ruby-hash-syntax)
+
+    (setq-default ruby-use-encoding-map nil
+                  ruby-insert-encoding-magic-comment nil)
+
+    (add-hook 'ruby-mode-hook
+              (lambda ()
+                (unless (derived-mode-p 'prog-mode)
+                  (run-hooks 'prog-mode-hook))))
+    (add-hook 'ruby-mode-hook 'subword-mode)
+
+    (use-package rspec-mode)
+    (use-package inf-ruby)
+    (use-package ruby-compilation
+      :config
+      (defalias 'rake 'ruby-compilation-rake))
+
+    (let ((m ruby-mode-map))
+      (define-key m [S-f7] 'ruby-compilation-this-buffer)
+      (define-key m [f7] 'ruby-compilation-this-test))
+
+    (use-package robe
+      :config
+      (add-hook 'ruby-mode-hook 'robe-mode))
+
+    (use-package yari
+      :config
+      (defalias 'ri 'yari))
+
+    (use-package goto-gem)
+    (use-package bundler)
+
+    (use-package yaml-mode
+      :config
+      (add-auto-mode 'yaml-mode "\\.yml\\.erb\\'"))
+
+    (use-package mmm-mode
+      :config
+      (require 'mmm-erb)
+      (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb)
+
+      (require 'derived)
+
+      (let ((html-erb-modes '(html-mode html-erb-mode nxml-mode)))
+        (dolist (mode html-erb-modes)
+          (sanityinc/set-up-mode-for-erb mode)
+          (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-js)
+          (mmm-add-mode-ext-class mode "\\.r?html\\(\\.erb\\)?\\'" 'html-css)))
+
+      (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
+
+      (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
+      (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)
+
+      (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
+        (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -447,8 +526,6 @@ to benefit from both? (Another tough task)
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :demand
-    :bind* (("M-o" . projectile-find-file-dwim)
-            ("M-O" . projectile-find-file-dwim-other-window))
     :config
     (projectile-global-mode)
     (setq projectile-indexing-method 'alien
@@ -456,8 +533,9 @@ to benefit from both? (Another tough task)
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
-(use-package find-file-in-project
-  :ensure ivy)
+  (use-package find-file-in-project
+    :ensure ivy
+    :bind* (("M-o" . find-file-in-project)))
 #+END_SRC
 * Misc setup
 #+BEGIN_SRC emacs-lisp
