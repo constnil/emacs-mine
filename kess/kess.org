@@ -473,23 +473,17 @@ Learn more and get used to it.
     (use-package goto-gem)
     (use-package bundler)
 
-    (use-package yaml-mode
-      :config
-      (add-auto-mode 'yaml-mode "\\.yml\\.erb\\'"))
+    (use-package yaml-mode)
 
     (use-package mmm-mode
       :config
       (require 'mmm-erb)
-      (mmm-add-mode-ext-class mode "\\.erb\\'" 'erb)
-
       (require 'derived)
       (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
 
       (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-      (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)
+      (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)))
 
-      (dolist (mode (list 'js-mode 'js2-mode 'js3-mode))
-        (mmm-add-mode-ext-class mode "\\.js\\.erb\\'" 'erb))))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
