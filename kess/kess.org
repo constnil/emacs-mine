@@ -259,6 +259,7 @@ These're packages I think is essential.
 ** ivy
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :demand
     :diminish ivy-mode
     :bind (:map ivy-minibuffer-map
                 ("C-j" . ivy-immediate-done)
