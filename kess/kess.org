@@ -134,7 +134,6 @@ which I think very easy to reach.
       org-special-ctrl-k t
       org-special-ctrl-o t
       org-startup-indented t
-      org-tags-column 0
       org-use-property-inheritance t)
 #+END_SRC
 ** Keywords for todo tasks
