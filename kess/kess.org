@@ -284,10 +284,7 @@ These're packages I think is essential.
 
     (use-package ivy-historian
       :config
-      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
-
-    (use-package ivy-smex
-      :bind* (("M-x" . ivy-smex))))
+      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t)))))
 #+END_SRC
 ** ido related
 #+BEGIN_SRC emacs-lisp
