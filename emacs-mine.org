@@ -17,6 +17,9 @@ up my own configuration.
   (set-language-environment 'utf-8)
   (set-locale-environment "utf-8")
 
+  ;; try load local ~/.emacs-mine.el to setup prerequests, if exists
+  (load "~/.local-preset.el" 'noerror)
+
   ;; default suit init file, if suit's init file is not named init.el,
   ;; then change it in suit preset file, see below.
   (defvar suit-init-file "init.el")
@@ -58,7 +61,7 @@ up my own configuration.
 
     ;; Machine local settings such as font size, frame size etc. can be
     ;; set in ~/.local.el, if exists.
-    (load "~/.local.el" 'noerror)
+    (load "~/.local-postset.el" 'noerror)
 
     (message "config suit \"%s\" loaded" suit))
 #+END_SRC
