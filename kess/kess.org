@@ -26,18 +26,32 @@ No custom load-path for now...
 ** package.el
 Setup archive lists and initialize package.el
 #+BEGIN_SRC emacs-lisp
-  ;; package.el setup, borrow(steal)ed from purcell's emacs.d repos
-  (when (< emacs-major-version 24)
-    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  ;; package.el setup
+  ;; helper functions
+  (defun kess/add-to-package-archives (name url &optional overwrite append)
+    (if (assoc name package-archives)
+        (when overwrite
+          (setcdr (assoc name package-archives) url))
+      (add-to-list 'package-archives (cons name url) append)))
 
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+  (defun kess/insert-to-package-archives (name url &optional overwrite)
+    (kess/add-to-package-archives name url overwrite))
+
+  (defun kess/append-to-package-archives (name url &optional overwrite)
+    (kess/add-to-package-archives name url overwrite 'append))
+
+  ;; add archives to package-archives, if not exist
+  (kess/append-to-package-archives "gnu" "http://elpa.gnu.org/packages/")
+  (kess/append-to-package-archives "org" "http://orgmode.org/elpa/")
 
   (if (and (memq system-type '(windows-nt ms-dos))
            (not (gnutls-available-p)))
-      (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+      (kess/append-to-package-archives "melpa" "http://melpa.org/packages/")
     (progn
-      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-      (setcdr (assoc "gnu" package-archives) "https://elpa.gnu.org/packages/")))
+      (kess/append-to-package-archives "melpa" "https://melpa.org/packages/")
+      (kess/append-to-package-archives "gnu" "https://elpa.gnu.org/packages/" 'overwrite)))
+
+  (kess/append-to-package-archives "marmalade" "http://marmalade-repo.org/packages/")
 
   (setq package-enable-at-startup nil)
   (package-initialize)
