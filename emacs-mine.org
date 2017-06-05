@@ -20,6 +20,9 @@ up my own configuration.
   ;; try load local ~/.emacs-mine.el to setup prerequests, if exists
   (load "~/.local-preset.el" 'noerror)
 
+  ;; mine directory, will set to user-emacs-directory after preset loaded
+  (defvar mine-root-path nil)
+
   ;; default mine init file, if mine's init file is not named init.el,
   ;; then change it in mine preset file, see below.
   (defvar mine-init-file "init.el")
@@ -36,6 +39,7 @@ up my own configuration.
          (env (getenv "EMACS_MINE"))
          (mine (or (and (member env mines) env) "kess")))
     (setenv "EMACS_MINE" mine)  ; In case environment variable not set
+    (setq mine-root-path (concat user-emacs-directory mine "/"))
     (message "start mine \"%s\" loading on %s" mine system-type)
 
     ;; Set package.el 'elpa' directory to mine's own elpa directory
@@ -50,19 +54,18 @@ up my own configuration.
     ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
     (load (concat user-emacs-directory "presets/" mine ".el") 'noerror)
 
-    ;; HACK: Change user-emacs-directory to mine directory
-    (setq user-emacs-directory (concat user-emacs-directory mine "/"))
-
-    ;; Load current mine
+    ;; HACK: Change user-emacs-directory to mine's root directory, and load it
+    (setq user-emacs-directory mine-root-path)
     (load (concat user-emacs-directory mine-init-file))
 
     ;; Personal settings can be set in ~/.personal.el file, if exists.
     (load "~/.personal.el" 'noerror)
 
-    ;; Machine local settings such as font size, frame size etc. can be
-    ;; set in ~/.local.el, if exists.
+    ;; Load post set file if exists. I use it to specify machine local
+    ;; settings such as font size, frame size, etc.
     (load "~/.local-postset.el" 'noerror)
 
+    ;; done
     (message "mine \"%s\" loaded" mine))
 #+END_SRC
 * My custom aliases
