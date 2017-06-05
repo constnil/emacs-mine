@@ -334,13 +334,10 @@ Learn more and get used to it.
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
-  ;;; Basic ruby setup
   (use-package ruby-mode
     :bind (:map ruby-mode-map
                 ("TAB" . indent-for-tab-command))
     :config
-    (use-package ruby-hash-syntax)
-
     (setq-default ruby-use-encoding-map nil
                   ruby-insert-encoding-magic-comment nil)
 
@@ -350,29 +347,24 @@ Learn more and get used to it.
                   (run-hooks 'prog-mode-hook))))
     (add-hook 'ruby-mode-hook 'subword-mode)
 
-    (use-package rspec-mode)
-    (use-package inf-ruby)
+    (use-package ruby-hash-syntax)
     (use-package ruby-compilation
       :config
       (defalias 'rake 'ruby-compilation-rake))
-
-    (let ((m ruby-mode-map))
-      (define-key m [S-f7] 'ruby-compilation-this-buffer)
-      (define-key m [f7] 'ruby-compilation-this-test))
-
+    (use-package inf-ruby)
     (use-package robe
       :config
+      (eval-after-load 'company '(push 'company-robe company-backends))
+      (add-hook 'robe-mode-hook 'ac-robe-setup)
       (add-hook 'ruby-mode-hook 'robe-mode))
 
+    (use-package rspec-mode)
     (use-package yari
       :config
       (defalias 'ri 'yari))
-
     (use-package goto-gem)
     (use-package bundler)
-
     (use-package yaml-mode)
-
     (use-package mmm-mode
       :config
       (require 'mmm-erb)
@@ -381,7 +373,6 @@ Learn more and get used to it.
 
       (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
       (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)))
-
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
