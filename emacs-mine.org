@@ -7,10 +7,10 @@
 
 There are hundreds of emacs config repositories on github (prelude, emacs-live,
 spacemacs, etc). I started by including them individualy as submodule (so called
-"config suit") and load particular suit specified by environment variable
-$EMACS_CONFIG on emacs startup. Thus I can easily taste and study them, not mess
+"/emacs mine/") and load particular /mine/ specified by environment variable
+$EMACS_MINE on emacs startup. Thus I can easily taste and study them, not mess
 up my own configuration.
-* Suit Loading
+* Mine Loading
 #+BEGIN_SRC emacs-lisp
   ;; Common setting and variables
   (prefer-coding-system 'utf-8)
@@ -20,41 +20,41 @@ up my own configuration.
   ;; try load local ~/.emacs-mine.el to setup prerequests, if exists
   (load "~/.local-preset.el" 'noerror)
 
-  ;; default suit init file, if suit's init file is not named init.el,
-  ;; then change it in suit preset file, see below.
-  (defvar suit-init-file "init.el")
+  ;; default mine init file, if mine's init file is not named init.el,
+  ;; then change it in mine preset file, see below.
+  (defvar mine-init-file "init.el")
 
-  ;; Load specified config suit from the following list:
+  ;; Load specified mines from the following list:
   ;;    live - "emacs-live" (git://github.com/overtone/emacs-live.git)
   ;; prelude - "prelude" (git://github.com/bbatsov/prelude.git)
   ;;   space - "spacemacs" (git://github.com/syl20bnr/spacemacs.git)
   ;;   bling - "bling's KISS dotemacs" (git://github.com/bling/dotemacs.git)
   ;;  sachac - "sacha chua's .emacs.d (git://github.com/sachac/.emacs.d.git)"
   ;; purcell - "Steve Purcell's emacs.d (git://github.com/purcell/emacs.d.git)"
-  ;;    kess - "default 'Keep Emacs Simple, Stupid' suit"
-  (let* ((suits '("live" "prelude" "space" "bling" "sachac" "purcell" "kess"))
-         (env (getenv "EMACS_CONFIG"))
-         (suit (or (and (member env suits) env) "kess")))
-    (setenv "EMACS_CONFIG" suit)  ; In case environment variable not set
-    (message "start config suit \"%s\" loading on %s" suit system-type)
+  ;;    kess - "default 'Keep Emacs Simple, Stupid' mine"
+  (let* ((mines '("live" "prelude" "space" "bling" "sachac" "purcell" "kess"))
+         (env (getenv "EMACS_MINE"))
+         (mine (or (and (member env mines) env) "kess")))
+    (setenv "EMACS_MINE" mine)  ; In case environment variable not set
+    (message "start mine \"%s\" loading on %s" mine system-type)
 
-    ;; Set package.el 'elpa' directory to suit's own elpa directory
+    ;; Set package.el 'elpa' directory to mine's own elpa directory
     (require 'package)
-    (setq package-user-dir (concat user-emacs-directory suit "/elpa"))
+    (setq package-user-dir (concat user-emacs-directory mine "/elpa"))
 
-    ;; Set emacs customize file for loading suit.
-    (setq custom-file (concat user-emacs-directory "customizes/" suit ".el"))
+    ;; Set emacs customize file for loading mine.
+    (setq custom-file (concat user-emacs-directory "customizes/" mine ".el"))
     (load custom-file 'noerror)
 
-    ;; Load suit preset file if exists.
-    ;; Opportunity for adjusting given suit, such as change suit-init-file, etc.
-    (load (concat user-emacs-directory "suits/" suit ".el") 'noerror)
+    ;; Load mine preset file if exists.
+    ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
+    (load (concat user-emacs-directory "presets/" mine ".el") 'noerror)
 
-    ;; HACK: Change user-emacs-directory to suit directory
-    (setq user-emacs-directory (concat user-emacs-directory suit "/"))
+    ;; HACK: Change user-emacs-directory to mine directory
+    (setq user-emacs-directory (concat user-emacs-directory mine "/"))
 
-    ;; Load config suit
-    (load (concat user-emacs-directory suit-init-file))
+    ;; Load current mine
+    (load (concat user-emacs-directory mine-init-file))
 
     ;; Personal settings can be set in ~/.personal.el file, if exists.
     (load "~/.personal.el" 'noerror)
@@ -63,36 +63,31 @@ up my own configuration.
     ;; set in ~/.local.el, if exists.
     (load "~/.local-postset.el" 'noerror)
 
-    (message "config suit \"%s\" loaded" suit))
+    (message "mine \"%s\" loaded" mine))
 #+END_SRC
 * My custom aliases
-** Suit prefix aliases
-- alias prelude='export EMACS_CONFIG="prelude" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias live='export EMACS_CONFIG="live" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias space='export EMACS_CONFIG="space" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias bling='export EMACS_CONFIG="bling" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias sachac='export EMACS_CONFIG="sachac" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias purcell='export EMACS_CONFIG="purcell" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-- alias kess='export EMACS_CONFIG="kess" && echo "launch emacs using config: $EMACS_CONFIG" &&'
-** Emacs command aliases, they can be used follow above suit prefixes, like 'prelude emacw'
+** Mine prefix aliases
+- alias prelude='export EMACS_MINE="prelude" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias live='export EMACS_MINE="live" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias space='export EMACS_MINE="space" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias bling='export EMACS_MINE="bling" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias sachac='export EMACS_MINE="sachac" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias purcell='export EMACS_MINE="purcell" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias kess='export EMACS_MINE="kess" && echo "launch emacs using mine: $EMACS_MINE" &&'
+** Emacs command aliases, they can be used follow above mine prefixes, like 'prelude emacw'
 - alias vanilla='emacs -nw -q'
 - alias emacn='emacs -nw'
 - alias emacd='emacs -nw --debug-init'
 - alias emawd='emacs --debug-init &'
 - alias emact='emacsclient -t'
 - alias emacw='emacsclient -c &'
-* Suit management will not use submodule
-- How to define suit? (name, repos location, ...)
+* Mine management will not use submodule
+- How to define mine? (name, repos location, ...)
 - Maybe not use environment variable too?
-- Which famous suits too include by default?
+- Which famous mines too include by default?
 * Use cask and ecukes for study purpose?
 * Functions for emacs study?
 - Insert command name by key press
-* Change "mine" suit to "[[file:kess/kess.org][kess - Keep Emacs Simple, Stupid]]" suit
-- [X] make kess as default
-- [X] C-` prefix key map, mainly for mark related commands
-- [ ] C-backspace backward-delete-line
-- [ ] M-backspace backward-delete-word
 * Learning Plan
 ** As text editor
 *** global search (grep/ack/ag)
@@ -157,5 +152,3 @@ configure failure: no socklen_t
 *** how emacs key binding works
 - [[file:~/.emacs.d/notes/keymap.org][notes]] after reading emacs lisp manual
 *** find key binding's original and current value in all minor/major modes
-* Thoughts
-** Preview for dired-mode
