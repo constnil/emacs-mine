@@ -528,7 +528,9 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("C-h l" . counsel-find-library)
               ("C-h i" . counsel-info-lookup-symbol)
               ("C-h u" . counsel-unicode-char)
+              ("C-h p" . describe-package)
 
               ("C-h C-l" . view-lossage)
-              ("C-h C-i" . info))
+              ("C-h C-i" . info)
+              ("C-h C-p" . finder-by-keyword))
 #+END_SRC
