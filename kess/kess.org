@@ -20,7 +20,12 @@ Thanks Sacha!
 * Setup load paths
 No custom load-path for now...
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
+  (let ((home-lib-path (expand-file-name "~/.elisp/")))
+    (when (file-directory-p home-lib-path)
+      (add-to-list 'load-path home-lib-path)
+      (load (concat home-lib-path "init.el") 'noerror)))
+
+  (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 #+END_SRC
 * Package Setup
 ** package.el
@@ -293,7 +298,7 @@ Learn more and get used to it.
     (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
-:PROPERTIES:
+:PROPERTIES: 
 :CUSTOM_ID: paredit
 :END:
 #+BEGIN_SRC emacs-lisp
@@ -326,6 +331,8 @@ Learn more and get used to it.
 #+END_SRC
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
+
   (use-package eldoc
     :diminish eldoc-mode
     :config
@@ -484,9 +491,9 @@ custom prefix binding use C-\, which I think very easy to reach.
 #+END_SRC
 ** Bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-keys* ("<backspace>" . delete-backward-char)
+  (bind-keys ("<backspace>" . delete-backward-char))
 
-              ("M-o" . find-file-in-project)
+  (bind-keys* ("M-o" . find-file-in-project)
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
               ("M-\\" . hippie-expand)
