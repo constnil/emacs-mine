@@ -110,7 +110,10 @@ up my own configuration.
     (set-locale-environment "utf-8")
     
     ;; try load local ~/.emacs-mine.el to setup prerequests, if exists
-    (load "~/.local-preset.el" 'noerror)
+    (load (expand-file-name "~/.local-preset.el") 'noerror)
+    
+    ;; mine directory, will set to user-emacs-directory after preset loaded
+    (defvar mine-root-path nil)
     
     ;; default mine init file, if mine's init file is not named init.el,
     ;; then change it in mine preset file, see below.
@@ -130,31 +133,33 @@ up my own configuration.
       (setenv "EMACS_MINE" mine)  ; In case environment variable not set
       (message "start mine \"%s\" loading on %s" mine system-type)
     
+      (setq mine-root-path (concat (expand-file-name mine user-emacs-directory) "/"))
+      (message "root path of mine \"%s\": %s" mine mine-root-path)
+    
       ;; Set package.el 'elpa' directory to mine's own elpa directory
       (require 'package)
-      (setq package-user-dir (concat user-emacs-directory mine "/elpa"))
-    
-      ;; Set emacs customize file for loading mine.
-      (setq custom-file (concat user-emacs-directory "customizes/" mine ".el"))
-      (load custom-file 'noerror)
+      (setq package-user-dir (concat mine-root-path "elpa/"))
     
       ;; Load mine preset file if exists.
       ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-      (load (concat user-emacs-directory "mines/" mine ".el") 'noerror)
+      (load (concat (expand-file-name "presets" user-emacs-directory) "/" mine ".el") 'noerror)
     
-      ;; HACK: Change user-emacs-directory to mine directory
-      (setq user-emacs-directory (concat user-emacs-directory mine "/"))
+      ;; Set emacs customize file for loading mine.
+      (setq custom-file (concat (expand-file-name "customizes" user-emacs-directory) mine ".el"))
+      (load custom-file 'noerror)
     
-      ;; Load current mine
+      ;; HACK: Change user-emacs-directory to mine's root directory, and load it
+      (setq user-emacs-directory mine-root-path)
       (load (concat user-emacs-directory mine-init-file))
     
       ;; Personal settings can be set in ~/.personal.el file, if exists.
-      (load "~/.personal.el" 'noerror)
+      (load (expand-file-name "~/.personal.el") 'noerror)
     
-      ;; Machine local settings such as font size, frame size etc. can be
-      ;; set in ~/.local.el, if exists.
-      (load "~/.local-postset.el" 'noerror)
+      ;; Load post set file if exists. I use it to specify machine local
+      ;; settings such as font size, frame size, etc.
+      (load (expand-file-name "~/.local-postset.el") 'noerror)
     
+      ;; Done
       (message "mine \"%s\" loaded" mine))
 
 # My custom aliases<a id="sec-3" name="sec-3"></a>

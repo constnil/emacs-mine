@@ -86,7 +86,12 @@ Thanks Sacha!
 
 No custom load-path for now&#x2026;
 
-    (add-to-list 'load-path (concat user-emacs-directory "/lisp"))
+    (let ((home-lib-path (expand-file-name "~/.elisp/")))
+      (when (file-directory-p home-lib-path)
+        (add-to-list 'load-path home-lib-path)
+        (load (concat home-lib-path "init.el") 'noerror)))
+    
+    (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 
 # Package Setup<a id="sec-4" name="sec-4"></a>
 
@@ -402,6 +407,8 @@ Learn more and get used to it.
 
 ### emacs-lisp<a id="sec-10-3-4" name="sec-10-3-4"></a>
 
+    (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
+    
     (use-package eldoc
       :diminish eldoc-mode
       :config
@@ -566,9 +573,9 @@ custom prefix binding use C-\\, which I think very easy to reach.
 
 ## Bindings<a id="sec-14-2" name="sec-14-2"></a>
 
-    (bind-keys* ("<backspace>" . delete-backward-char)
+    (bind-keys ("<backspace>" . delete-backward-char))
     
-                ("M-o" . find-file-in-project)
+    (bind-keys* ("M-o" . find-file-in-project)
                 ("M-x" . counsel-M-x)
                 ("M-X" . smex)
                 ("M-\\" . hippie-expand)
