@@ -50,7 +50,7 @@ up my own configuration.
 
     ;; Load mine preset file if exists.
     ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-    (load (concat (expand-file-name "presets" user-emacs-directory) mine ".el") 'noerror)
+    (load (concat (expand-file-name "presets" user-emacs-directory) "/" mine ".el") 'noerror)
 
     ;; Set emacs customize file for loading mine.
     (setq custom-file (concat (expand-file-name "customizes" user-emacs-directory) mine ".el"))
