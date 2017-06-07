@@ -18,14 +18,11 @@ Thanks Sacha!
         user-mail-address "icebergwtf@qq.com")
 #+END_SRC
 * Setup load paths
-No custom load-path for now...
 #+BEGIN_SRC emacs-lisp
   (let ((home-lib-path (expand-file-name "~/.elisp/")))
     (when (file-directory-p home-lib-path)
       (add-to-list 'load-path home-lib-path)
       (load (concat home-lib-path "init.el") 'noerror)))
-
-  (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 #+END_SRC
 * Package Setup
 ** package.el
