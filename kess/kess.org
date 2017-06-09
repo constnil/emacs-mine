@@ -29,6 +29,7 @@ Thanks Sacha!
 Setup archive lists and initialize package.el
 #+BEGIN_SRC emacs-lisp
   ;; package.el setup
+
   ;; helper functions
   (defun kess/add-to-package-archives (name url &optional overwrite append)
     (if (assoc name package-archives)
@@ -43,17 +44,12 @@ Setup archive lists and initialize package.el
     (kess/add-to-package-archives name url overwrite 'append))
 
   ;; add archives to package-archives, if not exist
-  (kess/append-to-package-archives "gnu" "http://elpa.gnu.org/packages/")
+  (let* ((schema (or (and (gnutls-available-p)  "https://") "http://")))
+    (kess/append-to-package-archives "gnu" (concat schema "elpa.gnu.org/packages/"))
+    (kess/append-to-package-archives "melpa" (concat schema "melpa.org/packages/"))
+    (kess/append-to-package-archives "marmalade" (concat schema "marmalade-repo.org/packages/")))
+
   (kess/append-to-package-archives "org" "http://orgmode.org/elpa/")
-
-  (if (and (memq system-type '(windows-nt ms-dos))
-           (not (gnutls-available-p)))
-      (kess/append-to-package-archives "melpa" "http://melpa.org/packages/")
-    (progn
-      (kess/append-to-package-archives "melpa" "https://melpa.org/packages/")
-      (kess/append-to-package-archives "gnu" "https://elpa.gnu.org/packages/" 'overwrite)))
-
-  (kess/append-to-package-archives "marmalade" "http://marmalade-repo.org/packages/")
 
   (setq package-enable-at-startup nil)
   (package-initialize)
