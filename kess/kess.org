@@ -412,9 +412,11 @@ to benefit from both? (Another tough task)
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
-  (use-package find-file-in-project
-    :demand
-    :ensure ivy)
+  (use-package find-file-in-project :ensure ivy)
+#+END_SRC
+** find-file-in-repository
+#+BEGIN_SRC emacs-lisp
+  (use-package find-file-in-repository)
 #+END_SRC
 * Emacs server
 Start server if not already running. Properly set server to work on MSWin is
@@ -487,6 +489,8 @@ custom prefix binding use C-\, which I think very easy to reach.
   (bind-keys ("<backspace>" . delete-backward-char))
 
   (bind-keys* ("M-o" . find-file-in-project)
+              ("M-O" . find-file-in-repository)
+              ("M-D" . find-file-in-current-directory)
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
               ("M-\\" . hippie-expand)
