@@ -450,34 +450,38 @@ painful.
     (interactive)
     (kill-buffer (get-buffer (buffer-name))))
 #+END_SRC
-** Bindings
+** Global bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-keys ("<backspace>" . delete-backward-char)
-             ("M-n" . scroll-up-command)
-             ("M-N" . scroll-other-window)
-             ("M-p" . scroll-down-command)
-             ("M-P" . scroll-other-window-down)
-             ("C-M-." . scroll-up-line)
-             ("C-M-," . scroll-down-line)
-             :map Info-mode-map
-             ("<backspace>" . Info-scroll-down))
+  (bind-keys* ("<backspace>" . delete-backward-char)
 
-  (bind-keys* ("M-H" . eval-buffer)
+              ("M-H" . eval-buffer)
+
+              ("M-n" . scroll-up-command)
+              ("M-N" . scroll-other-window)
+
+              ("M-p" . scroll-down-command)
+              ("M-P" . scroll-other-window-down)
+
               ("M-o" . find-file-in-project)
               ("M-O" . find-file-in-repository)
+
               ("M-D" . find-file-in-current-directory)
+
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
+
               ("M-\\" . hippie-expand)
               ("M-`" . kess/kill-current-buffer)
 
               ("C-;" . mark-sexp)
               ("C-'" . set-mark-command)
 
+              ("C-`" . ivy-resume)
+              ("C-/" . swiper)
+
               ("C-v" . yank)
               ("C-z" . undo-tree-undo)
               ("C-y" . undo-tree-redo)
-              ("C-/" . swiper)
 
               ("C-M-x" . eval-defun)
               ("C-M-z" . eval-region)
@@ -505,6 +509,8 @@ painful.
 
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
+              ("C-M-." . scroll-up-line)
+              ("C-M-," . scroll-down-line)
 
               ("C-h n" . counsel-find-library)
               ("C-h N" . view-emacs-news)
