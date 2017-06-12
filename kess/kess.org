@@ -486,7 +486,7 @@ custom prefix binding use C-\, which I think very easy to reach.
 #+END_SRC
 ** Bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-keys ("<backspace>" . delete-backward-char))
+  ;; (bind-keys ("<backspace>" . delete-backward-char))
 
   (bind-keys* ("M-o" . find-file-in-project)
               ("M-O" . find-file-in-repository)
