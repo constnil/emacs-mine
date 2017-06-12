@@ -447,8 +447,7 @@ custom prefix binding use C-\, which I think very easy to reach.
              ("\\" . uncomment-region)
 
              ("C-." . describe-personal-keybindings)
-             ("C-/" . evil-search-highlight-persist-remove-all)
-             ("C-\\" . set-mark-command)
+             ("C-\\" . evil-search-highlight-persist-remove-all)
 
              ("M-x" . execute-extended-command)
              ("M-X" . smex-major-mode-commands)
@@ -478,9 +477,18 @@ custom prefix binding use C-\, which I think very easy to reach.
 #+END_SRC
 ** Bindings
 #+BEGIN_SRC emacs-lisp
-  ;; (bind-keys ("<backspace>" . delete-backward-char))
+  (bind-keys ("<backspace>" . delete-backward-char)
+             ("M-n" . scroll-up-command)
+             ("M-N" . scroll-other-window)
+             ("M-p" . scroll-down-command)
+             ("M-P" . scroll-other-window-down)
+             ("C-M-." . scroll-up-line)
+             ("C-M-," . scroll-down-line)
+             :map Info-mode-map
+             ("<backspace>" . Info-scroll-down))
 
-  (bind-keys* ("M-o" . find-file-in-project)
+  (bind-keys* ("M-H" . eval-buffer)
+              ("M-o" . find-file-in-project)
               ("M-O" . find-file-in-repository)
               ("M-D" . find-file-in-current-directory)
               ("M-x" . counsel-M-x)
@@ -488,9 +496,16 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("M-\\" . hippie-expand)
               ("M-`" . (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
 
+              ("C-;" . mark-sexp)
+              ("C-'" . set-mark-command)
+
+              ("C-v" . yank)
               ("C-z" . undo-tree-undo)
-              ("C-/" . undo-tree-redo)
-              ("C-`" . swiper)
+              ("C-y" . undo-tree-redo)
+              ("C-/" . swiper)
+
+              ("C-M-x" . eval-defun)
+              ("C-M-z" . eval-region)
 
               ("C-x C-f" . counsel-find-file)
               ("C-x S" . write-file)
@@ -504,8 +519,6 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("<C-S-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer nil)))
 
               ("C-M-|" . kess/indent-buffer)
-              ("C-M-." . scroll-other-window)
-              ("C-M-," . scroll-other-window-down)
 
               ("C-M-h" . windmove-left)
               ("C-M-j" . windmove-down)
@@ -515,12 +528,12 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
 
-              ("C-h l" . counsel-find-library)
-              ("C-h i" . counsel-info-lookup-symbol)
-              ("C-h u" . counsel-unicode-char)
-              ("C-h p" . describe-package)
+              ("C-h n" . counsel-find-library)
+              ("C-h N" . view-emacs-news)
 
-              ("C-h C-l" . view-lossage)
-              ("C-h C-i" . info)
-              ("C-h C-p" . finder-by-keyword))
+              ("C-h h" . counsel-info-lookup-symbol)
+              ("C-h H" . view-hello-file)
+
+              ("C-h t" . counsel-unicode-char)
+              ("C-h T" . help-with-tutorial))
 #+END_SRC
