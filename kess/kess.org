@@ -79,18 +79,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
 #+BEGIN_SRC emacs-lisp
 (use-package better-defaults)
 #+END_SRC
-** emacs apperence
-Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
-menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'tango-dark)
-  (when window-system
-    (menu-bar-mode 1)
-    (if (equal system-type 'windows-nt)
-        (add-hook 'after-init-hook 'toggle-frame-maximized)
-      (add-hook 'after-init-hook 'toggle-frame-fullscreen)))
-#+END_SRC
-* My defaults
+** my defaults
 #+BEGIN_SRC emacs-lisp
   (setq-default tab-width 4
                 indent-tabs-mode nil
@@ -110,17 +99,26 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
         split-width-threshold 120
         split-height-threshold 40)
 
-  (setq org-catch-invisible-edits 'smart
+  (setq org-archive-mark-done nil
+        org-catch-invisible-edits 'smart
         org-completion-use-ido t
         org-ctrl-k-protect-subtree t
+        org-edit-timestamp-down-means-later t
         org-enforce-todo-checkbox-dependencies t
         org-enforce-todo-dependencies t
+        org-export-coding-system 'utf-8
+        org-export-kill-product-buffer-when-displayed t
+        org-fast-tag-selection-single-key 'expert
+        org-hide-emphasis-markers t
+        org-html-validation-link nil
         org-log-done 'time
         org-return-follows-link t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
         org-special-ctrl-o t
+        org-use-speed-commands t
         org-startup-indented t
+        org-tags-column 80
         org-use-property-inheritance t)
 
   (winner-mode 1)
@@ -140,9 +138,23 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
         desktop-restore-eager 10
         desktop-save t
         desktop-base-file-name "desktop"
-        desktop-path user-emacs-directory
+        desktop-path (list user-emacs-directory)
         desktop-dirname user-emacs-directory)
   (desktop-save-mode 1)
+#+END_SRC
+** emacs apperence
+Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
+menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'tango-dark)
+  (when window-system
+    (menu-bar-mode 1)
+    (let ((func (or (and (eq system-type 'windows-nt)
+                         'toggle-frame-maximized)
+                    'toggle-frame-fullscreen)))
+      (add-hook 'after-init-hook func)
+      (if desktop-save-mode
+          (add-hook 'desktop-after-read-hook func))))
 #+END_SRC
 * Essential packages
 These're packages I think is essential.
@@ -454,18 +466,20 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys* ("<backspace>" . delete-backward-char)
 
-              ("M-H" . eval-buffer)
+              ("M-D" . find-file-in-current-directory)
 
               ("M-n" . scroll-up-command)
               ("M-N" . scroll-other-window)
 
-              ("M-p" . scroll-down-command)
-              ("M-P" . scroll-other-window-down)
+              ("M-H" . eval-buffer)
 
               ("M-o" . find-file-in-project)
               ("M-O" . find-file-in-repository)
 
-              ("M-D" . find-file-in-current-directory)
+              ("M-p" . scroll-down-command)
+              ("M-P" . scroll-other-window-down)
+
+              ("M-v" . yank-pop)
 
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
@@ -481,6 +495,7 @@ painful.
 
               ("C-v" . yank)
               ("C-z" . undo-tree-undo)
+              ("C-Z" . undo-tree-visualize)
               ("C-y" . undo-tree-redo)
 
               ("C-M-x" . eval-defun)
