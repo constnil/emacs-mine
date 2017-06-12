@@ -96,11 +96,11 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
                 indent-tabs-mode nil
                 show-trailing-whitespace t)
 
-  (setq gc-cons-threshold 20000000
+  (setq inhibit-startup-screen t
+        gc-cons-threshold 20000000
         gdb-many-windows t
+        default-fill-column 80
         highlight-nonselected-windows t
-        inhibit-startup-screen t
-        linum-format "%4d"
         scroll-conservatively 9999
         scroll-margin 5
         scroll-step 1
@@ -108,8 +108,7 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
         tramp-default-method "ssh"
         diff-switches "-u"
         split-width-threshold 120
-        split-height-threshold 40
-        savehist-file (concat user-emacs-directory "savehist"))
+        split-height-threshold 40)
 
   (setq org-catch-invisible-edits 'smart
         org-completion-use-ido t
@@ -124,17 +123,26 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
         org-startup-indented t
         org-use-property-inheritance t)
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "|" "DONE(d)")
-          (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
-          (sequence "QUESTION(q) | ANSWERED(a)")))
-
   (winner-mode 1)
   (show-paren-mode 1)
   (recentf-mode 1)
-  (global-linum-mode 1)
   (column-number-mode 1)
   (savehist-mode 1)
+
+  (setq display-time-24hr-format t
+        display-time-day-and-date t)
+  (display-time-mode 1)
+
+  (setq linum-format "%4d")
+  (global-linum-mode 1)
+
+  (setq desktop-restore-frames nil
+        desktop-restore-eager 10
+        desktop-save t
+        desktop-base-file-name "desktop"
+        desktop-path user-emacs-directory
+        desktop-dirname user-emacs-directory)
+  (desktop-save-mode 1)
 #+END_SRC
 * Essential packages
 These're packages I think is essential.
