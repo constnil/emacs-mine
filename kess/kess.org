@@ -202,10 +202,6 @@ These're packages I think is essential.
     (setq ivy-use-virtual-buffers t
           enable-recursive-minibuffers t)
 
-    (use-package flx
-      :config
-      (setq-default ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
-
     (use-package ivy-historian
       :config
       (add-hook 'after-init-hook (lambda () (ivy-historian-mode t)))))
