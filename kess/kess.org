@@ -228,19 +228,13 @@ loaded above.
   (use-package popwin :config (popwin-mode 1))
 #+END_SRC
 * Evil-mode
-Maybe I can totally discard later?  And I'm think about create a minor mode like
-[[https://github.com/chrisdone/god-mode][god-mode]] and evil-mode, but just a thin layer to provide vim's normal state and
-visual state. =Of course, this will be a tough task for me now.=
+Use advice to escape from insert mode, to just use evil normal and
+visual states, for editing tasks, e.g. insert state, use regular
+emacs. /Don't know if this really possible./
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :diminish undo-tree-mode
-    :bind* (("C-:" . evil-ex))
     :config
-    (use-package powerline-evil
-      :config
-      (powerline-evil-vim-color-theme)
-      (display-time-mode t))
-
     (unbind-key "C-z" evil-normal-state-map)
     (unbind-key "C-z" evil-motion-state-map)
     (unbind-key "C-z" evil-insert-state-map)
@@ -251,21 +245,22 @@ visual state. =Of course, this will be a tough task for me now.=
       :config
       (global-evil-visualstar-mode t))
 
-    (use-package evil-numbers
-      :bind (:map evil-normal-state-map
-                  ("+" . evil-numbers/inc-at-pt)
-                  ("-" . evil-numbers/dec-at-pt)))
-
-    (use-package evil-search-highlight-persist
-      :config
-      (global-evil-search-highlight-persist t))
-
     (use-package evil-leader
       :config
       (setq evil-leader/in-all-states 1)
       (evil-leader/set-leader ",")
       (global-evil-leader-mode)
       (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)))
+
+  (use-package evil-numbers
+    :demand
+    :bind (:map evil-normal-state-map
+                ("+" . evil-numbers/inc-at-pt)
+                ("-" . evil-numbers/dec-at-pt)))
+
+  (use-package evil-search-highlight-persist
+    :config
+    (global-evil-search-highlight-persist t))
 #+END_SRC
 * Coding setup
 ** Syntax Check
@@ -534,6 +529,9 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("<C-S-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer nil)))
 
               ("C-M-|" . kess/indent-buffer)
+              ("C-+" . evil-numbers/inc-at-pt)
+              ("C-_" . evil-numbers/dec-at-pt)
+              ("C-:" . evil-ex)
 
               ("C-M-h" . windmove-left)
               ("C-M-j" . windmove-down)
