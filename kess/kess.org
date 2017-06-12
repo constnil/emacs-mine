@@ -460,7 +460,9 @@ custom prefix binding use C-\, which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
   (defun kess/switch-buffer (next)
     "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
-      otherwise, previous-buffer. (idea from stackoverflow)"
+      otherwise, previous-buffer. (idea from stackoverflow)
+
+  Some of *[buffer]* are included to switching, like *scratch*, *info*, etc."
     (let ((bread-crumb (buffer-name))
           (fn (or (and next 'next-buffer) 'previous-buffer))
           (allowed-buffers '("*scratch*" "*info*" "*eshell*")))
@@ -474,6 +476,11 @@ custom prefix binding use C-\, which I think very easy to reach.
     "Indent whole buffer."
     (interactive)
     (indent-region (point-min) (point-max) nil))
+
+  (defun kess/kill-current-buffer ()
+    "Kill current buffer."
+    (interactive)
+    (kill-buffer (get-buffer (buffer-name))))
 #+END_SRC
 ** Bindings
 #+BEGIN_SRC emacs-lisp
@@ -494,7 +501,7 @@ custom prefix binding use C-\, which I think very easy to reach.
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
               ("M-\\" . hippie-expand)
-              ("M-`" . (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
+              ("M-`" . kess/kill-current-buffer)
 
               ("C-;" . mark-sexp)
               ("C-'" . set-mark-command)
