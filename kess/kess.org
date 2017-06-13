@@ -517,7 +517,7 @@ painful.
         (let ((next (cadr (member (cdr method) methods))))
           (setcdr method (or next (car methods)))))))
 #+END_SRC
-** COMMENT Global bindings
+** Global bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("<backspace>" . delete-backward-char))
 
