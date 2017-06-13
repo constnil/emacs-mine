@@ -211,7 +211,8 @@ These're packages I think is essential.
     :diminish ivy-mode
     :bind (:map ivy-minibuffer-map
                 ("C-j" . ivy-immediate-done)
-                ("RET" . ivy-alt-done))
+                ("RET" . ivy-alt-done)
+                ("C-." . kess--cycle-ivy-regex-method))
     :bind (:map read-expression-map
                 ("C-r" . counsel-expression-history))
     :config
@@ -499,6 +500,17 @@ painful.
     (interactive)
     (delete-other-windows)
     (recenter))
+
+  (defun kess--cycle-ivy-regex-method ()
+    "Cycle switch ivy minibuffer regex match method."
+    (interactive)
+    (let ((method (assoc t ivy-re-builders-alist))
+          (methods '(;ivy--regex regexp-quote
+                     ivy--regex-plus ivy--regex-fuzzy)))
+      (if (null method)
+          (setq-default ivy-re-builders-alist '((t . ivy--regex-plus)))
+        (let ((next (cadr (member (cdr method) methods))))
+          (setcdr method (or next (car methods)))))))
 #+END_SRC
 ** COMMENT Global bindings
 #+BEGIN_SRC emacs-lisp
