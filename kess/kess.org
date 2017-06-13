@@ -193,14 +193,14 @@ These're packages I think is essential.
   (use-package flx-ido
     :defer t
     :config
-    (setq ido-enable-prefix nil
-          ido-enable-flex-matching t
-          ido-use-faces nil
+    (setq ido-auto-merge-work-directories-length -1
           ido-create-new-buffer 'always
-          ido-use-filename-at-point 'guess
-          ido-max-prospects 10
           ido-default-file-method 'selected-window
-          ido-auto-merge-work-directories-length -1)
+          ido-enable-flex-matching t
+          ido-enable-prefix nil
+          ido-max-prospects 10
+          ido-use-faces nil
+          ido-use-filename-at-point 'guess)
     (flx-ido-mode 1))
 #+END_SRC
 ** ivy
