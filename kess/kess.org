@@ -497,7 +497,7 @@ painful.
     (delete-other-windows)
     (recenter))
 #+END_SRC
-** Global bindings
+** COMMENT Global bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("<backspace>" . delete-backward-char))
 
@@ -520,7 +520,7 @@ painful.
               ("M-X" . smex)
 
               ("M-\\" . hippie-expand)
-              ("M-`" . kess/kill-current-buffer)
+              ("M-`" . kess--kill-buf-or-win)
 
               ("C-;" . mark-sexp)
               ("C-'" . set-mark-command)
@@ -541,12 +541,10 @@ painful.
               ("C-S-g" . occur)
               ("C-S-s" . save-some-buffers)
 
-              ("<C-tab>" . (lambda () (interactive) (kess/switch-buffer t)))
-              ("<C-S-tab>" . (lambda () (interactive) (kess/switch-buffer nil)))
-              ("<C-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer t)))
-              ("<C-S-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer nil)))
+              ("<C-tab>" . kess--switch-next-win-or-buf)
+              ("<C-S-tab>" . kess--switch-prev-win-or-buf)
 
-              ("C-M-|" . kess/indent-buffer)
+              ("C-M-|" . kess--indent-buffer)
               ("C-+" . evil-numbers/inc-at-pt)
               ("C-_" . evil-numbers/dec-at-pt)
               ("C-:" . evil-ex)
@@ -599,7 +597,8 @@ custom prefix binding use C-\, which I think very easy to reach.
              ("\\" . uncomment-region)
 
              ("C-." . describe-personal-keybindings)
-             ("C-\\" . evil-search-highlight-persist-remove-all)
+             ("C-/" . evil-search-highlight-persist-remove-all)
+             ("C-\\" . kess--delete-other-windows)
 
              ("M-x" . execute-extended-command)
              ("M-X" . smex-major-mode-commands)
