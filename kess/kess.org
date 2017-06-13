@@ -245,7 +245,10 @@ loaded above.
   (use-package ack :defer t)
   (use-package bookmark+ :defer t)
   (use-package cl-lib :config (require 'cl-lib))
-  (use-package dtrt-indent :config (dtrt-indent-mode 1))
+  (use-package dtrt-indent
+    :config
+    (setq dtrt-indent-active-mode-line-info " [dtrt]")
+    (dtrt-indent-mode 1))
   (use-package fullframe :config (fullframe list-packages quit-window))
   (use-package smex :defer t)
   (use-package popwin :config (popwin-mode 1))
