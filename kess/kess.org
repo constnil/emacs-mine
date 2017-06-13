@@ -446,26 +446,27 @@ painful.
 * Bindings
 ** Utility functions
 #+BEGIN_SRC emacs-lisp
+  (defvar kess-switch-ignores nil
+    "Buffer names will be ignored while switching buffer through
+  `kess--switch-buffer'.")
+
   (defun kess--switch-buffer (&optional prev)
-    "Switch to non *[buffer]*. (idea from stackoverflow)
+    "Switch buffer, skip those buffer names specified in `kess-switch-ignores'.
 
-  Only switch to non *[buffer]* buffer, use next-buffer when NEXT
-  is t, otherwise, previous-buffer.
-
-  NOTE: Some special *[buffer]* are included to switching, like
-  ,*scratch*, *info*, etc."
+  Switch to next buffer by default, if PREV is non nil then switch
+  to previous buffer."
     (let ((bread-crumb (buffer-name))
-          (switch-fn (or (and prev 'previous-buffer) 'next-buffer))
-          (white-list '("*scratch*" "*info*" "*eshell*")))
+          (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
       (funcall switch-fn)
       (while (and (not (equal bread-crumb (buffer-name)))
-                  (and (not (member (buffer-name) white-list))
-                       (string-match-p "^\*.*\*$" (buffer-name))))
+                  (member (buffer-name) kess-switch-ignores))
         (funcall switch-fn))))
 
   (defun kess--switch-next-win-or-buf ()
     "Switch to next window if not single window in current frame,
-  otherwise switch to next buffer."
+  otherwise switch to next buffer.
+
+  Switch buffer by call `kess--switch-buffer' with default argument."
     (interactive)
     (if (one-window-p 'nomini)
         (kess--switch-buffer)
@@ -473,7 +474,9 @@ painful.
 
   (defun kess--switch-prev-win-or-buf ()
     "Switch to previous window if not single window in current frame,
-  otherwise switch to previous buffer."
+  otherwise switch to previous buffer.
+
+  Switch buffer by call `kess--switch-buffer' with 'PREV."
     (interactive)
     (if (one-window-p 'nomini)
         (kess--switch-buffer 'prev)
