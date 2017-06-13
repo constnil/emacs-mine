@@ -31,25 +31,25 @@ Setup archive lists and initialize package.el
   ;; package.el setup
 
   ;; helper functions
-  (defun kess/add-to-package-archives (name url &optional overwrite append)
+  (defun kess--add-to-package-archives (name url &optional overwrite append)
     (if (assoc name package-archives)
         (when overwrite
           (setcdr (assoc name package-archives) url))
       (add-to-list 'package-archives (cons name url) append)))
 
-  (defun kess/insert-to-package-archives (name url &optional overwrite)
-    (kess/add-to-package-archives name url overwrite))
+  (defun kess--insert-to-package-archives (name url &optional overwrite)
+    (kess--add-to-package-archives name url overwrite))
 
-  (defun kess/append-to-package-archives (name url &optional overwrite)
-    (kess/add-to-package-archives name url overwrite 'append))
+  (defun kess--append-to-package-archives (name url &optional overwrite)
+    (kess--add-to-package-archives name url overwrite 'append))
 
   ;; add archives to package-archives, if not exist
   (let* ((schema (or (and (gnutls-available-p)  "https://") "http://")))
-    (kess/append-to-package-archives "gnu" (concat schema "elpa.gnu.org/packages/"))
-    (kess/append-to-package-archives "melpa" (concat schema "melpa.org/packages/"))
-    (kess/append-to-package-archives "marmalade" (concat schema "marmalade-repo.org/packages/")))
+    (kess--append-to-package-archives "gnu" (concat schema "elpa.gnu.org/packages/"))
+    (kess--append-to-package-archives "melpa" (concat schema "melpa.org/packages/"))
+    (kess--append-to-package-archives "marmalade" (concat schema "marmalade-repo.org/packages/")))
 
-  (kess/append-to-package-archives "org" "http://orgmode.org/elpa/")
+  (kess--append-to-package-archives "org" "http://orgmode.org/elpa/")
 
   (setq package-enable-at-startup nil)
   (package-initialize)
@@ -446,29 +446,56 @@ painful.
 * Bindings
 ** Utility functions
 #+BEGIN_SRC emacs-lisp
-  (defun kess/switch-buffer (next)
-    "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
-      otherwise, previous-buffer. (idea from stackoverflow)
+  (defun kess--switch-buffer (&optional prev)
+    "Switch to non *[buffer]*. (idea from stackoverflow)
 
-  Some of *[buffer]* are included to switching, like *scratch*, *info*, etc."
+  Only switch to non *[buffer]* buffer, use next-buffer when NEXT
+  is t, otherwise, previous-buffer.
+
+  NOTE: Some special *[buffer]* are included to switching, like
+  ,*scratch*, *info*, etc."
     (let ((bread-crumb (buffer-name))
-          (fn (or (and next 'next-buffer) 'previous-buffer))
-          (allowed-buffers '("*scratch*" "*info*" "*eshell*")))
-      (funcall fn)
+          (switch-fn (or (and prev 'previous-buffer) 'next-buffer))
+          (white-list '("*scratch*" "*info*" "*eshell*")))
+      (funcall switch-fn)
       (while (and (not (equal bread-crumb (buffer-name)))
-                  (and (not (member (buffer-name) allowed-buffers))
+                  (and (not (member (buffer-name) white-list))
                        (string-match-p "^\*.*\*$" (buffer-name))))
-        (funcall fn))))
+        (funcall switch-fn))))
 
-  (defun kess/indent-buffer ()
+  (defun kess--switch-next-win-or-buf ()
+    "Switch to next window if not single window in current frame,
+  otherwise switch to next buffer."
+    (interactive)
+    (if (one-window-p 'nomini)
+        (kess--switch-buffer)
+      (other-window 1)))
+
+  (defun kess--switch-prev-win-or-buf ()
+    "Switch to previous window if not single window in current frame,
+  otherwise switch to previous buffer."
+    (interactive)
+    (if (one-window-p 'nomini)
+        (kess--switch-buffer 'prev)
+      (other-window -1)))
+
+  (defun kess--indent-buffer ()
     "Indent whole buffer."
     (interactive)
     (indent-region (point-min) (point-max) nil))
 
-  (defun kess/kill-current-buffer ()
-    "Kill current buffer."
+  (defun kess--kill-buf-or-win ()
+    "Kill current buffer or delete window (if not single window)."
     (interactive)
-    (kill-buffer (get-buffer (buffer-name))))
+    (if (one-window-p 'nomini)
+        (kill-buffer (get-buffer (buffer-name)))
+      (delete-window)))
+
+  (defun kess--delete-other-windows ()
+    "Delete other windows and recenter current window to middle."
+    (interactive)
+    (delete-other-windows)
+    (recenter))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
