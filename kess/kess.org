@@ -141,6 +141,16 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         desktop-base-file-name "desktop"
         desktop-path (list user-emacs-directory)
         desktop-dirname user-emacs-directory)
+
+  (setq frameset-filter-alist (copy-tree frameset-filter-alist))
+  (let ((fullscreen (assoc 'fullscreen frameset-filter-alist))
+        (gui-fullscreen (assoc 'GUI:fullscreen frameset-filter-alist))
+        (never-fn (lambda (elt)
+                    (if elt (setcdr elt :never)
+                      (push (cons elt . :never) frameset-filter-alist)))))
+    (funcall never-fn fullscreen)
+    (funcall never-fn gui-fullscreen))
+
   (desktop-save-mode 1)
 #+END_SRC
 ** emacs apperence
@@ -150,12 +160,9 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
   (load-theme 'tango-dark)
   (when window-system
     (menu-bar-mode 1)
-    (let ((func (or (and (eq system-type 'windows-nt)
-                         'toggle-frame-maximized)
-                    'toggle-frame-fullscreen)))
-      (add-hook 'after-init-hook func)
-      (if desktop-save-mode
-          (add-hook 'desktop-after-read-hook func))))
+    (add-hook 'after-init-hook
+              (or (and (eq system-type 'windows-nt) 'toggle-frame-maximized)
+                  'toggle-frame-fullscreen)))
 #+END_SRC
 * Essential packages
 These're packages I think is essential.
