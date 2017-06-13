@@ -233,7 +233,9 @@ These're packages I think is essential.
 
     (use-package ivy-historian
       :config
-      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t)))))
+      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
+
+    (use-package flx))
 #+END_SRC
 * Useful packages
 In order to be KESS, these're packages besides essential packages
