@@ -453,39 +453,49 @@ painful.
 * Bindings
 ** Utility functions
 #+BEGIN_SRC emacs-lisp
-  (defvar kess-switch-ignores nil
-    "Buffer names will be ignored while switching buffer through
-  `kess--switch-buffer'.")
+  (defcustom kess-switch-ignore-regexs
+    '("\\*Ibuffer\\*" "\\*Messages\\*" "\\*scratch\\*")
+    "Regex list for filter buffer names which will be ignored while
+  switching buffer through `kess--switch-buffer'.")
+
+  (defun kess--match-ignores (patterns buffer)
+    "Match given buffer name BUFFER with all patterns in PATTERNS.
+
+  Return t if a match is found, otherwise nil."
+    (and patterns
+         (or (string-match-p (car patterns) buffer)
+             (kess--match-ignores (cdr patterns) buffer))))
 
   (defun kess--switch-buffer (&optional prev)
-    "Switch buffer, skip those buffer names specified in `kess-switch-ignores'.
+    "Switch buffer, skip those buffer names specified in `kess-switch-ignore-regexs'.
 
-  Switch to next buffer by default, if PREV is non nil then switch
+   Switch to next buffer by default, if PREV is non nil then switch
   to previous buffer."
     (let ((bread-crumb (buffer-name))
           (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
       (funcall switch-fn)
       (while (and (not (equal bread-crumb (buffer-name)))
-                  (member (buffer-name) kess-switch-ignores))
+                  (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
         (funcall switch-fn))))
 
-  (defun kess--switch-next-win-or-buf ()
-    "Switch to next window if not single window in current frame,
-  otherwise switch to next buffer.
+  (defun kess--switch-next-win-or-buf (&optional force-buffer)
+    "Switch to next window when FORCE-BUFFER is nil or just one
+  window in frame, otherwise switch to next buffer.
 
-  Switch buffer by call `kess--switch-buffer' with default argument."
-    (interactive)
-    (if (one-window-p 'nomini)
+  When switch buffer call `kess--switch-buffer' with default
+  argument."
+    (interactive "P")
+    (if (or force-buffer (one-window-p 'nomini))
         (kess--switch-buffer)
       (other-window 1)))
 
-  (defun kess--switch-prev-win-or-buf ()
-    "Switch to previous window if not single window in current frame,
-  otherwise switch to previous buffer.
+  (defun kess--switch-prev-win-or-buf (&optional force-buffer)
+    "Switch to previous window when FORCE-BUFFER is nil or just one
+  window in frame, otherwise switch to previous buffer.
 
   Switch buffer by call `kess--switch-buffer' with 'PREV."
-    (interactive)
-    (if (one-window-p 'nomini)
+    (interactive "P")
+    (if (or force-buffer (one-window-p 'nomini))
         (kess--switch-buffer 'prev)
       (other-window -1)))
 
@@ -498,8 +508,8 @@ painful.
     "Kill current buffer or delete window (if not single window)."
     (interactive)
     (if (one-window-p 'nomini)
-        (kill-buffer (get-buffer (buffer-name)))
-      (delete-window)))
+        (kill-buffer)
+      (kill-buffer-and-window)))
 
   (defun kess--delete-other-windows ()
     "Delete other windows and recenter current window to middle."
