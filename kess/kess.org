@@ -550,14 +550,13 @@ painful.
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
 
-              ("M-\\" . hippie-expand)
               ("M-`" . kess--kill-buf-or-win)
 
               ("C-;" . mark-sexp)
               ("C-'" . set-mark-command)
 
-              ("C-`" . ivy-resume)
               ("C-/" . swiper)
+              ("C-`" . ivy-resume)
 
               ("C-v" . yank)
               ("C-z" . undo-tree-undo)
