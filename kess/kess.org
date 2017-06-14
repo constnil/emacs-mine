@@ -139,6 +139,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         desktop-restore-eager 10
         desktop-save t
         desktop-base-file-name "desktop"
+        desktop-base-lock-name "desktop.lock"
         desktop-path (list user-emacs-directory)
         desktop-dirname user-emacs-directory)
 
