@@ -141,7 +141,8 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         desktop-base-file-name "desktop"
         desktop-base-lock-name "desktop.lock"
         desktop-path (list user-emacs-directory)
-        desktop-dirname user-emacs-directory)
+        desktop-dirname user-emacs-directory
+        desktop-load-locked-desktop nil)
 
   (setq frameset-filter-alist (copy-tree frameset-filter-alist))
   (let ((fullscreen (assoc 'fullscreen frameset-filter-alist))
@@ -532,71 +533,61 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("<backspace>" . delete-backward-char))
 
-  (bind-keys* ("M-D" . find-file-in-current-directory)
+  (bind-keys* ("<M-left>" . windmove-left)
+              ("<M-down>" . windmove-down)
+              ("<M-up>" . windmove-up)
+              ("<M-right>" . windmove-right)
 
-              ("M-n" . scroll-up-command)
+              ("<C-up>" . scroll-down-line)
+              ("<C-down>" . scroll-up-line)
+
               ("M-N" . scroll-other-window)
-
-              ("M-H" . eval-buffer)
-
-              ("M-o" . find-file-in-project)
-              ("M-O" . find-file-in-repository)
-
-              ("M-p" . scroll-down-command)
               ("M-P" . scroll-other-window-down)
-
-              ("M-v" . undo-tree-visualize)
 
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
 
-              ("M-`" . kess--kill-buf-or-win)
-
-              ("C-;" . mark-sexp)
               ("C-'" . set-mark-command)
+              ("C-;" . mark-sexp)
 
               ("C-/" . swiper)
               ("C-`" . ivy-resume)
 
-              ("C-v" . yank)
               ("C-z" . undo-tree-undo)
-              ("C-y" . undo-tree-redo)
+              ("M-z" . undo-tree-redo)
+              ("C-S-z" . undo-tree-visualize)
 
-              ("C-M-x" . eval-defun)
-              ("C-M-z" . eval-region)
+              ("M-D" . eval-defun)
+              ("M-R" . eval-region)
+              ("M-B" . eval-buffer)
 
               ("C-x C-f" . counsel-find-file)
-              ("C-x S" . write-file)
+              ("C-x f" . find-file-in-current-directory)
+              ("M-o" . find-file-in-repository)
+              ("M-O" . find-file-in-project)
 
               ("C-S-g" . occur)
               ("C-S-s" . save-some-buffers)
 
               ("<C-tab>" . kess--switch-next-win-or-buf)
               ("<C-S-tab>" . kess--switch-prev-win-or-buf)
-
               ("C-M-|" . kess--indent-buffer)
+              ("M-`" . kess--kill-buf-or-win)
+
               ("C-+" . evil-numbers/inc-at-pt)
               ("C-_" . evil-numbers/dec-at-pt)
               ("C-:" . evil-ex)
-
-              ("C-M-h" . windmove-left)
-              ("C-M-j" . windmove-down)
-              ("C-M-k" . windmove-up)
-              ("C-M-l" . windmove-right)
+              ("C-S-j" . evil-join)
+              ("C-M-J" . join-line)
 
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
-              ("C-M-." . scroll-up-line)
-              ("C-M-," . scroll-down-line)
-
-              ("C-h N" . describe-language-environment)
 
               ("C-h h" . counsel-info-lookup-symbol)
-              ("C-h H" . view-hello-file)
-
-              ("C-h L" . counsel-find-library)
-
               ("C-h t" . counsel-unicode-char)
+              ("C-h N" . describe-language-environment)
+              ("C-h H" . view-hello-file)
+              ("C-h L" . counsel-find-library)
               ("C-h T" . help-with-tutorial))
 #+END_SRC
 ** Mode-map bindings
@@ -613,15 +604,30 @@ custom prefix binding use C-\, which I think very easy to reach.
   (define-prefix-command 'kess-prefix-map)
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
+             ("ESC" . evil-mode)
+
              ("0" . delete-frame)
 
-             ("a" . counsel-ag)
+             ("a" . org-archive-to-archive-sibling)
+             ("TAB" . org-force-cycle-archived)
+
+             ("c" . cider-jack-in)
+             ("s" . slime)
+             ("r" . inf-ruby)
+
              ("f" . flycheck-mode)
-             ("g" . counsel-git)
+
+             ("g" . counsel-ag)
+             ("G" . counsel-git)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("o" . counsel-rhythmbox)
-             ("z" . org-archive-to-archive-sibling)
+
+             ("x" . execute-extended-command)
+             ("X" . smex-major-mode-commands)
+
+             ("z" . zap-up-to-char)
+             ("Z" . zap-to-char)
 
              ("/" . comment-region)
              ("\\" . uncomment-region)
@@ -630,11 +636,6 @@ custom prefix binding use C-\, which I think very easy to reach.
              ("C-/" . evil-search-highlight-persist-remove-all)
              ("C-\\" . kess--delete-other-windows)
 
-             ("M-x" . execute-extended-command)
-             ("M-X" . smex-major-mode-commands)
-
              ("<backspace>" . winner-undo)
-             ("RET" . winner-redo)
-             ("TAB" . org-force-cycle-archived)
-             ("ESC" . evil-mode))
+             ("RET" . winner-redo))
 #+END_SRC
