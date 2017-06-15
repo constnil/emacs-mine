@@ -583,12 +583,15 @@ painful.
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
 
-              ("C-h h" . counsel-info-lookup-symbol)
-              ("C-h t" . counsel-unicode-char)
+              ("C-h t" . cider-drink-a-sip)
+              ("C-h T" . help-with-tutorial)
+
               ("C-h N" . describe-language-environment)
               ("C-h H" . view-hello-file)
+
+              ("C-h h" . counsel-info-lookup-symbol)
               ("C-h L" . counsel-find-library)
-              ("C-h T" . help-with-tutorial))
+              ("C-h u" . counsel-unicode-char))
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
