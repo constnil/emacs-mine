@@ -3,8 +3,8 @@
 #+OPTIONS: toc:4 h:4
 
 * Preface
-OK, the following configuration as *simple* as promised, but I'm trying
-achieve this goal as I'm getting more comfortable with emacs.
+OK, the following configuration as *simple* as promised, but I'm trying achieve
+this goal as I'm getting more comfortable with emacs.
 
 Also, I'm trying to make KESS work as I expect on all my OSs:
 - Win7/Win10 (chocolatey emacs package)
@@ -12,6 +12,7 @@ Also, I'm trying to make KESS work as I expect on all my OSs:
 - Arch Linux (pacman emacs package)
 * Personal information
 I got this [[https://github.com/sachac/.emacs.d][org-babel config]] idea from [[https://github.com/sachac][Sacha Chua]] and her [[http://sachachua.com/blog/][amazing blog]].
+
 Thanks Sacha!
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Tiefeng Wu"
@@ -240,8 +241,7 @@ These're packages I think is essential.
     (use-package flx))
 #+END_SRC
 * Useful packages
-In order to be KESS, these're packages besides essential packages
-loaded above.
+In order to be KESS, these're packages besides essential packages loaded above.
 #+BEGIN_SRC emacs-lisp
   (use-package ag :defer t)
   (use-package ack :defer t)
@@ -256,9 +256,9 @@ loaded above.
   (use-package popwin :config (popwin-mode 1))
 #+END_SRC
 * Evil-mode
-Use advice to escape from insert mode, to just use evil normal and
-visual states, for editing tasks, e.g. insert state, use regular
-emacs. /Don't know if this really possible./
+Use advice to escape from insert mode, to just use evil normal and visual
+states, for editing tasks, e.g. insert state, use regular emacs. /Don't know if
+this really possible./
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :diminish undo-tree-mode
