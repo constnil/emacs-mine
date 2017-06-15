@@ -510,7 +510,7 @@ painful.
     (interactive)
     (if (one-window-p 'nomini)
         (kill-buffer)
-      (kill-buffer-and-window)))
+      (delete-window)))
 
   (defun kess--delete-other-windows ()
     "Delete other windows and recenter current window to middle."
@@ -597,6 +597,8 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
+  (bind-keys :map lisp-interaction-mode-map
+             ("<C-return>" . eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
@@ -608,37 +610,32 @@ prefix binding use C-\, which I think very easy to reach.
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
              ("C-." . describe-personal-keybindings)
-
              ("\\" . evil-search-highlight-persist-remove-all)
              ("C-\\" . kess--delete-other-windows)
-
              ("/" . comment-region)
              ("C-/" . uncomment-region)
 
              ("ESC" . evil-mode)
-
+             ("TAB" . org-force-cycle-archived)
              ("RET" . winner-redo)
              ("<backspace>" . winner-undo)
 
+             ("`" . kill-buffer-and-window)
              ("0" . delete-frame)
-
              ("a" . org-archive-to-archive-sibling)
-             ("TAB" . org-force-cycle-archived)
-
+             ("b" . switch-to-buffer-other-window)
              ("c" . cider-jack-in)
-             ("s" . slime)
-             ("r" . inf-ruby)
-
-             ("f" . flycheck-mode)
-
+             ("d" . dired-other-window)
+             ("f" . find-file-other-window)
+             ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
-             ("G" . counsel-git)
+             ("C-g" . counsel-git)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
-
+             ("r" . inf-ruby)
+             ("s" . slime)
              ("x" . execute-extended-command)
              ("C-x" . smex-major-mode-commands)
-
              ("z" . zap-up-to-char)
              ("C-z" . zap-to-char))
 #+END_SRC
