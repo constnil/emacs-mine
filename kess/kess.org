@@ -596,15 +596,26 @@ painful.
              ("<backspace>" . Info-scroll-down))
 #+END_SRC
 ** Custom prefix keymap
-To not mess up with emacs's own and other package's prefix maps, my
-custom prefix binding use C-\, which I think very easy to reach.
+To not mess up with emacs's own and other package's prefix maps, my custom
+prefix binding use C-\, which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
   ;; C-\ prefix map for nearly all my custom bindings, to not mess up
   ;; default or other installed package's bindings
   (define-prefix-command 'kess-prefix-map)
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
+             ("C-." . describe-personal-keybindings)
+
+             ("\\" . evil-search-highlight-persist-remove-all)
+             ("C-\\" . kess--delete-other-windows)
+
+             ("/" . comment-region)
+             ("C-/" . uncomment-region)
+
              ("ESC" . evil-mode)
+
+             ("RET" . winner-redo)
+             ("<backspace>" . winner-undo)
 
              ("0" . delete-frame)
 
@@ -621,21 +632,10 @@ custom prefix binding use C-\, which I think very easy to reach.
              ("G" . counsel-git)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
-             ("o" . counsel-rhythmbox)
 
              ("x" . execute-extended-command)
-             ("X" . smex-major-mode-commands)
+             ("C-x" . smex-major-mode-commands)
 
              ("z" . zap-up-to-char)
-             ("Z" . zap-to-char)
-
-             ("/" . comment-region)
-             ("\\" . uncomment-region)
-
-             ("C-." . describe-personal-keybindings)
-             ("C-/" . evil-search-highlight-persist-remove-all)
-             ("C-\\" . kess--delete-other-windows)
-
-             ("<backspace>" . winner-undo)
-             ("RET" . winner-redo))
+             ("C-z" . zap-to-char))
 #+END_SRC
