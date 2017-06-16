@@ -516,7 +516,10 @@ painful.
     "Kill current buffer or delete window (if not single window)."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
-        (kill-buffer)
+        (progn
+          (kill-buffer)
+          (when (kess--match-ignores kess-switch-ignore-regexs (buffer-name))
+            (kess--switch-next-win-or-buf)))
       (delete-window)))
 
   (defun kess--delete-other-windows ()
