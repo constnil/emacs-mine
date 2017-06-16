@@ -565,13 +565,17 @@ painful.
               ("C-/" . swiper)
               ("C-`" . ivy-resume)
 
+              ("C-=" . winner-redo)
+              ("C--" . winner-undo)
+
               ("C-z" . undo-tree-undo)
               ("M-z" . undo-tree-redo)
               ("C-S-z" . undo-tree-visualize)
 
-              ("M-D" . eval-defun)
-              ("M-R" . eval-region)
-              ("M-B" . eval-buffer)
+              ("M-D" . zap-up-to-char)
+              ("M-F" . eval-defun)
+              ("M-G" . eval-region)
+              ("M-H" . eval-buffer)
 
               ("C-x C-f" . counsel-find-file)
               ("C-x f" . find-file-in-current-directory)
@@ -611,6 +615,9 @@ painful.
              ("<backspace>" . Info-scroll-down))
   (bind-keys :map lisp-interaction-mode-map
              ("<C-return>" . eval-print-last-sexp))
+  (bind-keys :map paredit-mode-map
+             ("M-n" . paredit-forward)
+             ("M-p" . paredit-backward))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
@@ -622,15 +629,13 @@ prefix binding use C-\, which I think very easy to reach.
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
              ("C-." . describe-personal-keybindings)
-             ("\\" . evil-search-highlight-persist-remove-all)
+             ("\\" . whitespace-mode)
              ("C-\\" . kess--delete-other-windows)
              ("/" . comment-region)
              ("C-/" . uncomment-region)
 
              ("ESC" . evil-mode)
              ("TAB" . org-force-cycle-archived)
-             ("RET" . winner-redo)
-             ("<backspace>" . winner-undo)
 
              ("`" . kess--switch-to-scratch)
              ("0" . delete-frame)
@@ -642,12 +647,11 @@ prefix binding use C-\, which I think very easy to reach.
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
+             ("h" . evil-search-highlight-persist-remove-all)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("r" . inf-ruby)
              ("s" . slime)
              ("x" . execute-extended-command)
-             ("C-x" . smex-major-mode-commands)
-             ("z" . zap-up-to-char)
-             ("C-z" . zap-to-char))
+             ("C-x" . smex-major-mode-commands))
 #+END_SRC
