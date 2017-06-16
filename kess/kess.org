@@ -511,10 +511,19 @@ painful.
       (delete-window)))
 
   (defun kess--delete-other-windows ()
-    "Delete other windows and recenter current window to middle."
+    "Delete other windows or restore to previous windows layout.
+
+  if only one window in frame then delete other windows and recenter
+  selected window.
+
+  Otherwise use `winner-undo' to restore previous windows layout
+  configurations."
     (interactive)
-    (delete-other-windows)
-    (recenter))
+    (if (one-window-p 'nomini)
+        (progn (setq this-command 'winner-undo)
+               (winner-undo))
+      (progn (delete-other-windows)
+             (recenter))))
 
   (defun kess--cycle-ivy-regex-method ()
     "Cycle switch ivy minibuffer regex match method."
