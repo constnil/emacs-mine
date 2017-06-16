@@ -313,9 +313,6 @@ Learn more and get used to it.
     (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
-:PROPERTIES: 
-:CUSTOM_ID: paredit
-:END:
 #+BEGIN_SRC emacs-lisp
   (defun add-lisp-hook (func)
     (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
