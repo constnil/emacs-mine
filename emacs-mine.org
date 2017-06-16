@@ -28,13 +28,13 @@ up my own configuration.
   (defvar mine-init-file "init.el")
 
   ;; Load specified mines from the following list:
-  ;;    live - "emacs-live" (git://github.com/overtone/emacs-live.git)
-  ;; prelude - "prelude" (git://github.com/bbatsov/prelude.git)
-  ;;   space - "spacemacs" (git://github.com/syl20bnr/spacemacs.git)
-  ;;   bling - "bling's KISS dotemacs" (git://github.com/bling/dotemacs.git)
-  ;;  sachac - "sacha chua's .emacs.d (git://github.com/sachac/.emacs.d.git)"
-  ;; purcell - "Steve Purcell's emacs.d (git://github.com/purcell/emacs.d.git)"
-  ;;    kess - "default 'Keep Emacs Simple, Stupid' mine"
+  ;;    live - emacs-live (git://github.com/overtone/emacs-live.git)
+  ;; prelude - prelude (git://github.com/bbatsov/prelude.git)
+  ;;   space - spacemacs (git://github.com/syl20bnr/spacemacs.git)
+  ;;   bling - bling's KISS dotemacs (git://github.com/bling/dotemacs.git)
+  ;;  sachac - Sacha Chua's .emacs.d (git://github.com/sachac/.emacs.d.git)
+  ;; purcell - Steve Purcell's emacs.d (git://github.com/purcell/emacs.d.git)
+  ;;    kess - default "Keep Emacs Simple, Stupid" mine
   (let* ((mines '("live" "prelude" "space" "bling" "sachac" "purcell" "kess"))
          (env (getenv "EMACS_MINE"))
          (mine (or (and (member env mines) env) "kess")))
