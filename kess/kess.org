@@ -552,6 +552,13 @@ painful.
     "Switch to *scratch* buffer."
     (interactive)
     (switch-to-buffer "*scratch*"))
+
+  (defun kess--eval-print-last-sexp ()
+    "Call `eval-print-last-sexp' by move to the end of sexp."
+    (interactive)
+    (unwind-protect
+        (paredit-forward-up)
+      (eval-print-last-sexp)))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -626,10 +633,7 @@ painful.
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
   (bind-keys :map lisp-interaction-mode-map
-             ("<C-return>" . eval-print-last-sexp))
-  (bind-keys :map paredit-mode-map
-             ("M-n" . paredit-forward)
-             ("M-p" . paredit-backward))
+             ("<C-return>" . kess--eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
