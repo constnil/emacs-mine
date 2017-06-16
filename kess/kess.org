@@ -535,6 +535,11 @@ painful.
           (setq-default ivy-re-builders-alist '((t . ivy--regex-plus)))
         (let ((next (cadr (member (cdr method) methods))))
           (setcdr method (or next (car methods)))))))
+
+  (defun kess--switch-to-scratch ()
+    "Switch to *scratch* buffer."
+    (interactive)
+    (switch-to-buffer "*scratch*"))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -627,7 +632,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("RET" . winner-redo)
              ("<backspace>" . winner-undo)
 
-             ("`" . kill-buffer-and-window)
+             ("`" . kess--switch-to-scratch)
              ("0" . delete-frame)
              ("a" . org-archive-to-archive-sibling)
              ("b" . switch-to-buffer-other-window)
