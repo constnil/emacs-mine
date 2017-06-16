@@ -481,6 +481,9 @@ painful.
       (funcall switch-fn)
       (while (and (not (equal bread-crumb (buffer-name)))
                   (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
+        (funcall switch-fn))
+      (when (and (equal bread-crumb (buffer-name))
+                 (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
         (funcall switch-fn))))
 
   (defun kess--switch-next-win-or-buf (&optional force-buffer)
