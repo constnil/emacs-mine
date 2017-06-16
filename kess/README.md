@@ -14,49 +14,51 @@
 <li><a href="#sec-5">5. Default Setup</a>
 <ul>
 <li><a href="#sec-5-1">5.1. better-defaults</a></li>
-<li><a href="#sec-5-2">5.2. emacs apperence</a></li>
+<li><a href="#sec-5-2">5.2. my defaults</a></li>
+<li><a href="#sec-5-3">5.3. emacs apperence</a></li>
 </ul>
 </li>
-<li><a href="#sec-6">6. My defaults</a></li>
-<li><a href="#sec-7">7. Essential packages</a>
+<li><a href="#sec-6">6. Essential packages</a>
 <ul>
-<li><a href="#sec-7-1">7.1. undo-tree</a></li>
-<li><a href="#sec-7-2">7.2. company</a></li>
-<li><a href="#sec-7-3">7.3. ido</a></li>
-<li><a href="#sec-7-4">7.4. ivy</a></li>
+<li><a href="#sec-6-1">6.1. undo-tree</a></li>
+<li><a href="#sec-6-2">6.2. company</a></li>
+<li><a href="#sec-6-3">6.3. ido</a></li>
+<li><a href="#sec-6-4">6.4. ivy</a></li>
 </ul>
 </li>
-<li><a href="#sec-8">8. Useful packages</a></li>
-<li><a href="#sec-9">9. Evil-mode</a></li>
-<li><a href="#sec-10">10. Coding setup</a>
+<li><a href="#sec-7">7. Useful packages</a></li>
+<li><a href="#sec-8">8. Evil-mode</a></li>
+<li><a href="#sec-9">9. Coding setup</a>
 <ul>
-<li><a href="#sec-10-1">10.1. Syntax Check</a></li>
-<li><a href="#sec-10-2">10.2. Templating</a></li>
-<li><a href="#paredit">10.3. Lisp coding setup</a>
+<li><a href="#sec-9-1">9.1. Syntax Check</a></li>
+<li><a href="#sec-9-2">9.2. Templating</a></li>
+<li><a href="#paredit">9.3. Lisp coding setup</a>
 <ul>
-<li><a href="#sec-10-3-1">10.3.1. clojure</a></li>
-<li><a href="#sec-10-3-2">10.3.2. common lisp</a></li>
-<li><a href="#sec-10-3-3">10.3.3. paredit</a></li>
-<li><a href="#sec-10-3-4">10.3.4. emacs-lisp</a></li>
+<li><a href="#sec-9-3-1">9.3.1. clojure</a></li>
+<li><a href="#sec-9-3-2">9.3.2. common lisp</a></li>
+<li><a href="#sec-9-3-3">9.3.3. paredit</a></li>
+<li><a href="#sec-9-3-4">9.3.4. emacs-lisp</a></li>
 </ul>
 </li>
-<li><a href="#sec-10-4">10.4. Ruby coding setup</a></li>
-<li><a href="#sec-10-5">10.5. C# coding setup</a></li>
-<li><a href="#sec-10-6">10.6. Common coding setup</a></li>
+<li><a href="#sec-9-4">9.4. Ruby coding setup</a></li>
+<li><a href="#sec-9-5">9.5. C# coding setup</a></li>
+<li><a href="#sec-9-6">9.6. Common coding setup</a></li>
 </ul>
 </li>
-<li><a href="#sec-11">11. Project management</a>
+<li><a href="#sec-10">10. Project management</a>
 <ul>
-<li><a href="#sec-11-1">11.1. projectile</a></li>
-<li><a href="#sec-11-2">11.2. find-file-in-project</a></li>
+<li><a href="#sec-10-1">10.1. projectile</a></li>
+<li><a href="#sec-10-2">10.2. find-file-in-project</a></li>
+<li><a href="#sec-10-3">10.3. find-file-in-repository</a></li>
 </ul>
 </li>
-<li><a href="#sec-12">12. Emacs server</a></li>
-<li><a href="#sec-13">13. Custom prefix keymap</a></li>
-<li><a href="#sec-14">14. Global bindings</a>
+<li><a href="#sec-11">11. Emacs server</a></li>
+<li><a href="#sec-12">12. Bindings</a>
 <ul>
-<li><a href="#sec-14-1">14.1. Utility functions</a></li>
-<li><a href="#sec-14-2">14.2. Bindings</a></li>
+<li><a href="#sec-12-1">12.1. Utility functions</a></li>
+<li><a href="#sec-12-2">12.2. Global bindings</a></li>
+<li><a href="#sec-12-3">12.3. Mode-map bindings</a></li>
+<li><a href="#sec-12-4">12.4. Custom prefix keymap</a></li>
 </ul>
 </li>
 </ul>
@@ -66,8 +68,8 @@
 
 # Preface<a id="sec-1" name="sec-1"></a>
 
-OK, the following configuration as **simple** as promised, but I'm trying
-achieve this goal as I'm getting more comfortable with emacs.
+OK, the following configuration as **simple** as promised, but I'm trying achieve
+this goal as I'm getting more comfortable with emacs.
 
 Also, I'm trying to make KESS work as I expect on all my OSs:
 -   Win7/Win10 (chocolatey emacs package)
@@ -77,6 +79,7 @@ Also, I'm trying to make KESS work as I expect on all my OSs:
 # Personal information<a id="sec-2" name="sec-2"></a>
 
 I got this [org-babel config](https://github.com/sachac/.emacs.d) idea from [Sacha Chua](https://github.com/sachac) and her [amazing blog](http://sachachua.com/blog/).
+
 Thanks Sacha!
 
     (setq user-full-name "Tiefeng Wu"
@@ -84,14 +87,10 @@ Thanks Sacha!
 
 # Setup load paths<a id="sec-3" name="sec-3"></a>
 
-No custom load-path for now&#x2026;
-
     (let ((home-lib-path (expand-file-name "~/.elisp/")))
       (when (file-directory-p home-lib-path)
         (add-to-list 'load-path home-lib-path)
         (load (concat home-lib-path "init.el") 'noerror)))
-    
-    (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 
 # Package Setup<a id="sec-4" name="sec-4"></a>
 
@@ -100,31 +99,27 @@ No custom load-path for now&#x2026;
 Setup archive lists and initialize package.el
 
     ;; package.el setup
+    
     ;; helper functions
-    (defun kess/add-to-package-archives (name url &optional overwrite append)
+    (defun kess--add-to-package-archives (name url &optional overwrite append)
       (if (assoc name package-archives)
           (when overwrite
             (setcdr (assoc name package-archives) url))
         (add-to-list 'package-archives (cons name url) append)))
     
-    (defun kess/insert-to-package-archives (name url &optional overwrite)
-      (kess/add-to-package-archives name url overwrite))
+    (defun kess--insert-to-package-archives (name url &optional overwrite)
+      (kess--add-to-package-archives name url overwrite))
     
-    (defun kess/append-to-package-archives (name url &optional overwrite)
-      (kess/add-to-package-archives name url overwrite 'append))
+    (defun kess--append-to-package-archives (name url &optional overwrite)
+      (kess--add-to-package-archives name url overwrite 'append))
     
     ;; add archives to package-archives, if not exist
-    (kess/append-to-package-archives "gnu" "http://elpa.gnu.org/packages/")
-    (kess/append-to-package-archives "org" "http://orgmode.org/elpa/")
+    (let* ((schema (or (and (gnutls-available-p)  "https://") "http://")))
+      (kess--append-to-package-archives "gnu" (concat schema "elpa.gnu.org/packages/"))
+      (kess--append-to-package-archives "melpa" (concat schema "melpa.org/packages/"))
+      (kess--append-to-package-archives "marmalade" (concat schema "marmalade-repo.org/packages/")))
     
-    (if (and (memq system-type '(windows-nt ms-dos))
-             (not (gnutls-available-p)))
-        (kess/append-to-package-archives "melpa" "http://melpa.org/packages/")
-      (progn
-        (kess/append-to-package-archives "melpa" "https://melpa.org/packages/")
-        (kess/append-to-package-archives "gnu" "https://elpa.gnu.org/packages/" 'overwrite)))
-    
-    (kess/append-to-package-archives "marmalade" "http://marmalade-repo.org/packages/")
+    (kess--append-to-package-archives "org" "http://orgmode.org/elpa/")
     
     (setq package-enable-at-startup nil)
     (package-initialize)
@@ -157,29 +152,17 @@ Use [better-defaults](https://github.com/technomancy/better-defaults) package as
 
     (use-package better-defaults)
 
-## emacs apperence<a id="sec-5-2" name="sec-5-2"></a>
-
-Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
-menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
-
-    (load-theme 'tango-dark)
-    (when window-system
-      (menu-bar-mode 1)
-      (if (equal system-type 'windows-nt)
-          (add-hook 'after-init-hook 'toggle-frame-maximized)
-        (add-hook 'after-init-hook 'toggle-frame-fullscreen)))
-
-# My defaults<a id="sec-6" name="sec-6"></a>
+## my defaults<a id="sec-5-2" name="sec-5-2"></a>
 
     (setq-default tab-width 4
                   indent-tabs-mode nil
                   show-trailing-whitespace t)
     
-    (setq gc-cons-threshold 20000000
+    (setq inhibit-startup-screen t
+          gc-cons-threshold 20000000
           gdb-many-windows t
+          default-fill-column 80
           highlight-nonselected-windows t
-          inhibit-startup-screen t
-          linum-format "%4d"
           scroll-conservatively 9999
           scroll-margin 5
           scroll-step 1
@@ -187,47 +170,85 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
           tramp-default-method "ssh"
           diff-switches "-u"
           split-width-threshold 120
-          split-height-threshold 40
-          savehist-file (concat user-emacs-directory "savehist"))
+          split-height-threshold 40)
     
-    (setq org-catch-invisible-edits 'smart
+    (setq org-archive-mark-done nil
+          org-catch-invisible-edits 'smart
           org-completion-use-ido t
           org-ctrl-k-protect-subtree t
+          org-edit-timestamp-down-means-later t
           org-enforce-todo-checkbox-dependencies t
           org-enforce-todo-dependencies t
+          org-export-coding-system 'utf-8
+          org-export-kill-product-buffer-when-displayed t
+          org-fast-tag-selection-single-key 'expert
+          org-hide-emphasis-markers t
+          org-html-validation-link nil
           org-log-done 'time
           org-return-follows-link t
           org-special-ctrl-a/e t
           org-special-ctrl-k t
           org-special-ctrl-o t
+          org-use-speed-commands t
           org-startup-indented t
+          org-support-shift-select t
+          org-tags-column 80
           org-use-property-inheritance t)
-    
-    (setq org-todo-keywords
-          '((sequence "TODO(t)" "|" "DONE(d)")
-            (sequence "OPEN(o)" "INSPECT(i)" "|" "FIXED(f)" "CLOSED(c)" "WONTFIX(w)" "NOREPROD(n)")
-            (sequence "QUESTION(q) | ANSWERED(a)")))
-    
-    (bind-keys :map org-mode-map
-               ("M-n" . org-forward-heading-same-level)
-               ("M-p" . org-backward-heading-same-level))
     
     (winner-mode 1)
     (show-paren-mode 1)
     (recentf-mode 1)
-    (global-linum-mode 1)
     (column-number-mode 1)
     (savehist-mode 1)
+    
+    (setq display-time-24hr-format t
+          display-time-day-and-date t)
+    (display-time-mode 1)
+    
+    (setq linum-format "%4d")
+    (global-linum-mode 1)
+    
+    (setq desktop-restore-frames nil
+          desktop-restore-eager 10
+          desktop-save t
+          desktop-base-file-name "desktop"
+          desktop-base-lock-name "desktop.lock"
+          desktop-path (list user-emacs-directory)
+          desktop-dirname user-emacs-directory
+          desktop-load-locked-desktop nil)
+    
+    (setq frameset-filter-alist (copy-tree frameset-filter-alist))
+    (let ((fullscreen (assoc 'fullscreen frameset-filter-alist))
+          (gui-fullscreen (assoc 'GUI:fullscreen frameset-filter-alist))
+          (never-fn (lambda (elt)
+                      (if elt (setcdr elt :never)
+                        (push (cons elt . :never) frameset-filter-alist)))))
+      (funcall never-fn fullscreen)
+      (funcall never-fn gui-fullscreen))
+    
+    (desktop-save-mode 1)
 
-# Essential packages<a id="sec-7" name="sec-7"></a>
+## emacs apperence<a id="sec-5-3" name="sec-5-3"></a>
+
+Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
+menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
+
+    (load-theme 'tango-dark)
+    (when window-system
+      (menu-bar-mode 1)
+      (add-hook 'after-init-hook
+                (or (and (eq system-type 'windows-nt) 'toggle-frame-maximized)
+                    'toggle-frame-fullscreen)))
+
+# Essential packages<a id="sec-6" name="sec-6"></a>
 
 These're packages I think is essential.
 
-## undo-tree<a id="sec-7-1" name="sec-7-1"></a>
+## undo-tree<a id="sec-6-1" name="sec-6-1"></a>
 
     (use-package undo-tree :config (global-undo-tree-mode))
 
-## company<a id="sec-7-2" name="sec-7-2"></a>
+## company<a id="sec-6-2" name="sec-6-2"></a>
 
     (use-package company
       :diminish company-mode
@@ -243,24 +264,24 @@ These're packages I think is essential.
             company-minimum-prefix-length 2)
       (global-company-mode 1))
 
-## ido<a id="sec-7-3" name="sec-7-3"></a>
+## ido<a id="sec-6-3" name="sec-6-3"></a>
 
     (use-package ido-ubiquitous :defer t)
     
     (use-package flx-ido
       :defer t
       :config
-      (setq ido-enable-prefix nil
-            ido-enable-flex-matching t
-            ido-use-faces nil
+      (setq ido-auto-merge-work-directories-length -1
             ido-create-new-buffer 'always
-            ido-use-filename-at-point 'guess
-            ido-max-prospects 10
             ido-default-file-method 'selected-window
-            ido-auto-merge-work-directories-length -1)
+            ido-enable-flex-matching t
+            ido-enable-prefix nil
+            ido-max-prospects 10
+            ido-use-faces nil
+            ido-use-filename-at-point 'guess)
       (flx-ido-mode 1))
 
-## ivy<a id="sec-7-4" name="sec-7-4"></a>
+## ivy<a id="sec-6-4" name="sec-6-4"></a>
 
     (use-package ivy
       :demand
@@ -268,7 +289,8 @@ These're packages I think is essential.
       :diminish ivy-mode
       :bind (:map ivy-minibuffer-map
                   ("C-j" . ivy-immediate-done)
-                  ("RET" . ivy-alt-done))
+                  ("RET" . ivy-alt-done)
+                  ("C-." . kess--cycle-ivy-regex-method))
       :bind (:map read-expression-map
                   ("C-r" . counsel-expression-history))
       :config
@@ -287,43 +309,37 @@ These're packages I think is essential.
       (setq ivy-use-virtual-buffers t
             enable-recursive-minibuffers t)
     
-      (use-package flx
-        :config
-        (setq-default ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
-    
       (use-package ivy-historian
         :config
-        (add-hook 'after-init-hook (lambda () (ivy-historian-mode t)))))
+        (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
+    
+      (use-package flx))
 
-# Useful packages<a id="sec-8" name="sec-8"></a>
+# Useful packages<a id="sec-7" name="sec-7"></a>
 
-In order to be KESS, these're packages besides essential packages
-loaded above.
+In order to be KESS, these're packages besides essential packages loaded above.
 
     (use-package ag :defer t)
     (use-package ack :defer t)
     (use-package bookmark+ :defer t)
     (use-package cl-lib :config (require 'cl-lib))
-    (use-package dtrt-indent :config (dtrt-indent-mode 1))
+    (use-package dtrt-indent
+      :config
+      (setq dtrt-indent-active-mode-line-info " [dtrt]")
+      (dtrt-indent-mode 1))
     (use-package fullframe :config (fullframe list-packages quit-window))
     (use-package smex :defer t)
     (use-package popwin :config (popwin-mode 1))
 
-# Evil-mode<a id="sec-9" name="sec-9"></a>
+# Evil-mode<a id="sec-8" name="sec-8"></a>
 
-Maybe I can totally discard later?  And I'm think about create a minor mode like
-[god-mode](https://github.com/chrisdone/god-mode) and evil-mode, but just a thin layer to provide vim's normal state and
-visual state. `Of course, this will be a tough task for me now.`
+Use advice to escape from insert mode, to just use evil normal and visual
+states, for editing tasks, e.g. insert state, use regular emacs. *Don't know if
+this really possible.*
 
     (use-package evil
       :diminish undo-tree-mode
-      :bind* (("C-:" . evil-ex))
       :config
-      (use-package powerline-evil
-        :config
-        (powerline-evil-vim-color-theme)
-        (display-time-mode t))
-    
       (unbind-key "C-z" evil-normal-state-map)
       (unbind-key "C-z" evil-motion-state-map)
       (unbind-key "C-z" evil-insert-state-map)
@@ -334,25 +350,26 @@ visual state. `Of course, this will be a tough task for me now.`
         :config
         (global-evil-visualstar-mode t))
     
-      (use-package evil-numbers
-        :bind (:map evil-normal-state-map
-                    ("+" . evil-numbers/inc-at-pt)
-                    ("-" . evil-numbers/dec-at-pt)))
-    
-      (use-package evil-search-highlight-persist
-        :config
-        (global-evil-search-highlight-persist t))
-    
       (use-package evil-leader
         :config
         (setq evil-leader/in-all-states 1)
         (evil-leader/set-leader ",")
         (global-evil-leader-mode)
         (evil-leader/set-key "/" 'evil-search-highlight-persist-remove-all)))
+    
+    (use-package evil-numbers
+      :demand
+      :bind (:map evil-normal-state-map
+                  ("+" . evil-numbers/inc-at-pt)
+                  ("-" . evil-numbers/dec-at-pt)))
+    
+    (use-package evil-search-highlight-persist
+      :config
+      (global-evil-search-highlight-persist t))
 
-# Coding setup<a id="sec-10" name="sec-10"></a>
+# Coding setup<a id="sec-9" name="sec-9"></a>
 
-## Syntax Check<a id="sec-10-1" name="sec-10-1"></a>
+## Syntax Check<a id="sec-9-1" name="sec-9-1"></a>
 
     (use-package flycheck
       :defer t
@@ -364,7 +381,7 @@ visual state. `Of course, this will be a tough task for me now.`
           '(custom-set-variables
             '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 
-## Templating<a id="sec-10-2" name="sec-10-2"></a>
+## Templating<a id="sec-9-2" name="sec-9-2"></a>
 
 Learn more and get used to it.
 
@@ -382,17 +399,17 @@ Learn more and get used to it.
       (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
         (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
 
-### clojure<a id="sec-10-3-1" name="sec-10-3-1"></a>
+### clojure<a id="sec-9-3-1" name="sec-9-3-1"></a>
 
     (use-package clojure-mode :defer t)
     (use-package cider :defer t)
 
-### common lisp<a id="sec-10-3-2" name="sec-10-3-2"></a>
+### common lisp<a id="sec-9-3-2" name="sec-9-3-2"></a>
 
     (load (expand-file-name "~/quicklisp/slime-helper.el"))
     (setq inferior-lisp-program "sbcl")
 
-### paredit<a id="sec-10-3-3" name="sec-10-3-3"></a>
+### paredit<a id="sec-9-3-3" name="sec-9-3-3"></a>
 
     (use-package paredit
       :demand
@@ -405,7 +422,7 @@ Learn more and get used to it.
       :config
       (add-lisp-hook 'enable-paredit-mode))
 
-### emacs-lisp<a id="sec-10-3-4" name="sec-10-3-4"></a>
+### emacs-lisp<a id="sec-9-3-4" name="sec-9-3-4"></a>
 
     (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
     
@@ -415,7 +432,7 @@ Learn more and get used to it.
       (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
       (add-lisp-hook (lambda () (eldoc-mode 1))))
 
-## Ruby coding setup<a id="sec-10-4" name="sec-10-4"></a>
+## Ruby coding setup<a id="sec-9-4" name="sec-9-4"></a>
 
     (use-package ruby-mode
       :bind (:map ruby-mode-map
@@ -457,7 +474,7 @@ Learn more and get used to it.
         (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
         (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)))
 
-## C# coding setup<a id="sec-10-5" name="sec-10-5"></a>
+## C# coding setup<a id="sec-9-5" name="sec-9-5"></a>
 
 More dig into omnisharp-emacs.
 
@@ -470,7 +487,7 @@ More dig into omnisharp-emacs.
         (add-hook 'csharp-mode-hook 'omnisharp-mode)
         (add-to-list 'company-backends 'company-omnisharp)))
 
-## Common coding setup<a id="sec-10-6" name="sec-10-6"></a>
+## Common coding setup<a id="sec-9-6" name="sec-9-6"></a>
 
     (use-package rainbow-delimiters
       :config
@@ -482,12 +499,12 @@ More dig into omnisharp-emacs.
       :config
       (global-color-identifiers-mode))
 
-# Project management<a id="sec-11" name="sec-11"></a>
+# Project management<a id="sec-10" name="sec-10"></a>
 
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
 
-## projectile<a id="sec-11-1" name="sec-11-1"></a>
+## projectile<a id="sec-10-1" name="sec-10-1"></a>
 
     (use-package projectile
       :demand
@@ -496,13 +513,15 @@ to benefit from both? (Another tough task)
       (setq projectile-indexing-method 'alien
             projectile-enable-caching t))
 
-## find-file-in-project<a id="sec-11-2" name="sec-11-2"></a>
+## find-file-in-project<a id="sec-10-2" name="sec-10-2"></a>
 
-    (use-package find-file-in-project
-      :demand
-      :ensure ivy)
+    (use-package find-file-in-project :ensure ivy)
 
-# Emacs server<a id="sec-12" name="sec-12"></a>
+## find-file-in-repository<a id="sec-10-3" name="sec-10-3"></a>
+
+    (use-package find-file-in-repository)
+
+# Emacs server<a id="sec-11" name="sec-11"></a>
 
 Start server if not already running. Properly set server to work on MSWin is
 painful.
@@ -513,112 +532,192 @@ painful.
                 (unless (server-running-p)
                   (server-start))))
 
-# Custom prefix keymap<a id="sec-13" name="sec-13"></a>
+# Bindings<a id="sec-12" name="sec-12"></a>
 
-To not mess up with emacs's own and other package's prefix maps, my
-custom prefix binding use C-\\, which I think very easy to reach.
+## Utility functions<a id="sec-12-1" name="sec-12-1"></a>
+
+    (defcustom kess-switch-ignore-regexs
+      '("\\*Ibuffer\\*" "\\*Messages\\*" "\\*scratch\\*")
+      "Regex list for filter buffer names which will be ignored while
+    switching buffer through `kess--switch-buffer'.")
+    
+    (defun kess--match-ignores (patterns buffer)
+      "Match given buffer name BUFFER with all patterns in PATTERNS.
+    
+    Return t if a match is found, otherwise nil."
+      (and patterns
+           (or (string-match-p (car patterns) buffer)
+               (kess--match-ignores (cdr patterns) buffer))))
+    
+    (defun kess--switch-buffer (&optional prev)
+      "Switch buffer, skip those buffer names specified in `kess-switch-ignore-regexs'.
+    
+     Switch to next buffer by default, if PREV is non nil then switch
+    to previous buffer."
+      (let ((bread-crumb (buffer-name))
+            (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
+        (funcall switch-fn)
+        (while (and (not (equal bread-crumb (buffer-name)))
+                    (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
+          (funcall switch-fn))))
+    
+    (defun kess--switch-next-win-or-buf (&optional force-buffer)
+      "Switch to next window when FORCE-BUFFER is nil or just one
+    window in frame, otherwise switch to next buffer.
+    
+    When switch buffer call `kess--switch-buffer' with default
+    argument."
+      (interactive "P")
+      (if (or force-buffer (one-window-p 'nomini))
+          (kess--switch-buffer)
+        (other-window 1)))
+    
+    (defun kess--switch-prev-win-or-buf (&optional force-buffer)
+      "Switch to previous window when FORCE-BUFFER is nil or just one
+    window in frame, otherwise switch to previous buffer.
+    
+    Switch buffer by call `kess--switch-buffer' with 'PREV."
+      (interactive "P")
+      (if (or force-buffer (one-window-p 'nomini))
+          (kess--switch-buffer 'prev)
+        (other-window -1)))
+    
+    (defun kess--indent-buffer ()
+      "Indent whole buffer."
+      (interactive)
+      (indent-region (point-min) (point-max) nil))
+    
+    (defun kess--kill-buf-or-win (&optional force-buffer)
+      "Kill current buffer or delete window (if not single window)."
+      (interactive "P")
+      (if (or force-buffer (one-window-p 'nomini))
+          (kill-buffer)
+        (delete-window)))
+    
+    (defun kess--delete-other-windows ()
+      "Delete other windows and recenter current window to middle."
+      (interactive)
+      (delete-other-windows)
+      (recenter))
+    
+    (defun kess--cycle-ivy-regex-method ()
+      "Cycle switch ivy minibuffer regex match method."
+      (interactive)
+      (let ((method (assoc t ivy-re-builders-alist))
+            (methods '(;ivy--regex regexp-quote
+                       ivy--regex-plus ivy--regex-fuzzy)))
+        (if (null method)
+            (setq-default ivy-re-builders-alist '((t . ivy--regex-plus)))
+          (let ((next (cadr (member (cdr method) methods))))
+            (setcdr method (or next (car methods)))))))
+
+## Global bindings<a id="sec-12-2" name="sec-12-2"></a>
+
+    (bind-keys ("<backspace>" . delete-backward-char))
+    
+    (bind-keys* ("<M-left>" . windmove-left)
+                ("<M-down>" . windmove-down)
+                ("<M-up>" . windmove-up)
+                ("<M-right>" . windmove-right)
+    
+                ("<C-up>" . scroll-down-line)
+                ("<C-down>" . scroll-up-line)
+    
+                ("M-N" . scroll-other-window)
+                ("M-P" . scroll-other-window-down)
+    
+                ("M-x" . counsel-M-x)
+                ("M-X" . smex)
+    
+                ("C-'" . set-mark-command)
+                ("C-;" . mark-sexp)
+    
+                ("C-/" . swiper)
+                ("C-`" . ivy-resume)
+    
+                ("C-z" . undo-tree-undo)
+                ("M-z" . undo-tree-redo)
+                ("C-S-z" . undo-tree-visualize)
+    
+                ("M-D" . eval-defun)
+                ("M-R" . eval-region)
+                ("M-B" . eval-buffer)
+    
+                ("C-x C-f" . counsel-find-file)
+                ("C-x f" . find-file-in-current-directory)
+                ("M-o" . find-file-in-repository)
+                ("M-O" . find-file-in-project)
+    
+                ("C-S-g" . occur)
+                ("C-S-s" . save-some-buffers)
+    
+                ("<C-tab>" . kess--switch-next-win-or-buf)
+                ("<C-S-tab>" . kess--switch-prev-win-or-buf)
+                ("C-M-|" . kess--indent-buffer)
+                ("M-`" . kess--kill-buf-or-win)
+    
+                ("C-+" . evil-numbers/inc-at-pt)
+                ("C-_" . evil-numbers/dec-at-pt)
+                ("C-:" . evil-ex)
+                ("C-S-j" . evil-join)
+                ("C-M-J" . join-line)
+    
+                ("C-M-/" . query-replace)
+                ("C-M-?" . query-replace-regexp)
+    
+                ("C-h t" . cider-drink-a-sip)
+                ("C-h T" . help-with-tutorial)
+    
+                ("C-h N" . describe-language-environment)
+                ("C-h H" . view-hello-file)
+    
+                ("C-h h" . counsel-info-lookup-symbol)
+                ("C-h L" . counsel-find-library)
+                ("C-h u" . counsel-unicode-char))
+
+## Mode-map bindings<a id="sec-12-3" name="sec-12-3"></a>
+
+    (bind-keys :map Info-mode-map
+               ("<backspace>" . Info-scroll-down))
+    (bind-keys :map lisp-interaction-mode-map
+               ("<C-return>" . eval-print-last-sexp))
+
+## Custom prefix keymap<a id="sec-12-4" name="sec-12-4"></a>
+
+To not mess up with emacs's own and other package's prefix maps, my custom
+prefix binding use C-\\, which I think very easy to reach.
 
     ;; C-\ prefix map for nearly all my custom bindings, to not mess up
     ;; default or other installed package's bindings
     (define-prefix-command 'kess-prefix-map)
     (bind-key* (kbd "C-\\") kess-prefix-map)
     (bind-keys :map kess-prefix-map
-               ("0" . delete-frame)
+               ("C-." . describe-personal-keybindings)
+               ("\\" . evil-search-highlight-persist-remove-all)
+               ("C-\\" . kess--delete-other-windows)
+               ("/" . comment-region)
+               ("C-/" . uncomment-region)
     
-               ("a" . counsel-ag)
-               ("f" . flycheck-mode)
-               ("g" . counsel-git)
+               ("ESC" . evil-mode)
+               ("TAB" . org-force-cycle-archived)
+               ("RET" . winner-redo)
+               ("<backspace>" . winner-undo)
+    
+               ("`" . kill-buffer-and-window)
+               ("0" . delete-frame)
+               ("a" . org-archive-to-archive-sibling)
+               ("b" . switch-to-buffer-other-window)
+               ("c" . cider-jack-in)
+               ("d" . dired-other-window)
+               ("f" . find-file-other-window)
+               ("C-f" . flycheck-mode)
+               ("g" . counsel-ag)
+               ("C-g" . counsel-git)
                ("j" . counsel-git-grep)
                ("l" . counsel-locate)
-               ("o" . counsel-rhythmbox)
-               ("r" . ivy-resume)
-               ("s" . swiper)
-               ("z" . org-archive-to-archive-sibling)
-    
-               ("," . winner-undo)
-               ("." . winner-redo)
-               ("/" . comment-region)
-               ("\\" . uncomment-region)
-    
-               ("C-." . describe-personal-keybindings)
-               ("C-/" . evil-search-highlight-persist-remove-all)
-               ("C-\\" . set-mark-command)
-    
-               ("M-x" . execute-extended-command)
-               ("M-X" . smex-major-mode-commands)
-    
-               ("TAB" . org-force-cycle-archived)
-               ("ESC" . evil-mode))
-
-# Global bindings<a id="sec-14" name="sec-14"></a>
-
-## Utility functions<a id="sec-14-1" name="sec-14-1"></a>
-
-    (defun kess/switch-buffer (next)
-      "Switch to non *[buffer]* buffer, use next-buffer when NEXT is t,
-        otherwise, previous-buffer. (idea from stackoverflow)"
-      (let ((bread-crumb (buffer-name))
-            (fn (or (and next 'next-buffer) 'previous-buffer))
-            (allowed-buffers '("*scratch*" "*info*" "*eshell*")))
-        (funcall fn)
-        (while (and (not (equal bread-crumb (buffer-name)))
-                    (and (not (member (buffer-name) allowed-buffers))
-                         (string-match-p "^\*.*\*$" (buffer-name))))
-          (funcall fn))))
-    
-    (defun kess/indent-buffer ()
-      "Indent whole buffer."
-      (interactive)
-      (indent-region (point-min) (point-max) nil))
-
-## Bindings<a id="sec-14-2" name="sec-14-2"></a>
-
-    (bind-keys ("<backspace>" . delete-backward-char))
-    
-    (bind-keys* ("M-o" . find-file-in-project)
-                ("M-x" . counsel-M-x)
-                ("M-X" . smex)
-                ("M-\\" . hippie-expand)
-                ("M-`" . (lambda () (interactive) (kill-buffer (get-buffer (buffer-name)))))
-    
-                ("C-z" . undo-tree-undo)
-                ("C-/" . undo-tree-redo)
-                ("C-`" . swiper)
-    
-                ("C-x C-f" . counsel-find-file)
-                ("C-x S" . write-file)
-    
-                ("C-S-g" . occur)
-                ("C-S-s" . save-some-buffers)
-    
-                ("C-c a" . org-agenda)
-                ("C-c b" . org-iswitchb)
-                ("C-c c" . org-capture)
-                ("C-c l" . org-store-link)
-                ("C-c t" . org-tags-view)
-    
-                ("<C-tab>" . (lambda () (interactive) (kess/switch-buffer t)))
-                ("<C-S-tab>" . (lambda () (interactive) (kess/switch-buffer nil)))
-                ("<C-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer t)))
-                ("<C-S-iso-lefttab>" . (lambda () (interactive) (kess/switch-buffer nil)))
-    
-                ("C-M-|" . kess/indent-buffer)
-                ("C-M-." . scroll-other-window)
-                ("C-M-," . scroll-other-window-down)
-    
-                ("C-M-h" . windmove-left)
-                ("C-M-j" . windmove-down)
-                ("C-M-k" . windmove-up)
-                ("C-M-l" . windmove-right)
-    
-                ("C-M-/" . query-replace)
-                ("C-M-?" . query-replace-regexp)
-    
-                ("C-h l" . counsel-find-library)
-                ("C-h i" . counsel-info-lookup-symbol)
-                ("C-h u" . counsel-unicode-char)
-                ("C-h p" . describe-package)
-    
-                ("C-h C-l" . view-lossage)
-                ("C-h C-i" . info)
-                ("C-h C-p" . finder-by-keyword))
+               ("r" . inf-ruby)
+               ("s" . slime)
+               ("x" . execute-extended-command)
+               ("C-x" . smex-major-mode-commands)
+               ("z" . zap-up-to-char)
+               ("C-z" . zap-to-char))

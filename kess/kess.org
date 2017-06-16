@@ -505,10 +505,10 @@ painful.
     (interactive)
     (indent-region (point-min) (point-max) nil))
 
-  (defun kess--kill-buf-or-win ()
+  (defun kess--kill-buf-or-win (&optional force-buffer)
     "Kill current buffer or delete window (if not single window)."
-    (interactive)
-    (if (one-window-p 'nomini)
+    (interactive "P")
+    (if (or force-buffer (one-window-p 'nomini))
         (kill-buffer)
       (delete-window)))
 

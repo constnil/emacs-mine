@@ -133,7 +133,10 @@ up my own configuration.
       (setenv "EMACS_MINE" mine)  ; In case environment variable not set
       (message "start mine \"%s\" loading on %s" mine system-type)
     
-      (setq mine-root-path (concat (expand-file-name mine user-emacs-directory) "/"))
+      (setq user-emacs-directory
+            (file-name-as-directory (expand-file-name user-emacs-directory)))
+      (setq mine-root-path
+            (file-name-as-directory (expand-file-name mine user-emacs-directory)))
       (message "root path of mine \"%s\": %s" mine mine-root-path)
     
       ;; Set package.el 'elpa' directory to mine's own elpa directory
@@ -142,10 +145,10 @@ up my own configuration.
     
       ;; Load mine preset file if exists.
       ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-      (load (concat (expand-file-name "presets" user-emacs-directory) "/" mine ".el") 'noerror)
+      (load (concat user-emacs-directory "presets/" mine ".el") 'noerror)
     
       ;; Set emacs customize file for loading mine.
-      (setq custom-file (concat (expand-file-name "customizes" user-emacs-directory) mine ".el"))
+      (setq custom-file (concat user-emacs-directory "customizes/" mine ".el"))
       (load custom-file 'noerror)
     
       ;; HACK: Change user-emacs-directory to mine's root directory, and load it
@@ -274,7 +277,7 @@ up my own configuration.
 
 ## Dig into<a id="sec-7-9" name="sec-7-9"></a>
 
-### [emacs source code](file:///home/constnil/warehouse/projects/references/emacs/)<a id="sec-7-9-1" name="sec-7-9-1"></a>
+### [emacs source code](file://d:/HOME/memleaks/warehouse/projects/references/emacs/)<a id="sec-7-9-1" name="sec-7-9-1"></a>
 
 #### TODO Build Emacs under Msys2 [reference](https://chriszheng.science/2015/03/19/Chinese-version-of-Emacs-building-guideline/)<a id="sec-7-9-1-1" name="sec-7-9-1-1"></a>
 
@@ -307,6 +310,6 @@ up my own configuration.
 
 ### how emacs key binding works<a id="sec-7-9-2" name="sec-7-9-2"></a>
 
--   [notes](file:///home/constnil/.emacs.d/notes/keymap.md) after reading emacs lisp manual
+-   [notes](file://d:/HOME/memleaks/.emacs.d/notes/keymap.md) after reading emacs lisp manual
 
 ### find key binding's original and current value in all minor/major modes<a id="sec-7-9-3" name="sec-7-9-3"></a>
