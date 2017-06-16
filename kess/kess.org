@@ -96,9 +96,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         scroll-step 1
         system-time-locale "C"
         tramp-default-method "ssh"
-        diff-switches "-u"
-        split-width-threshold 120
-        split-height-threshold 40)
+        diff-switches "-u")
 
   (setq org-archive-mark-done nil
         org-catch-invisible-edits 'smart
