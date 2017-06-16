@@ -337,7 +337,9 @@ Learn more and get used to it.
                 ("C-." . paredit-forward-slurp-sexp)
                 ("C-," . paredit-forward-barf-sexp)
                 ("C-\>" . paredit-backward-barf-sexp)
-                ("C-\<" . paredit-backward-slurp-sexp))
+                ("C-\<" . paredit-backward-slurp-sexp)
+                ("M-n" . paredit-forward)
+                ("M-p" . paredit-backward))
     :config
     (add-lisp-hook 'enable-paredit-mode))
 #+END_SRC
