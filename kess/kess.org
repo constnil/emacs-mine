@@ -343,6 +343,12 @@ Learn more and get used to it.
     :config
     (add-lisp-hook 'enable-paredit-mode))
 #+END_SRC
+*** smartparens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :config
+    (require 'smartparens-config))
+#+END_SRC
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
