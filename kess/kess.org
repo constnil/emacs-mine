@@ -214,7 +214,7 @@ These're packages I think is essential.
     :bind (:map ivy-minibuffer-map
                 ("C-j" . ivy-immediate-done)
                 ("RET" . ivy-alt-done)
-                ("C-." . kess--cycle-ivy-regex-method))
+                ("C-." . kess-cycle-ivy-regex-method))
     :bind (:map read-expression-map
                 ("C-r" . counsel-expression-history))
     :config
@@ -458,71 +458,75 @@ painful.
 * Bindings
 ** Utility functions
 #+BEGIN_SRC emacs-lisp
-  (defcustom kess-switch-ignore-regexs
-    '("\\*Ibuffer\\*" "\\*Messages\\*" "\\*scratch\\*")
+  (defcustom kess-switch-black-list '("\\*.*\\*" "TAGS")
     "Regex list for filter buffer names which will be ignored while
-  switching buffer through `kess--switch-buffer'.")
+  switching buffer through `kess-switch-buffer'.")
 
-  (defun kess--match-ignores (patterns buffer)
-    "Match given buffer name BUFFER with all patterns in PATTERNS.
+  (defcustom kess-switch-white-list '("\\*Org Src .*")
+    "Regex list for filter buffer names which will be allowed while
+  switching buffer through `kess-switch-buffer'.")
+
+  (defun kess--ignore-buffer-p (buffer)
+    "Match given buffer name BUFFER with all patterns in BLACKLIST.
 
   Return t if a match is found, otherwise nil."
-    (and patterns
-         (or (string-match-p (car patterns) buffer)
-             (kess--match-ignores (cdr patterns) buffer))))
+    (cond ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-white-list) nil)
+          ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-black-list) t)))
 
-  (defun kess--switch-buffer (&optional prev)
-    "Switch buffer, skip those buffer names specified in `kess-switch-ignore-regexs'.
+  (defun kess-switch-buffer (&optional prev)
+    "Switch to next/previous buffer, skip buffer names matched in
+  `kess-switch-black-list' and allow those names specified in
+  `kess-switch-white-list'.
 
-   Switch to next buffer by default, if PREV is non nil then switch
+  Switch to next buffer by default, if PREV is non-nil then switch
   to previous buffer."
     (let ((bread-crumb (buffer-name))
           (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
       (funcall switch-fn)
       (while (and (not (equal bread-crumb (buffer-name)))
-                  (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
+                  (kess--ignore-buffer-p (buffer-name)))
         (funcall switch-fn))
       (when (and (equal bread-crumb (buffer-name))
-                 (kess--match-ignores kess-switch-ignore-regexs (buffer-name)))
+                 (kess--ignore-buffer-p (buffer-name)))
         (funcall switch-fn))))
 
-  (defun kess--switch-next-win-or-buf (&optional force-buffer)
+  (defun kess-switch-next-win-or-buf (&optional force-buffer)
     "Switch to next window when FORCE-BUFFER is nil or just one
   window in frame, otherwise switch to next buffer.
 
-  When switch buffer call `kess--switch-buffer' with default
+  When switch buffer call `kess-switch-buffer' with default
   argument."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
-        (kess--switch-buffer)
+        (kess-switch-buffer)
       (other-window 1)))
 
-  (defun kess--switch-prev-win-or-buf (&optional force-buffer)
+  (defun kess-switch-prev-win-or-buf (&optional force-buffer)
     "Switch to previous window when FORCE-BUFFER is nil or just one
   window in frame, otherwise switch to previous buffer.
 
-  Switch buffer by call `kess--switch-buffer' with 'PREV."
+  Switch buffer by call `kess-switch-buffer' with 'PREV."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
-        (kess--switch-buffer 'prev)
+        (kess-switch-buffer 'prev)
       (other-window -1)))
 
-  (defun kess--indent-buffer ()
+  (defun kess-indent-buffer ()
     "Indent whole buffer."
     (interactive)
     (indent-region (point-min) (point-max) nil))
 
-  (defun kess--kill-buf-or-win (&optional force-buffer)
+  (defun kess-kill-buf-or-win (&optional force-buffer)
     "Kill current buffer or delete window (if not single window)."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (progn
           (kill-buffer)
-          (when (kess--match-ignores kess-switch-ignore-regexs (buffer-name))
-            (kess--switch-next-win-or-buf)))
+          (when (kess--ignore-buffer-p (buffer-name))
+            (kess-switch-next-win-or-buf)))
       (delete-window)))
 
-  (defun kess--delete-other-windows ()
+  (defun kess-delete-other-windows ()
     "Delete other windows or restore to previous windows layout.
 
   if only one window in frame then delete other windows and recenter
@@ -537,23 +541,22 @@ painful.
       (progn (delete-other-windows)
              (recenter))))
 
-  (defun kess--cycle-ivy-regex-method ()
+  (defun kess-cycle-ivy-regex-method ()
     "Cycle switch ivy minibuffer regex match method."
     (interactive)
     (let ((method (assoc t ivy-re-builders-alist))
-          (methods '(;ivy--regex regexp-quote
-                     ivy--regex-plus ivy--regex-fuzzy)))
+          (methods '(ivy--regex-plus ivy--regex-fuzzy)))
       (if (null method)
           (setq-default ivy-re-builders-alist '((t . ivy--regex-plus)))
         (let ((next (cadr (member (cdr method) methods))))
           (setcdr method (or next (car methods)))))))
 
-  (defun kess--switch-to-scratch ()
+  (defun kess-switch-to-scratch ()
     "Switch to *scratch* buffer."
     (interactive)
     (switch-to-buffer "*scratch*"))
 
-  (defun kess--eval-print-last-sexp ()
+  (defun kess-eval-print-last-sexp ()
     "Call `eval-print-last-sexp' by move to the end of sexp."
     (interactive)
     (unwind-protect
@@ -604,10 +607,10 @@ painful.
               ("C-S-g" . occur)
               ("C-S-s" . save-some-buffers)
 
-              ("<C-tab>" . kess--switch-next-win-or-buf)
-              ("<C-S-tab>" . kess--switch-prev-win-or-buf)
-              ("C-M-|" . kess--indent-buffer)
-              ("M-`" . kess--kill-buf-or-win)
+              ("<C-tab>" . kess-switch-next-win-or-buf)
+              ("<C-S-tab>" . kess-switch-prev-win-or-buf)
+              ("C-M-|" . kess-indent-buffer)
+              ("M-`" . kess-kill-buf-or-win)
 
               ("C-+" . evil-numbers/inc-at-pt)
               ("C-_" . evil-numbers/dec-at-pt)
@@ -633,7 +636,7 @@ painful.
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
   (bind-keys :map lisp-interaction-mode-map
-             ("<C-return>" . kess--eval-print-last-sexp))
+             ("<C-return>" . kess-eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
@@ -646,14 +649,14 @@ prefix binding use C-\, which I think very easy to reach.
   (bind-keys :map kess-prefix-map
              ("C-." . describe-personal-keybindings)
              ("\\" . whitespace-mode)
-             ("C-\\" . kess--delete-other-windows)
+             ("C-\\" . kess-delete-other-windows)
              ("/" . comment-region)
              ("C-/" . uncomment-region)
 
              ("ESC" . evil-mode)
              ("TAB" . org-force-cycle-archived)
 
-             ("`" . kess--switch-to-scratch)
+             ("`" . kess-switch-to-scratch)
              ("0" . delete-frame)
              ("a" . org-archive-to-archive-sibling)
              ("b" . switch-to-buffer-other-window)
