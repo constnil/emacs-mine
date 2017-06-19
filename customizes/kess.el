@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(kess-switch-black-list (quote ("\\*.*\\*" "TAGS" "tasks.org")))
+ '(kess-switch-black-list (quote ("\\*.*\\*" "TAGS" "OmniServer" "tasks.org")))
  '(kess-switch-white-list (quote ("\\*Org Src .*"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
