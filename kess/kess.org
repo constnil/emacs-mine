@@ -347,7 +347,9 @@ Learn more and get used to it.
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
     :config
-    (require 'smartparens-config))
+    (require 'smartparens-config)
+    (sp-use-paredit-bindings)
+    (smartparens-global-strict-mode t))
 #+END_SRC
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
