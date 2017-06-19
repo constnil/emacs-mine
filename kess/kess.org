@@ -410,7 +410,10 @@ More dig into omnisharp-emacs.
   (use-package omnisharp
     :defer t
     :config
-    (setq omnisharp-server-executable-path "~/bin/omnisharp/OmniSharp")
+    (setq omnisharp-server-executable-path
+          (or (and (eq system-type 'windows-nt)
+                   (expand-file-name "~/bin/omnisharp/OmniSharp.exe"))
+              (expand-file-name "~/bin/omnisharp/OmniSharp")))
     (when (file-exists-p omnisharp-server-executable-path)
       (add-hook 'csharp-mode-hook 'omnisharp-mode)
       (add-to-list 'company-backends 'company-omnisharp)))
