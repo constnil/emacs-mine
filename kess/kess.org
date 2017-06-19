@@ -611,6 +611,8 @@ painful.
 
               ("<C-tab>" . kess-switch-next-win-or-buf)
               ("<C-S-tab>" . kess-switch-prev-win-or-buf)
+              ("<C-iso-lefttab>" . kess-switch-next-win-or-buf)
+              ("<C-S-iso-lefttab>" . kess-switch-prev-win-or-buf)
               ("C-M-|" . kess-indent-buffer)
               ("M-`" . kess-kill-buf-or-win)
 
