@@ -313,9 +313,13 @@ Learn more and get used to it.
     (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
+*** Utility functions
 #+BEGIN_SRC emacs-lisp
-  (defun add-lisp-hook (func)
-    (dolist (x '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
+  (defvar kess-lisp-modes
+    '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
+
+  (defun kess--add-lisp-mode-hook (func)
+    (dolist (x kess-lisp-modes)
       (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
 #+END_SRC
 *** clojure
@@ -341,7 +345,7 @@ Learn more and get used to it.
                 ("M-n" . paredit-forward)
                 ("M-p" . paredit-backward))
     :config
-    (add-lisp-hook 'enable-paredit-mode))
+    (kess--add-lisp-mode-hook 'enable-paredit-mode))
 #+END_SRC
 *** smartparens
 #+BEGIN_SRC emacs-lisp
@@ -354,12 +358,13 @@ Learn more and get used to it.
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
+  (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
 
   (use-package eldoc
     :diminish eldoc-mode
     :config
     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-    (add-lisp-hook (lambda () (eldoc-mode 1))))
+    (kess--add-lisp-mode-hook (lambda () (eldoc-mode 1))))
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
@@ -423,7 +428,7 @@ More dig into omnisharp-emacs.
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    (add-lisp-hook 'rainbow-delimiters-mode))
+    (kess--add-lisp-mode-hook 'rainbow-delimiters-mode))
 
   (use-package color-identifiers-mode
     :diminish color-identifiers-mode
