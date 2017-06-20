@@ -321,6 +321,13 @@ Learn more and get used to it.
   (defun kess--add-lisp-mode-hook (func)
     (dolist (x kess-lisp-modes)
       (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
+
+  (defun kess-eval-print-last-sexp ()
+    "Call `eval-print-last-sexp' by move to the end of sexp."
+    (interactive)
+    (unwind-protect
+        (end-of-defun)
+      (eval-print-last-sexp)))
 #+END_SRC
 *** clojure
 #+BEGIN_SRC emacs-lisp
@@ -565,13 +572,6 @@ painful.
     "Switch to *scratch* buffer."
     (interactive)
     (switch-to-buffer "*scratch*"))
-
-  (defun kess-eval-print-last-sexp ()
-    "Call `eval-print-last-sexp' by move to the end of sexp."
-    (interactive)
-    (unwind-protect
-        (paredit-forward-up)
-      (eval-print-last-sexp)))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -647,7 +647,7 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
-  (bind-keys :map lisp-interaction-mode-map
+  (bind-keys :map paredit-mode-map
              ("<C-return>" . kess-eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
