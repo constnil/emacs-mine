@@ -95,8 +95,8 @@ These're packages I think is essential.
     :diminish company-mode
     :demand
     :bind (:map company-active-map
-                ("M-n" . company-next-page)
-                ("M-p" . company-previous-page)
+                ("C-M-n" . company-next-page)
+                ("C-M-p" . company-previous-page)
                 ("C-n" . company-select-next-or-abort)
                 ("C-p" . company-select-previous-or-abort)
                 ("ESC" . company-abort))
