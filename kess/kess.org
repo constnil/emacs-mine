@@ -343,6 +343,13 @@ Learn more and get used to it.
 #+BEGIN_SRC emacs-lisp
   (use-package clojure-mode :defer t)
   (use-package cider :defer t)
+  (use-package clj-refactor
+    :config
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (yas-minor-mode 1)
+                (cljr-add-keybindings-with-prefix "C-c C-m"))))
 #+END_SRC
 *** common lisp
 #+BEGIN_SRC emacs-lisp
