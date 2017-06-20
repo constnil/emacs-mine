@@ -25,7 +25,7 @@ Thanks Sacha!
       (add-to-list 'load-path home-lib-path)
       (load (concat home-lib-path "init.el") 'noerror)))
 #+END_SRC
-* Package Setup
+* Package setup
 ** package.el
 Setup archive lists and initialize package.el
 #+BEGIN_SRC emacs-lisp
@@ -74,7 +74,91 @@ my own key bindings.
   (use-package diminish)
   (use-package bind-key)
 #+END_SRC
-* Default Setup
+** essential packages
+These're packages I think is essential.
+*** no-littering
+#+BEGIN_SRC emacs-lisp
+  (use-package no-littering
+    :ensure t
+    :config
+    (require 'recentf)
+    (add-to-list 'recentf-exclude no-littering-var-directory)
+    (add-to-list 'recentf-exclude no-littering-etc-directory))
+#+END_SRC
+*** undo-tree
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree :config (global-undo-tree-mode))
+#+END_SRC
+*** company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :diminish company-mode
+    :demand
+    :bind (:map company-active-map
+                ("M-n" . company-next-page)
+                ("M-p" . company-previous-page)
+                ("C-n" . company-select-next-or-abort)
+                ("C-p" . company-select-previous-or-abort)
+                ("ESC" . company-abort))
+    :config
+    (setq company-idle-delay 0.3
+          company-tooltip-limit 12
+          company-minimum-prefix-length 2)
+    (global-company-mode 1))
+#+END_SRC
+*** ido
+Setup ido but not using it by default.
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-ubiquitous :defer t)
+  (use-package flx-ido
+    :defer t
+    :config
+    (setq ido-auto-merge-work-directories-length -1
+          ido-create-new-buffer 'always
+          ido-default-file-method 'selected-window
+          ido-enable-flex-matching t
+          ido-enable-prefix nil
+          ido-max-prospects 10
+          ido-use-faces nil
+          ido-use-filename-at-point 'guess)
+    (flx-ido-mode 1))
+#+END_SRC
+*** ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :demand
+    :ensure counsel
+    :diminish ivy-mode
+    :bind (:map ivy-minibuffer-map
+                ("C-j" . ivy-immediate-done)
+                ("RET" . ivy-alt-done)
+                ("C-." . kess-cycle-ivy-regex-method))
+    :bind (:map read-expression-map
+                ("C-r" . counsel-expression-history))
+    :config
+    (add-hook 'after-init-hook
+              (lambda ()
+                (when (bound-and-true-p ido-ubiquitous-mode)
+                  (ido-ubiquitous-mode -1))
+                (when (bound-and-true-p ido-mode)
+                  (ido-mode -1))
+                (ivy-mode 1)))
+
+    (setq-default ivy-use-virtual-buffers t
+                  ivy-count-format ""
+                  ivy-initial-inputs-alist '((man . "^") (woman . "^"))
+                  projectile-completion-system 'ivy)
+
+    (setq ivy-use-virtual-buffers t
+          enable-recursive-minibuffers t)
+
+    (use-package ivy-historian
+      :config
+      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
+
+    (use-package flx))
+#+END_SRC
+* Default setup
 ** better-defaults
 Use [[https://github.com/technomancy/better-defaults][better-defaults]] package as start point
 #+BEGIN_SRC emacs-lisp
@@ -165,80 +249,6 @@ menu bar under GUI mode, whenever I'm getting lost, menu bar come for rescue.
               (or (and (eq system-type 'windows-nt) 'toggle-frame-maximized)
                   'toggle-frame-fullscreen)))
 #+END_SRC
-* Essential packages
-These're packages I think is essential.
-** undo-tree
-#+BEGIN_SRC emacs-lisp
-  (use-package undo-tree :config (global-undo-tree-mode))
-#+END_SRC
-** company
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :diminish company-mode
-    :demand
-    :bind (:map company-active-map
-                ("M-n" . company-next-page)
-                ("M-p" . company-previous-page)
-                ("C-n" . company-select-next-or-abort)
-                ("C-p" . company-select-previous-or-abort)
-                ("ESC" . company-abort))
-    :config
-    (setq company-idle-delay 0.3
-          company-tooltip-limit 12
-          company-minimum-prefix-length 2)
-    (global-company-mode 1))
-#+END_SRC
-** ido
-#+BEGIN_SRC emacs-lisp
-  (use-package ido-ubiquitous :defer t)
-
-  (use-package flx-ido
-    :defer t
-    :config
-    (setq ido-auto-merge-work-directories-length -1
-          ido-create-new-buffer 'always
-          ido-default-file-method 'selected-window
-          ido-enable-flex-matching t
-          ido-enable-prefix nil
-          ido-max-prospects 10
-          ido-use-faces nil
-          ido-use-filename-at-point 'guess)
-    (flx-ido-mode 1))
-#+END_SRC
-** ivy
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :demand
-    :ensure counsel
-    :diminish ivy-mode
-    :bind (:map ivy-minibuffer-map
-                ("C-j" . ivy-immediate-done)
-                ("RET" . ivy-alt-done)
-                ("C-." . kess-cycle-ivy-regex-method))
-    :bind (:map read-expression-map
-                ("C-r" . counsel-expression-history))
-    :config
-    (add-hook 'after-init-hook
-              (lambda ()
-                (when (bound-and-true-p ido-ubiquitous-mode)
-                  (ido-ubiquitous-mode -1))
-                (when (bound-and-true-p ido-mode)
-                  (ido-mode -1))
-                (ivy-mode 1)))
-
-    (setq-default ivy-use-virtual-buffers t
-                  ivy-count-format ""
-                  ivy-initial-inputs-alist '((man . "^") (woman . "^"))
-                  projectile-completion-system 'ivy)
-    (setq ivy-use-virtual-buffers t
-          enable-recursive-minibuffers t)
-
-    (use-package ivy-historian
-      :config
-      (add-hook 'after-init-hook (lambda () (ivy-historian-mode t))))
-
-    (use-package flx))
-#+END_SRC
 * Useful packages
 In order to be KESS, these're packages besides essential packages loaded above.
 #+BEGIN_SRC emacs-lisp
@@ -290,7 +300,7 @@ this really possible./
     (global-evil-search-highlight-persist t))
 #+END_SRC
 * Coding setup
-** Syntax Check
+** Syntax check
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :defer t
@@ -313,7 +323,7 @@ Learn more and get used to it.
     (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
-*** Utility functions
+*** utility functions
 #+BEGIN_SRC emacs-lisp
   (defvar kess-lisp-modes
     '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
@@ -339,34 +349,35 @@ Learn more and get used to it.
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 #+END_SRC
+*** emacs-lisp
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
+  (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
+#+END_SRC
 *** paredit
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
-    :demand
-    :diminish paredit-mode
-    :bind (:map paredit-mode-map
-                ("C-." . paredit-forward-slurp-sexp)
-                ("C-," . paredit-forward-barf-sexp)
-                ("C-\>" . paredit-backward-barf-sexp)
-                ("C-\<" . paredit-backward-slurp-sexp)
-                ("M-n" . paredit-forward)
-                ("M-p" . paredit-backward))
     :config
     (kess--add-lisp-mode-hook 'enable-paredit-mode))
 #+END_SRC
 *** smartparens
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
+    :demand
     :config
     (require 'smartparens-config)
     (sp-use-paredit-bindings)
+    (bind-keys :map paredit-mode-map
+               ("C-." . sp-forward-barf-sexp)
+               ("C-," . sp-forward-slurp-sexp)
+               ("C-\>" . sp-backward-barf-sexp)
+               ("C-\<" . sp-backward-slurp-sexp)
+               ("<C-return>" . eval-last-sexp)
+               ("<M-return>" . kess-eval-print-last-sexp))
     (smartparens-global-strict-mode t))
 #+END_SRC
-*** emacs-lisp
+*** eldoc
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
-  (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
-
   (use-package eldoc
     :diminish eldoc-mode
     :config
@@ -577,12 +588,7 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("<backspace>" . delete-backward-char))
 
-  (bind-keys* ("<M-left>" . windmove-left)
-              ("<M-down>" . windmove-down)
-              ("<M-up>" . windmove-up)
-              ("<M-right>" . windmove-right)
-
-              ("<C-up>" . scroll-down-line)
+  (bind-keys* ("<C-up>" . scroll-down-line)
               ("<C-down>" . scroll-up-line)
 
               ("M-N" . scroll-other-window)
@@ -628,7 +634,7 @@ painful.
               ("C-_" . evil-numbers/dec-at-pt)
               ("C-:" . evil-ex)
               ("C-S-j" . evil-join)
-              ("C-M-J" . join-line)
+              ("C-M-j" . join-line)
 
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
@@ -647,8 +653,6 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
-  (bind-keys :map paredit-mode-map
-             ("<C-return>" . kess-eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
@@ -678,7 +682,6 @@ prefix binding use C-\, which I think very easy to reach.
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
-             ("h" . evil-search-highlight-persist-remove-all)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("r" . inf-ruby)
