@@ -646,6 +646,9 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
+  (bind-keys :map org-mode-map
+             ("M-n" . org-down-element)
+             ("M-p" . org-up-element))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
