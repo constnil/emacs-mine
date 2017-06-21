@@ -370,9 +370,7 @@ Learn more and get used to it.
                 ("C-\>" . paredit-backward-barf-sexp)
                 ("C-\<" . paredit-backward-slurp-sexp)
                 ("<C-return>" . eval-last-sexp)
-                ("<M-return>" . kess-eval-print-last-sexp)
-                ("M-n" . paredit-forward)
-                ("M-p" . paredit-backward))
+                ("<M-return>" . kess-eval-print-last-sexp))
     :config
     (kess--add-lisp-mode-hook 'enable-paredit-mode))
 #+END_SRC
@@ -680,6 +678,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("a" . org-archive-to-archive-sibling)
              ("b" . switch-to-buffer-other-window)
              ("c" . cider-jack-in)
+             ("C" . cider-jack-in-clojurescript)
              ("d" . dired-other-window)
              ("f" . find-file-other-window)
              ("C-f" . flycheck-mode)
