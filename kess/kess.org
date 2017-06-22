@@ -625,10 +625,12 @@ painful.
         (let ((next (cadr (member (cdr method) methods))))
           (setcdr method (or next (car methods)))))))
 
-  (defun kess-switch-to-scratch ()
+  (defun kess-toggle-scratch-buffer ()
     "Switch to *scratch* buffer."
     (interactive)
-    (switch-to-buffer "*scratch*"))
+    (if (equal (buffer-name) "*scratch*")
+        (kess-switch-prev-win-or-buf 'force-buffer)
+      (switch-to-buffer "*scratch*")))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -730,7 +732,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("ESC" . evil-mode)
              ("TAB" . org-force-cycle-archived)
 
-             ("`" . kess-switch-to-scratch)
+             ("`" . kess-toggle-scratch-buffer)
              ("0" . delete-frame)
              ("a" . org-archive-to-archive-sibling)
              ("b" . switch-to-buffer-other-window)
