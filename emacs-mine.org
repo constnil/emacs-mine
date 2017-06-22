@@ -10,6 +10,22 @@ spacemacs, etc). I started by including them individualy as submodule (so called
 "/emacs mine/") and load particular /mine/ specified by environment variable
 $EMACS_MINE on emacs startup. Thus I can easily taste and study them, not mess
 up my own configuration.
+* My custom aliases
+** Mine prefix aliases
+- alias prelude='export EMACS_MINE="prelude" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias live='export EMACS_MINE="live" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias space='export EMACS_MINE="space" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias bling='export EMACS_MINE="bling" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias sachac='export EMACS_MINE="sachac" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias purcell='export EMACS_MINE="purcell" && echo "launch emacs using mine: $EMACS_MINE" &&'
+- alias kess='export EMACS_MINE="kess" && echo "launch emacs using mine: $EMACS_MINE" &&'
+** Emacs command aliases, they can be used follow above mine prefixes, like 'prelude emacw'
+- alias vanilla='emacs -nw -q'
+- alias emacn='emacs -nw'
+- alias emacd='emacs -nw --debug-init'
+- alias emawd='emacs --debug-init &'
+- alias emact='emacsclient -t'
+- alias emacw='emacsclient -c &'
 * Mine Loading
 #+BEGIN_SRC emacs-lisp
   ;; Common setting and variables
@@ -73,90 +89,3 @@ up my own configuration.
     ;; Done
     (message "mine \"%s\" loaded" mine))
 #+END_SRC
-* My custom aliases
-** Mine prefix aliases
-- alias prelude='export EMACS_MINE="prelude" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias live='export EMACS_MINE="live" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias space='export EMACS_MINE="space" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias bling='export EMACS_MINE="bling" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias sachac='export EMACS_MINE="sachac" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias purcell='export EMACS_MINE="purcell" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias kess='export EMACS_MINE="kess" && echo "launch emacs using mine: $EMACS_MINE" &&'
-** Emacs command aliases, they can be used follow above mine prefixes, like 'prelude emacw'
-- alias vanilla='emacs -nw -q'
-- alias emacn='emacs -nw'
-- alias emacd='emacs -nw --debug-init'
-- alias emawd='emacs --debug-init &'
-- alias emact='emacsclient -t'
-- alias emacw='emacsclient -c &'
-* Mine management will not use submodule
-- How to define mine? (name, repos location, ...)
-- Maybe not use environment variable too?
-- Which famous mines too include by default?
-* Use cask and ecukes for study purpose?
-* Functions for emacs study?
-- Insert command name by key press
-* Learning Plan
-** As text editor
-*** global search (grep/ack/ag)
-*** open recent file
-** As system management tool
-*** eshell-mode
-*** shell-mode
-*** term-mode
-*** package management
-**** el-get
-**** package.el
-**** use-package
-** As personal task management tool
-*** OrgMode
-** As programming IDE
-*** project management
-**** projectile
-***** Register for known project?
-- 0-9，total 10 registers
-- C-u 0..9 C-c p p switch project and record to register
-- C-u 0..9 followed by projectile commands to operate agaitest register recorded
-  project
-**** find-file-in-project
-*** pair wrapping
-- smartparens
-- wrap-region
-- autopair
-*** comment management
-** As elisp IDE
-*** paredit
-*** emacs-lisp-mode
-*** lisp-interaction-mode
-*** cask
-*** ecukes
-** As ruby IDE
-** As clojure IDE
-*** clojure-mode
-*** cider
-** As C# IDE
-*** csharp-mode
-*** omnisharp-emacs
-** Dig into
-*** [[file+emacs:~/warehouse/projects/references/emacs/][emacs source code]]
-**** TODO Build Emacs under Msys2 [[https://chriszheng.science/2015/03/19/Chinese-version-of-Emacs-building-guideline/][reference]]
-***** Install Msys2 packages
-pacman -S base-devel mingw-w64-x86_64-toolchain \
-mingw-w64-x86_64-xpm-nox mingw-w64-x86_64-libtiff \
-mingw-w64-x86_64-giflib mingw-w64-x86_64-libpng \
-mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-librsvg \
-mingw-w64-x86_64-libxml2 mingw-w64-x86_64-gnutls --needed
-***** Run autogen
-./autogen.sh
-***** Configure
-PKG_CONFIG_PATH=/mingw64/lib/pkgconfig ./configure --host=x86_64-w64-mingw32 \
---target=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --prefix=/usr/bin --with-wide-int \
---with-jpeg --with-xpm --with-png --with-tiff --with-rsvg --with-xml2 \
---with-gnutls --without-imagemagick
-***** Make
-make && make install
-***** progress
-configure failure: no socklen_t
-*** how emacs key binding works
-- [[file:~/.emacs.d/notes/keymap.org][notes]] after reading emacs lisp manual
-*** find key binding's original and current value in all minor/major modes
