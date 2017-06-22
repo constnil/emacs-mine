@@ -103,7 +103,8 @@ These're packages I think is essential.
     :config
     (setq company-idle-delay 0.3
           company-tooltip-limit 12
-          company-minimum-prefix-length 2)
+          company-minimum-prefix-length 2
+          company-tooltip-align-annotations t)
     (global-company-mode 1))
 #+END_SRC
 *** ido
