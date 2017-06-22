@@ -332,17 +332,25 @@ Learn more and get used to it.
     (dolist (x kess-lisp-modes)
       (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
 
-  (defun kess-eval-print-last-sexp ()
-    "Call `eval-print-last-sexp' by move to the end of sexp."
-    (interactive)
-    (unwind-protect
-        (end-of-defun)
-      (eval-print-last-sexp)))
+  (defadvice eval-print-last-sexp
+      (before ad-eval-print-last-sexp activate compile)
+    (end-of-defun))
+
+  (defadvice cider-eval-print-last-sexp
+      (before ad-cider-eval-print-last-sexp activate compile)
+    (end-of-defun))
 #+END_SRC
 *** clojure
 #+BEGIN_SRC emacs-lisp
   (use-package clojure-mode :defer t)
-  (use-package cider :defer t)
+  (use-package cider
+    :bind (:map cider-mode-map
+                ("M-D" . cider-eval-defun-at-point)
+                ("M-F" . cider-eval-file)
+                ("M-G" . cider-eval-region)
+                ("M-H" . cider-eval-buffer)
+                ("<C-return>" . cider-eval-last-sexp)
+                ("<M-return>" . cider-eval-print-last-sexp)))
   (use-package clj-refactor
     :config
     (add-hook 'clojure-mode-hook
@@ -368,9 +376,7 @@ Learn more and get used to it.
                 ("C-." . paredit-forward-barf-sexp)
                 ("C-," . paredit-forward-slurp-sexp)
                 ("C-\>" . paredit-backward-barf-sexp)
-                ("C-\<" . paredit-backward-slurp-sexp)
-                ("<C-return>" . eval-last-sexp)
-                ("<M-return>" . kess-eval-print-last-sexp))
+                ("C-\<" . paredit-backward-slurp-sexp))
     :config
     (kess--add-lisp-mode-hook 'enable-paredit-mode))
 #+END_SRC
@@ -631,10 +637,7 @@ painful.
               ("M-z" . undo-tree-redo)
               ("C-S-z" . undo-tree-visualize)
 
-              ("M-D" . zap-up-to-char)
-              ("M-F" . eval-defun)
-              ("M-G" . eval-region)
-              ("M-H" . eval-buffer)
+              ("M-Z" . zap-up-to-char)
 
               ("C-x C-f" . counsel-find-file)
               ("C-x f" . find-file-in-current-directory)
@@ -677,6 +680,18 @@ painful.
   (bind-keys :map org-mode-map
              ("M-n" . org-down-element)
              ("M-p" . org-up-element))
+  (bind-keys :map emacs-lisp-mode-map
+             ("M-D" . eval-defun)
+             ("M-G" . eval-region)
+             ("M-H" . eval-buffer)
+             ("<C-return>" . eval-last-sexp)
+             ("<M-return>" . eval-print-last-sexp))
+  (bind-keys :map lisp-interaction-mode-map
+             ("M-D" . eval-defun)
+             ("M-G" . eval-region)
+             ("M-H" . eval-buffer)
+             ("<C-return>" . eval-last-sexp)
+             ("<M-return>" . eval-print-last-sexp))
 #+END_SRC
 ** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
