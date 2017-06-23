@@ -658,17 +658,23 @@ painful.
     (kess--resize-window-height 1))
 
   (defun kess--resize-window-width (delta)
-    ""
+    "Change current window width by given DELTA. Check window
+  horizontal position to determin how window width needs to be
+  changed."
     (if (= (nth 2 (window-pixel-edges))
            (frame-pixel-width))
         (window-resize-no-error (selected-window) (* -1 delta) 'horizontal)
       (window-resize-no-error (selected-window) delta 'horizontal)))
 
   (defun kess-resize-window-width-left ()
+    "Wrapper for `kess-resize-window-width' function call to fit
+  the behavior 'left'."
     (interactive)
     (kess--resize-window-width -1))
 
   (defun kess-resize-window-width-right ()
+    "Wrapper for `kess-resize-window-width' function call to fit
+  the behavior 'right'."
     (interactive)
     (kess--resize-window-width 1))
 #+END_SRC
