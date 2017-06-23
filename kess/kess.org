@@ -631,13 +631,58 @@ painful.
     (if (equal (buffer-name) "*scratch*")
         (kess-switch-prev-win-or-buf 'force-buffer)
       (switch-to-buffer "*scratch*")))
+
+  (defun kess--frame-pixel-height-no-mini ()
+    (- (frame-pixel-height)
+       (window-pixel-height (minibuffer-window))))
+
+  (defun kess--resize-window-height (delta)
+    "Change current window height by given DELTA. Check window
+  vertical position to determin how window height needs to be
+  changed."
+    (if (= (nth 3 (window-pixel-edges))
+           (kess--frame-pixel-height-no-mini))
+        (window-resize-no-error (selected-window) (* -1 delta))
+      (window-resize-no-error (selected-window) delta)))
+
+  (defun kess-resize-window-height-up ()
+    "Wrapper for `kess-resize-window-height' function call to fit
+  the behavior 'up'."
+    (interactive)
+    (kess--resize-window-height -1))
+
+  (defun kess-resize-window-height-down ()
+    "Wrapper for `kess-resize-window-height' function call to fit
+  the behavior 'down'."
+    (interactive)
+    (kess--resize-window-height 1))
+
+  (defun kess--resize-window-width (delta)
+    ""
+    (if (= (nth 2 (window-pixel-edges))
+           (frame-pixel-width))
+        (window-resize-no-error (selected-window) (* -1 delta) 'horizontal)
+      (window-resize-no-error (selected-window) delta 'horizontal)))
+
+  (defun kess-resize-window-width-left ()
+    (interactive)
+    (kess--resize-window-width -1))
+
+  (defun kess-resize-window-width-right ()
+    (interactive)
+    (kess--resize-window-width 1))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
   (bind-keys ("<backspace>" . delete-backward-char))
 
-  (bind-keys* ("<C-up>" . scroll-down-line)
-              ("<C-down>" . scroll-up-line)
+  (bind-keys* ("<C-up>" . kess-resize-window-height-up)
+              ("<C-down>" . kess-resize-window-height-down)
+              ("<C-left>" . kess-resize-window-width-left)
+              ("<C-right>" . kess-resize-window-width-right)
+
+              ("<f12>" . evil-window-rotate-downwards)
+              ("<C-f12>" . evil-window-rotate-upwards)
 
               ("M-N" . scroll-other-window)
               ("M-P" . scroll-other-window-down)
