@@ -392,45 +392,72 @@ Learn more and get used to it.
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
-  (use-package inf-ruby
+  (use-package ruby-mode
+    :bind (:map ruby-mode-map
+                ("TAB" . indent-for-tab-command))
     :config
+    (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Guardfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.cap\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.rabl\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Thorfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Vagrantfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Podfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.podspec\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Puppetfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Berksfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Appraisals\\'" . ruby-mode))
+
+    (add-to-list 'completion-ignored-extensions ".rbc")
+
     (setq-default ruby-use-encoding-map nil
                   ruby-insert-encoding-magic-comment nil)
 
-    (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
-
-    (use-package ruby-mode
-      :bind (:map ruby-mode-map
-                  ("TAB" . indent-for-tab-command))
+    (use-package ruby-tools
+      :diminish ruby-tools-mode
       :config
-      (add-hook 'ruby-mode-hook
-                (lambda ()
-                  (unless (derived-mode-p 'prog-mode)
-                    (run-hooks 'prog-mode-hook))))
-      (add-hook 'ruby-mode-hook 'subword-mode))
+      (add-hook 'ruby-mode-hook (lambda () (ruby-tools-mode +1))))
 
-    (use-package enh-ruby-mode
-      :bind (:map enh-ruby-mode-map
-                  ("TAB" . indent-for-tab-command))
+    (use-package inf-ruby
+      :bind (:map inf-ruby-minor-mode-map
+                  ("M-D" . ruby-send-definition-and-go)
+                  ("M-F" . ruby-send-block-and-go)
+                  ("M-G" . ruby-send-region-and-go)
+                  ("M-H" . kess-send-ruby-buffer-and-go)
+                  ("<C-return>" . ruby-send-last-sexp)
+                  ("<M-return>" . kess-send-last-ruby-sexp-and-go))
       :config
-      (add-hook 'enh-ruby-mode-hook
-                (lambda ()
-                  (unless (derived-mode-p 'prog-mode)
-                    (run-hooks 'prog-mode-hook))))
-      (add-hook 'enh-ruby-mode-hook 'subword-mode))
+      (add-hook 'ruby-mode-hook (lambda () (inf-ruby-minor-mode +1)))
+      (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
 
     (use-package ruby-hash-syntax)
     (use-package ruby-compilation
       :config
       (defalias 'rake 'ruby-compilation-rake))
     (use-package robe
+      :diminish robe-mode
       :config
       (eval-after-load 'company '(push 'company-robe company-backends))
       (add-hook 'ruby-mode-hook 'robe-mode)
-      (add-hook 'enh-ruby-mode-hook 'robe-mode)
       (add-hook 'robe-mode-hook 'ac-robe-setup))
 
+    (use-package ruby-electric
+      :diminish ruby-electric-mode
+      :config
+      (add-hook 'ruby-mode-hook 'ruby-electric-mode))
+
     (use-package rspec-mode)
+    (use-package yard-mode
+      :diminish yard-mode
+      :config
+      (add-hook 'ruby-mode-hook 'yard-mode))
     (use-package yari
       :config
       (defalias 'ri 'yari))
@@ -692,6 +719,23 @@ painful.
   the behavior 'right'."
     (interactive)
     (kess--resize-window-width 1))
+
+  (defun kess-info-elisp-manual ()
+    "Open Emacs lisp manual info document."
+    (interactive)
+    (info "elisp"))
+
+  (defun kess-send-ruby-buffer-and-go ()
+    "Wrapper for `ruby-send-buffer' call and switch `inf-rub' buffer."
+    (interactive)
+    (ruby-send-buffer)
+    (ruby-switch-to-inf t))
+
+  (defun kess-send-last-ruby-sexp-and-go ()
+    "Wrapper for `ruby-send-last-sexp' call and switch to `inf-ruby' buffer."
+    (interactive)
+    (ruby-send-last-sexp)
+    (ruby-switch-to-inf t))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -750,6 +794,7 @@ painful.
               ("C-M-/" . query-replace)
               ("C-M-?" . query-replace-regexp)
 
+              ("C-h I" . kess-info-elisp-manual)
               ("C-h t" . cider-drink-a-sip)
               ("C-h T" . help-with-tutorial)
 
@@ -758,7 +803,9 @@ painful.
 
               ("C-h h" . counsel-info-lookup-symbol)
               ("C-h L" . counsel-find-library)
-              ("C-h u" . counsel-unicode-char))
+              ("C-h u" . counsel-unicode-char)
+
+              ("C-h R" . yari))
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
@@ -812,6 +859,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("r" . inf-ruby)
+             ("R" . inf-ruby-console-auto)
              ("s" . slime)
              ("x" . execute-extended-command)
              ("C-x" . smex-major-mode-commands))
