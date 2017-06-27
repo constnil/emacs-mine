@@ -4,8 +4,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(kess-switch-black-list (quote ("\\*.*\\*" "TAGS" "OmniServer" "tasks\.org")))
- '(kess-switch-white-list (quote ("\\*Org Src" "\\*cider-repl" "\\*slime-repl"))))
+ '(kess-switch-black-list (quote ("\\*.*\\*" "TAGS" "OmniServer" "tasks.org")))
+ '(kess-switch-white-list
+   (quote
+    ("\\*Org Src" "\\*cider-repl" "\\*slime-repl" "\\*ruby")))
+ '(package-selected-packages
+   (quote
+    (enh-ruby-mode mmm-mode yaml-mode bundler goto-gem yari rspec-mode robe ruby-compilation ruby-hash-syntax find-file-in-repository projectile color-identifiers-mode rainbow-delimiters web-mode tide omnisharp csharp-mode clj-refactor cider clojure-mode yasnippet flycheck-pos-tip flycheck evil-search-highlight-persist evil-numbers evil-leader evil-visualstar evil popwin smex fullframe dtrt-indent bookmark+ ack ag better-defaults ivy-historian counsel flx-ido ido-ubiquitous company undo-tree no-littering use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
