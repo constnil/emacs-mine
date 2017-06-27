@@ -206,6 +206,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         org-tags-column 80
         org-use-property-inheritance t)
 
+  (subword-mode 1)
   (winner-mode 1)
   (show-paren-mode 1)
   (recentf-mode 1)
