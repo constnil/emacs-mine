@@ -10,7 +10,7 @@
     ("\\*Org Src" "\\*cider-repl" "\\*slime-repl" "\\*ruby")))
  '(package-selected-packages
    (quote
-    (enh-ruby-mode mmm-mode yaml-mode bundler goto-gem yari rspec-mode robe ruby-compilation ruby-hash-syntax find-file-in-repository projectile color-identifiers-mode rainbow-delimiters web-mode tide omnisharp csharp-mode clj-refactor cider clojure-mode yasnippet flycheck-pos-tip flycheck evil-search-highlight-persist evil-numbers evil-leader evil-visualstar evil popwin smex fullframe dtrt-indent bookmark+ ack ag better-defaults ivy-historian counsel flx-ido ido-ubiquitous company undo-tree no-littering use-package))))
+    (yard-mode ruby-electric ruby-tools enh-ruby-mode mmm-mode yaml-mode bundler goto-gem yari rspec-mode robe ruby-compilation ruby-hash-syntax find-file-in-repository projectile color-identifiers-mode rainbow-delimiters web-mode tide omnisharp csharp-mode clj-refactor cider clojure-mode yasnippet flycheck-pos-tip flycheck evil-search-highlight-persist evil-numbers evil-leader evil-visualstar evil popwin smex fullframe dtrt-indent bookmark+ ack ag better-defaults ivy-historian counsel flx-ido ido-ubiquitous company undo-tree no-littering use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -24,3 +24,4 @@
  '(rainbow-delimiters-depth-6-face ((t (:foreground "orchid"))))
  '(rainbow-delimiters-depth-7-face ((t (:foreground "spring green"))))
  '(rainbow-delimiters-depth-8-face ((t (:foreground "sienna1")))))
+
