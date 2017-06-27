@@ -391,29 +391,43 @@ Learn more and get used to it.
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
-  (use-package ruby-mode
-    :bind (:map ruby-mode-map
-                ("TAB" . indent-for-tab-command))
+  (use-package inf-ruby
     :config
     (setq-default ruby-use-encoding-map nil
                   ruby-insert-encoding-magic-comment nil)
 
-    (add-hook 'ruby-mode-hook
-              (lambda ()
-                (unless (derived-mode-p 'prog-mode)
-                  (run-hooks 'prog-mode-hook))))
-    (add-hook 'ruby-mode-hook 'subword-mode)
+    (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter)
+
+    (use-package ruby-mode
+      :bind (:map ruby-mode-map
+                  ("TAB" . indent-for-tab-command))
+      :config
+      (add-hook 'ruby-mode-hook
+                (lambda ()
+                  (unless (derived-mode-p 'prog-mode)
+                    (run-hooks 'prog-mode-hook))))
+      (add-hook 'ruby-mode-hook 'subword-mode))
+
+    (use-package enh-ruby-mode
+      :bind (:map enh-ruby-mode-map
+                  ("TAB" . indent-for-tab-command))
+      :config
+      (add-hook 'enh-ruby-mode-hook
+                (lambda ()
+                  (unless (derived-mode-p 'prog-mode)
+                    (run-hooks 'prog-mode-hook))))
+      (add-hook 'enh-ruby-mode-hook 'subword-mode))
 
     (use-package ruby-hash-syntax)
     (use-package ruby-compilation
       :config
       (defalias 'rake 'ruby-compilation-rake))
-    (use-package inf-ruby)
     (use-package robe
       :config
       (eval-after-load 'company '(push 'company-robe company-backends))
-      (add-hook 'robe-mode-hook 'ac-robe-setup)
-      (add-hook 'ruby-mode-hook 'robe-mode))
+      (add-hook 'ruby-mode-hook 'robe-mode)
+      (add-hook 'enh-ruby-mode-hook 'robe-mode)
+      (add-hook 'robe-mode-hook 'ac-robe-setup))
 
     (use-package rspec-mode)
     (use-package yari
