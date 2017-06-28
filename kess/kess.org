@@ -423,9 +423,10 @@ Learn more and get used to it.
     (use-package ruby-tools
       :diminish ruby-tools-mode
       :config
-      (add-hook 'ruby-mode-hook (lambda () (ruby-tools-mode +1))))
+      (add-hook 'ruby-mode-hook 'ruby-tools-mode))
 
     (use-package inf-ruby
+      :demand
       :bind (:map inf-ruby-minor-mode-map
                   ("M-D" . ruby-send-definition-and-go)
                   ("M-F" . ruby-send-block-and-go)
@@ -434,19 +435,18 @@ Learn more and get used to it.
                   ("<C-return>" . ruby-send-last-sexp)
                   ("<M-return>" . kess-send-last-ruby-sexp-and-go))
       :config
-      (add-hook 'ruby-mode-hook (lambda () (inf-ruby-minor-mode +1)))
+      (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
       (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
 
-    (use-package ruby-hash-syntax)
     (use-package ruby-compilation
       :config
       (defalias 'rake 'ruby-compilation-rake))
+
     (use-package robe
       :diminish robe-mode
       :config
       (eval-after-load 'company '(push 'company-robe company-backends))
-      (add-hook 'ruby-mode-hook 'robe-mode)
-      (add-hook 'robe-mode-hook 'ac-robe-setup))
+      (add-hook 'ruby-mode-hook 'robe-mode))
 
     (use-package ruby-electric
       :diminish ruby-electric-mode
@@ -454,16 +454,21 @@ Learn more and get used to it.
       (add-hook 'ruby-mode-hook 'ruby-electric-mode))
 
     (use-package rspec-mode)
+
     (use-package yard-mode
       :diminish yard-mode
       :config
       (add-hook 'ruby-mode-hook 'yard-mode))
+
     (use-package yari
       :config
       (defalias 'ri 'yari))
+
     (use-package goto-gem)
     (use-package bundler)
     (use-package yaml-mode)
+    (use-package ruby-hash-syntax)
+
     (use-package mmm-mode
       :config
       (require 'mmm-erb)
