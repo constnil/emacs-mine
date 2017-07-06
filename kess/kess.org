@@ -467,16 +467,7 @@ Learn more and get used to it.
     (use-package goto-gem)
     (use-package bundler)
     (use-package yaml-mode)
-    (use-package ruby-hash-syntax)
-
-    (use-package mmm-mode
-      :config
-      (require 'mmm-erb)
-      (require 'derived)
-      (mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
-
-      (add-to-list 'auto-mode-alist '("\\.jst\\.ejs\\'"  . html-erb-mode))
-      (mmm-add-mode-ext-class 'yaml-mode "\\.yaml\\(\\.erb\\)?\\'" 'erb)))
+    (use-package ruby-hash-syntax))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -500,15 +491,6 @@ More dig into omnisharp-emacs.
     :config
     (use-package typescript-mode)
 
-    (defun setup-tide-mode ()
-      (interactive)
-      (tide-setup)
-      (flycheck-mode +1)
-      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-      (eldoc-mode +1)
-      (tide-hl-identifier-mode +1)
-      (company-mode +1))
-
     (add-hook 'before-save-hook 'tide-format-before-save)
     (add-hook 'typescript-mode-hook 'setup-tide-mode)
 
@@ -519,20 +501,26 @@ More dig into omnisharp-emacs.
       (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)))
 
   (use-package web-mode
+    :ensure tide
     :defer t
     :config
-    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-    (add-hook 'web-mode-hook
-              (lambda ()
-                (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                  (setup-tide-mode))))
+    (defun setup-tide-mode ()
+      (interactive)
+      (tide-setup)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (eldoc-mode +1)
+      (tide-hl-identifier-mode +1)
+      (company-mode +1))
 
-    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
     (add-hook 'web-mode-hook
               (lambda ()
-                (when (string-equal "jsx" (file-name-extension buffer-file-name))
-                  (setup-tide-mode))))
-    (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append))
+                (when (member (file-name-extension buffer-file-name)
+                              '("tsx" "jsx"))
+                  (setup-tide-mode)))))
+
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 #+END_SRC
 ** Common coding setup
 #+BEGIN_SRC emacs-lisp
