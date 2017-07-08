@@ -467,7 +467,8 @@ Learn more and get used to it.
     (use-package goto-gem)
     (use-package bundler)
     (use-package yaml-mode)
-    (use-package ruby-hash-syntax))
+    (use-package ruby-hash-syntax)
+    (use-package emacs-eruby-mode))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -519,8 +520,8 @@ More dig into omnisharp-emacs.
                   (setup-tide-mode)))))
 
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)))
+  ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode)
 #+END_SRC
 ** Common coding setup
 #+BEGIN_SRC emacs-lisp
