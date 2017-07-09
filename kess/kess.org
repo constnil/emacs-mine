@@ -206,7 +206,6 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         org-tags-column 80
         org-use-property-inheritance t)
 
-  (subword-mode 1)
   (winner-mode 1)
   (show-paren-mode 1)
   (recentf-mode 1)
@@ -525,6 +524,8 @@ More dig into omnisharp-emacs.
 #+END_SRC
 ** Common coding setup
 #+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'subword-mode)
+
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
