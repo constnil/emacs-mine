@@ -395,57 +395,56 @@ Learn more and get used to it.
     :bind (:map ruby-mode-map
                 ("TAB" . indent-for-tab-command))
     :config
-    (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.cap\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.irbrc\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.podspec\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.pryrc\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.rabl\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.rjs\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.rxml\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Appraisals\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Berksfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("Guardfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("\\.cap\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("\\.rabl\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Kirkfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Podfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Puppetfile\\'" . ruby-mode))
+    (add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("Thorfile\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("Vagrantfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Podfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("\\.podspec\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Puppetfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Berksfile\\'" . ruby-mode))
-    (add-to-list 'auto-mode-alist '("Appraisals\\'" . ruby-mode))
+
+    (add-to-list 'auto-mode-alist '("Gemfile\\.lock\\'" . conf-mode))
 
     (add-to-list 'completion-ignored-extensions ".rbc")
 
     (setq-default ruby-use-encoding-map nil
                   ruby-insert-encoding-magic-comment nil)
 
+    (bind-keys :map ruby-mode-map
+               ("<f6>" . ruby-compilation-this-buffer)
+               ("<f7>" . ruby-compilation-this-test))
+
+    (add-hook 'ruby-mode-hook
+              (lambda ()
+                (unless (derived-mode-p 'prog-mode)
+                  (run-hooks 'prog-mode-hook))))
+
+    (add-hook 'ruby-mode-hook
+              (lambda ()
+                (set (make-local-variable 'highlight-symbol-ignore-list)
+                     (list (concat "\\_<" (regexp-opt '("do" "end")) "\\_>")))))
+
     (use-package ruby-tools
       :diminish ruby-tools-mode
       :config
       (add-hook 'ruby-mode-hook 'ruby-tools-mode))
-
-    (use-package inf-ruby
-      :demand
-      :bind (:map inf-ruby-minor-mode-map
-                  ("M-D" . ruby-send-definition-and-go)
-                  ("M-F" . ruby-send-block-and-go)
-                  ("M-G" . ruby-send-region-and-go)
-                  ("M-H" . kess-send-ruby-buffer-and-go)
-                  ("<C-return>" . ruby-send-last-sexp)
-                  ("<M-return>" . kess-send-last-ruby-sexp-and-go))
-      :config
-      (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
-      (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
-
-    (use-package ruby-compilation
-      :config
-      (defalias 'rake 'ruby-compilation-rake))
-
-    (use-package robe
-      :diminish robe-mode
-      :config
-      (eval-after-load 'company '(push 'company-robe company-backends))
-      (add-hook 'ruby-mode-hook 'robe-mode))
 
     (use-package ruby-electric
       :diminish ruby-electric-mode
@@ -465,9 +464,35 @@ Learn more and get used to it.
 
     (use-package goto-gem)
     (use-package bundler)
+
+    (use-package ruby-compilation
+      :config
+      (defalias 'rake 'ruby-compilation-rake))
+
+    (use-package inf-ruby
+      :demand
+      :bind (:map inf-ruby-minor-mode-map
+                  ("M-D" . ruby-send-definition-and-go)
+                  ("M-F" . ruby-send-block-and-go)
+                  ("M-G" . ruby-send-region-and-go)
+                  ("M-H" . kess-send-ruby-buffer-and-go)
+                  ("<C-return>" . ruby-send-last-sexp)
+                  ("<M-return>" . kess-send-last-ruby-sexp-and-go))
+      :config
+      (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
+      (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
+
+    (use-package robe
+      :diminish robe-mode
+      :config
+      (add-hook 'ruby-mode-hook 'robe-mode)
+      (dolist (hook '(ruby-mode-hook inf-ruby-mode-hook haml-mode))
+        (add-hook hook (lambda () (push 'company-robe company-backends)))))
+
     (use-package yaml-mode)
+
     (use-package ruby-hash-syntax)
-    (use-package emacs-eruby-mode))
+    (use-package eruby-mode)
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -519,8 +544,7 @@ More dig into omnisharp-emacs.
                   (setup-tide-mode)))))
 
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)))
-  ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode)
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 #+END_SRC
 ** Common coding setup
 #+BEGIN_SRC emacs-lisp
@@ -535,6 +559,21 @@ More dig into omnisharp-emacs.
     :diminish color-identifiers-mode
     :config
     (global-color-identifiers-mode))
+#+END_SRC
+** mmm-mode setup
+#+BEGIN_SRC emacs-lisp
+    (use-package mmm-mode
+      :config
+      (require 'mmm-auto)
+      (require 'mmm-erb)
+      (setq mmm-global-mode 'maybe)
+      (mmm-add-classes
+       '((eruby
+          :submode ruby-mode
+          :front "<%[=]?"
+          :back  "%>")))
+
+      (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb)))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
