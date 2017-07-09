@@ -770,6 +770,25 @@ painful.
     (interactive)
     (ruby-send-last-sexp)
     (ruby-switch-to-inf t))
+
+  (defmacro kess--defshortcut (name)
+    (let ((symbol (intern name)))
+      `(progn
+         (defvar ,symbol nil)
+         (defun ,symbol ()
+           (interactive)
+           (funcall ,symbol)))))
+
+  (kess--defshortcut "kess-shortcut-0")
+  (kess--defshortcut "kess-shortcut-1")
+  (kess--defshortcut "kess-shortcut-2")
+  (kess--defshortcut "kess-shortcut-3")
+  (kess--defshortcut "kess-shortcut-4")
+  (kess--defshortcut "kess-shortcut-5")
+  (kess--defshortcut "kess-shortcut-6")
+  (kess--defshortcut "kess-shortcut-7")
+  (kess--defshortcut "kess-shortcut-8")
+  (kess--defshortcut "kess-shortcut-9")
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -870,6 +889,17 @@ prefix binding use C-\, which I think very easy to reach.
   (define-prefix-command 'kess-prefix-map)
   (bind-key* (kbd "C-\\") kess-prefix-map)
   (bind-keys :map kess-prefix-map
+             ("0" . kess-shortcut-0)
+             ("1" . kess-shortcut-1)
+             ("2" . kess-shortcut-2)
+             ("3" . kess-shortcut-3)
+             ("4" . kess-shortcut-4)
+             ("5" . kess-shortcut-5)
+             ("6" . kess-shortcut-6)
+             ("7" . kess-shortcut-7)
+             ("8" . kess-shortcut-8)
+             ("9" . kess-shortcut-9)
+
              ("C-." . describe-personal-keybindings)
              ("\\" . whitespace-mode)
              ("C-\\" . kess-delete-other-windows)
