@@ -87,7 +87,9 @@ These're packages I think is essential.
 #+END_SRC
 *** undo-tree
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree :config (global-undo-tree-mode))
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode 1))
 #+END_SRC
 *** company
 #+BEGIN_SRC emacs-lisp
@@ -562,18 +564,18 @@ More dig into omnisharp-emacs.
 #+END_SRC
 ** mmm-mode setup
 #+BEGIN_SRC emacs-lisp
-    (use-package mmm-mode
-      :config
-      (require 'mmm-auto)
-      (require 'mmm-erb)
-      (setq mmm-global-mode 'maybe)
-      (mmm-add-classes
-       '((eruby
-          :submode ruby-mode
-          :front "<%[=]?"
-          :back  "%>")))
+  (use-package mmm-mode
+    :config
+    (require 'mmm-auto)
+    (require 'mmm-erb)
+    (setq mmm-global-mode 'maybe)
+    (mmm-add-classes
+     '((eruby
+        :submode ruby-mode
+        :front "<%[=]?"
+        :back  "%>")))
 
-      (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb)))
+    (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb)))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
@@ -789,6 +791,18 @@ painful.
   (kess--defshortcut "kess-shortcut-7")
   (kess--defshortcut "kess-shortcut-8")
   (kess--defshortcut "kess-shortcut-9")
+
+  (defun kess--undo ()
+    (interactive)
+    (when (not undo-tree-mode)
+      (undo-tree-mode))
+    (undo-tree-undo))
+
+  (defun kess--redo ()
+    (interactive)
+    (when (not undo-tree-mode)
+      (undo-tree-mode))
+    (undo-tree-redo))
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
@@ -817,8 +831,8 @@ painful.
               ("C-=" . winner-redo)
               ("C--" . winner-undo)
 
-              ("C-z" . undo-tree-undo)
-              ("M-z" . undo-tree-redo)
+              ("C-z" . kess--undo)
+              ("M-z" . kess--redo)
               ("C-S-z" . undo-tree-visualize)
 
               ("M-Z" . zap-up-to-char)
