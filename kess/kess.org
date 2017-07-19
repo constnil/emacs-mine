@@ -235,7 +235,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         (gui-fullscreen (assoc 'GUI:fullscreen frameset-filter-alist))
         (never-fn (lambda (elt)
                     (if elt (setcdr elt :never)
-                      (push (cons elt . :never) frameset-filter-alist)))))
+                      (push (cons elt :never) frameset-filter-alist)))))
     (funcall never-fn fullscreen)
     (funcall never-fn gui-fullscreen))
 
@@ -494,7 +494,7 @@ Learn more and get used to it.
     (use-package yaml-mode)
 
     (use-package ruby-hash-syntax)
-    (use-package eruby-mode)
+    (use-package eruby-mode))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -569,13 +569,12 @@ More dig into omnisharp-emacs.
     (require 'mmm-auto)
     (require 'mmm-erb)
     (setq mmm-global-mode 'maybe)
-    (mmm-add-classes
-     '((eruby
-        :submode ruby-mode
-        :front "<%[=]?"
-        :back  "%>")))
+    (mmm-add-classes '((eruby
+                        :submode ruby-mode
+                        :front "<%[=]?"
+                        :back  "%>")))
 
-    (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb)))
+    (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
