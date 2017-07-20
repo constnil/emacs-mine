@@ -564,17 +564,12 @@ More dig into omnisharp-emacs.
 #+END_SRC
 ** mmm-mode setup
 #+BEGIN_SRC emacs-lisp
-  (use-package mmm-mode
-    :config
-    (require 'mmm-auto)
-    (require 'mmm-erb)
-    (setq mmm-global-mode 'maybe)
-    (mmm-add-classes '((eruby
-                        :submode ruby-mode
-                        :front "<%[=]?"
-                        :back  "%>")))
-
-    (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
+  ;; (use-package mmm-mode
+  ;;   :config
+  ;;   (require 'mmm-auto)
+  ;;   (require 'mmm-erb)
+  ;;   (setq mmm-global-mode 'auto)
+  ;;   (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
@@ -836,6 +831,7 @@ painful.
 
               ("M-Z" . zap-up-to-char)
 
+              ("C-x b" . ivy-switch-buffer)
               ("C-x C-f" . counsel-find-file)
               ("C-x f" . find-file-in-current-directory)
               ("M-o" . find-file-in-repository)
