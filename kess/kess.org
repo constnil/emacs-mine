@@ -210,6 +210,7 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
 
   (winner-mode 1)
   (show-paren-mode 1)
+  (electric-pair-mode 1)
   (recentf-mode 1)
   (column-number-mode 1)
   (savehist-mode 1)
