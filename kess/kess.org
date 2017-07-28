@@ -368,6 +368,10 @@ Learn more and get used to it.
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 #+END_SRC
+*** scheme
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("rkt"  . scheme-mode))
+#+END_SRC
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
