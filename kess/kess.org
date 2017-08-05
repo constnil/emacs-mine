@@ -221,26 +221,6 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
 
   (setq linum-format "%4d")
   (global-linum-mode 1)
-
-  (setq desktop-restore-frames nil
-        desktop-restore-eager 10
-        desktop-save t
-        desktop-base-file-name "desktop"
-        desktop-base-lock-name "desktop.lock"
-        desktop-path (list user-emacs-directory)
-        desktop-dirname user-emacs-directory
-        desktop-load-locked-desktop nil)
-
-  (setq frameset-filter-alist (copy-tree frameset-filter-alist))
-  (let ((fullscreen (assoc 'fullscreen frameset-filter-alist))
-        (gui-fullscreen (assoc 'GUI:fullscreen frameset-filter-alist))
-        (never-fn (lambda (elt)
-                    (if elt (setcdr elt :never)
-                      (push (cons elt :never) frameset-filter-alist)))))
-    (funcall never-fn fullscreen)
-    (funcall never-fn gui-fullscreen))
-
-  (desktop-save-mode 1)
 #+END_SRC
 ** emacs apperence
 Load faviorite theme, and since I'm still an emacs newbie, I perfer to enable
