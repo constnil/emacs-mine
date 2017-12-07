@@ -281,6 +281,7 @@ this really possible./
 
   (use-package evil-search-highlight-persist
     :config
+    (unbind-key "C-x SPC" evil-search-highlight-persist-map)
     (global-evil-search-highlight-persist t))
 #+END_SRC
 * Coding setup
@@ -914,6 +915,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
+             ("h" . evil-search-highlight-persist-remove-all)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("r" . inf-ruby)
