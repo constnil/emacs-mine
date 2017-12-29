@@ -592,8 +592,14 @@ painful.
   (add-hook 'after-init-hook
             (lambda ()
               (require 'server)
-              (unless (server-running-p)
-                (server-start))))
+              (let ((server-running (server-running-p)))
+                (message "server status: %s" server-running)
+                (unless (eq server-running t)
+                  (message "starting emacs server...")
+                  (server-start)
+                  (if (eq (server-running-p) t)
+                      (message "emacs server started!")
+                    (message "emacs server start failed!"))))))
 #+END_SRC
 * Bindings
 ** Utility functions
