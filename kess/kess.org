@@ -534,6 +534,14 @@ More dig into omnisharp-emacs.
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 #+END_SRC
+** Erlang/Elixir setup
+#+BEGIN_SRC emacs-lisp
+  (when (and erlang-root-dir (file-exists-p erlang-root-dir))
+    (use-package erlang
+      :config
+      (require 'erlang-start)))
+  (use-package alchemist)
+#+END_SRC
 ** Common coding setup
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'subword-mode)
@@ -910,6 +918,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("b" . switch-to-buffer-other-window)
              ("c" . cider-jack-in)
              ("C" . cider-jack-in-clojurescript)
+             ("e" . erlang-shell)
              ("d" . dired-other-window)
              ("f" . find-file-other-window)
              ("C-f" . flycheck-mode)
@@ -921,6 +930,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("r" . inf-ruby)
              ("R" . inf-ruby-console-auto)
              ("s" . slime)
-             ("x" . execute-extended-command)
+             ("x" . alchemist-iex-run)
+             ("X" . execute-extended-command)
              ("C-x" . smex-major-mode-commands))
 #+END_SRC
