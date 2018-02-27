@@ -889,7 +889,7 @@ painful.
              ("<C-return>" . eval-last-sexp)
              ("<M-return>" . eval-print-last-sexp))
 #+END_SRC
-** Custom prefix keymap
+** COMMENT Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
 prefix binding use C-\, which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
@@ -931,12 +931,13 @@ prefix binding use C-\, which I think very easy to reach.
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
              ("h" . evil-search-highlight-persist-remove-all)
+             ("i" . alchemist-iex-project-run)
+             ("I" . alchemist-iex-run)
              ("j" . counsel-git-grep)
              ("l" . counsel-locate)
              ("r" . inf-ruby)
              ("R" . inf-ruby-console-auto)
              ("s" . slime)
-             ("x" . alchemist-iex-run)
-             ("X" . execute-extended-command)
-             ("C-x" . smex-major-mode-commands))
+             ("x" . smex-major-mode-commands)
+             ("X" . execute-extended-command))
 #+END_SRC
