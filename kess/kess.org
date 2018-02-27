@@ -238,7 +238,6 @@ In order to be KESS, these're packages besides essential packages loaded above.
 #+BEGIN_SRC emacs-lisp
   (use-package ag :defer t)
   (use-package ack :defer t)
-  (use-package bookmark+ :defer t)
   (use-package cl-lib :config (require 'cl-lib))
   (use-package dtrt-indent
     :config
@@ -485,17 +484,38 @@ Learn more and get used to it.
 ** C# coding setup
 More dig into omnisharp-emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode :defer t)
-  (use-package omnisharp
+  (use-package csharp-mode
     :defer t
     :config
-    (setq omnisharp-server-executable-path
-          (or (and (eq system-type 'windows-nt)
-                   (expand-file-name "~/bin/omnisharp/OmniSharp.exe"))
-              (expand-file-name "~/bin/omnisharp/OmniSharp")))
-    (when (file-exists-p omnisharp-server-executable-path)
-      (add-hook 'csharp-mode-hook 'omnisharp-mode)
-      (add-to-list 'company-backends 'company-omnisharp)))
+    (use-package omnisharp
+      :config
+      (eval-after-load
+          'company
+        '(add-to-list 'company-backends 'company-omnisharp))
+
+      (add-hook 'csharp-mode-hook #'company-mode)
+      (add-hook 'csharp-mode-hook #'flycheck-mode)
+      (defun my-csharp-mode-setup ()
+        (omnisharp-mode)
+        (company-mode)
+        (flycheck-mode)
+
+        (setq indent-tabs-mode nil)
+        (setq c-syntactic-indentation t)
+        (c-set-style "ellemtel")
+        (setq c-basic-offset 4)
+        (setq truncate-lines t)
+        (setq tab-width 4)
+        (setq evil-shift-width 4)
+
+        ;;csharp-mode README.md recommends this too
+        ;;(electric-pair-mode 1)       ;; Emacs 24
+        ;;(electric-pair-local-mode 1) ;; Emacs 25
+
+        (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+        (local-set-key (kbd "C-c C-c") 'recompile))
+
+      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
 #+END_SRC
 ** TypeScript setup
 #+BEGIN_SRC emacs-lisp
