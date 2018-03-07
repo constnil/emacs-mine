@@ -12,8 +12,6 @@ Also, I'm trying to make KESS work as I expect on all my OSs:
 - Arch Linux (pacman emacs package)
 * Personal information
 I got this [[https://github.com/sachac/.emacs.d][org-babel config]] idea from [[https://github.com/sachac][Sacha Chua]] and her [[http://sachachua.com/blog/][amazing blog]].
-
-Thanks Sacha!
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Tiefeng Wu"
         user-mail-address "icebergwtf@qq.com")
@@ -297,14 +295,14 @@ this really possible./
           '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 #+END_SRC
 ** Templating
-Learn more and get used to it.
+Learn more and get used to it. (Disabled for now)
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :defer t
-    :diminish yas-minor-mode
-    :config
-    (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-    (yas-global-mode 1))
+  ;; (use-package yasnippet
+  ;;   :defer t
+  ;;   :diminish yas-minor-mode
+  ;;   :config
+  ;;   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  ;;   (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
 *** utility functions
@@ -378,6 +376,18 @@ Learn more and get used to it.
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
+  (defun kess-send-ruby-buffer-and-go ()
+    "Wrapper for `ruby-send-buffer' call and switch `inf-rub' buffer."
+    (interactive)
+    (ruby-send-buffer)
+    (ruby-switch-to-inf t))
+
+  (defun kess-send-last-ruby-sexp-and-go ()
+    "Wrapper for `ruby-send-last-sexp' call and switch to `inf-ruby' buffer."
+    (interactive)
+    (ruby-send-last-sexp)
+    (ruby-switch-to-inf t))
+
   (use-package ruby-mode
     :bind (:map ruby-mode-map
                 ("TAB" . indent-for-tab-command))
@@ -577,6 +587,7 @@ More dig into omnisharp-emacs.
     (global-color-identifiers-mode))
 #+END_SRC
 ** mmm-mode setup
+(Disabled for now)
 #+BEGIN_SRC emacs-lisp
   ;; (use-package mmm-mode
   ;;   :config
@@ -589,13 +600,14 @@ More dig into omnisharp-emacs.
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
 ** projectile
+(Disabled for now)
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :demand
-    :config
-    (projectile-global-mode)
-    (setq projectile-indexing-method 'alien
-          projectile-enable-caching t))
+  ;; (use-package projectile
+  ;;   :demand
+  ;;   :config
+  ;;   (projectile-global-mode)
+  ;;   (setq projectile-indexing-method 'alien
+  ;;         projectile-enable-caching t))
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
@@ -626,26 +638,26 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (defcustom kess-switch-black-list '("\\*.*\\*" "TAGS")
     "Regex list for filter buffer names which will be ignored while
-  switching buffer through `kess-switch-buffer'.")
+    switching buffer through `kess-switch-buffer'.")
 
   (defcustom kess-switch-white-list '("\\*Org Src .*")
     "Regex list for filter buffer names which will be allowed while
-  switching buffer through `kess-switch-buffer'.")
+    switching buffer through `kess-switch-buffer'.")
 
   (defun kess--ignore-buffer-p (buffer)
     "Match given buffer name BUFFER with all patterns in BLACKLIST.
 
-  Return t if a match is found, otherwise nil."
+    Return t if a match is found, otherwise nil."
     (cond ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-white-list) nil)
           ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-black-list) t)))
 
   (defun kess-switch-buffer (&optional prev)
     "Switch to next/previous buffer, skip buffer names matched in
-  `kess-switch-black-list' and allow those names specified in
-  `kess-switch-white-list'.
+    `kess-switch-black-list' and allow those names specified in
+    `kess-switch-white-list'.
 
-  Switch to next buffer by default, if PREV is non-nil then switch
-  to previous buffer."
+    Switch to next buffer by default, if PREV is non-nil then switch
+    to previous buffer."
     (let ((bread-crumb (buffer-name))
           (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
       (funcall switch-fn)
@@ -657,21 +669,21 @@ painful.
         (funcall switch-fn))))
 
   (defun kess-switch-next-win-or-buf (&optional force-buffer)
-    "Switch to next window when FORCE-BUFFER is nil or just one
-  window in frame, otherwise switch to next buffer.
+    "Switch to next window, if FORCE-BUFFER is not nil or just one
+    window in frame, then switch to next buffer.
 
-  When switch buffer call `kess-switch-buffer' with default
-  argument."
+    Switch buffer by calling `kess-switch-buffer' with default
+    argument."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (kess-switch-buffer)
       (other-window 1)))
 
   (defun kess-switch-prev-win-or-buf (&optional force-buffer)
-    "Switch to previous window when FORCE-BUFFER is nil or just one
-  window in frame, otherwise switch to previous buffer.
+    "Switch to previous window, if FORCE-BUFFER is not nil or just
+    one window in frame, then switch to previous buffer.
 
-  Switch buffer by call `kess-switch-buffer' with 'PREV."
+    Switch buffer by call `kess-switch-buffer' with 'PREV."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (kess-switch-buffer 'prev)
@@ -683,7 +695,9 @@ painful.
     (indent-region (point-min) (point-max) nil))
 
   (defun kess-kill-buf-or-win (&optional force-buffer)
-    "Kill current buffer or delete window (if not single window)."
+    "Kill current buffer or delete window (if not single window).
+
+    Kill buffer if FORCE-BUFFER is not nil."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (progn
@@ -695,11 +709,11 @@ painful.
   (defun kess-delete-other-windows ()
     "Delete other windows or restore to previous windows layout.
 
-  if only one window in frame then delete other windows and recenter
-  selected window.
+    if not only one window in frame then delete other windows and
+    recenter selected window.
 
-  Otherwise use `winner-undo' to restore previous windows layout
-  configurations."
+    Otherwise use `winner-undo' to restore previous windows layout
+    configurations."
     (interactive)
     (if (one-window-p 'nomini)
         (progn (setq this-command 'winner-undo)
@@ -730,8 +744,8 @@ painful.
 
   (defun kess--resize-window-height (delta)
     "Change current window height by given DELTA. Check window
-  vertical position to determin how window height needs to be
-  changed."
+    vertical position to determin how window height needs to be
+    changed."
     (if (= (nth 3 (window-pixel-edges))
            (kess--frame-pixel-height-no-mini))
         (window-resize-no-error (selected-window) (* -1 delta))
@@ -739,20 +753,20 @@ painful.
 
   (defun kess-resize-window-height-up ()
     "Wrapper for `kess-resize-window-height' function call to fit
-  the behavior 'up'."
+    the behavior 'up'."
     (interactive)
     (kess--resize-window-height -1))
 
   (defun kess-resize-window-height-down ()
     "Wrapper for `kess-resize-window-height' function call to fit
-  the behavior 'down'."
+    the behavior 'down'."
     (interactive)
     (kess--resize-window-height 1))
 
   (defun kess--resize-window-width (delta)
     "Change current window width by given DELTA. Check window
-  horizontal position to determin how window width needs to be
-  changed."
+    horizontal position to determin how window width needs to be
+    changed."
     (if (= (nth 2 (window-pixel-edges))
            (frame-pixel-width))
         (window-resize-no-error (selected-window) (* -1 delta) 'horizontal)
@@ -760,13 +774,13 @@ painful.
 
   (defun kess-resize-window-width-left ()
     "Wrapper for `kess-resize-window-width' function call to fit
-  the behavior 'left'."
+    the behavior 'left'."
     (interactive)
     (kess--resize-window-width -1))
 
   (defun kess-resize-window-width-right ()
     "Wrapper for `kess-resize-window-width' function call to fit
-  the behavior 'right'."
+    the behavior 'right'."
     (interactive)
     (kess--resize-window-width 1))
 
@@ -774,18 +788,6 @@ painful.
     "Open Emacs lisp manual info document."
     (interactive)
     (info "elisp"))
-
-  (defun kess-send-ruby-buffer-and-go ()
-    "Wrapper for `ruby-send-buffer' call and switch `inf-rub' buffer."
-    (interactive)
-    (ruby-send-buffer)
-    (ruby-switch-to-inf t))
-
-  (defun kess-send-last-ruby-sexp-and-go ()
-    "Wrapper for `ruby-send-last-sexp' call and switch to `inf-ruby' buffer."
-    (interactive)
-    (ruby-send-last-sexp)
-    (ruby-switch-to-inf t))
 
   (defmacro kess--defshortcut (name)
     (let ((symbol (intern name)))
@@ -909,7 +911,7 @@ painful.
              ("<C-return>" . eval-last-sexp)
              ("<M-return>" . eval-print-last-sexp))
 #+END_SRC
-** COMMENT Custom prefix keymap
+** Custom prefix keymap
 To not mess up with emacs's own and other package's prefix maps, my custom
 prefix binding use C-\, which I think very easy to reach.
 #+BEGIN_SRC emacs-lisp
