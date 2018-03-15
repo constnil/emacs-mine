@@ -282,7 +282,57 @@ this really possible./
     (global-evil-search-highlight-persist t))
 #+END_SRC
 * Coding setup
-** Syntax check
+** Common coding setup
+*** utilities
+#+BEGIN_SRC emacs-lisp
+  (defvar electrify-return-match
+    "[\]}\)\"]"
+    "If this regexp matches the text after the cursor, do an \"electric\"
+    return.")
+
+  (defun electrify-return-if-match (arg)
+    "If the text after the cursor matches `electrify-return-match' then
+    open and indent an empty line between the cursor and the text.  Move the
+    cursor to the new line."
+    (interactive "P")
+    (let ((case-fold-search nil))
+      (if (looking-at electrify-return-match)
+          (save-excursion (newline-and-indent)))
+      (newline arg)
+      (indent-according-to-mode)))
+
+  (defun enable-eldoc-paredit (hook)
+    "Enable `eldoc-mode' and `paredit-mode' to specified mode's HOOK"
+    (add-hook hook (lambda ()
+                     (require 'eldoc)
+                     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+                     (eldoc-add-command 'electrify-return-if-match)
+                     (eldoc-mode +1)
+                     (enable-paredit-mode))))
+#+END_SRC
+*** common setup
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'subword-mode)
+
+  (use-package paredit
+    :config
+    (autoload 'enable-paredit-mode
+      "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+    (use-package eldoc
+      :diminish eldoc-mode
+      :config
+      (enable-eldoc-paredit 'prog-mode-hook)))
+
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+  (use-package color-identifiers-mode
+    :diminish color-identifiers-mode
+    :config
+    (global-color-identifiers-mode))
+#+END_SRC
+*** syntax check
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :defer t
@@ -294,7 +344,7 @@ this really possible./
         '(custom-set-variables
           '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
 #+END_SRC
-** Templating
+*** templating
 Learn more and get used to it. (Disabled for now)
 #+BEGIN_SRC emacs-lisp
   ;; (use-package yasnippet
@@ -305,75 +355,106 @@ Learn more and get used to it. (Disabled for now)
   ;;   (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
-*** utility functions
+*** emacs-lisp
 #+BEGIN_SRC emacs-lisp
-  (defvar kess-lisp-modes
-    '(scheme emacs-lisp lisp clojure lisp-interaction slime-repl cider-repl))
-
-  (defun kess--add-lisp-mode-hook (func)
-    (dolist (x kess-lisp-modes)
-      (add-hook (intern (concat (symbol-name x) "-mode-hook")) func)))
-
   (defadvice eval-print-last-sexp
       (before ad-eval-print-last-sexp activate compile)
     (end-of-defun))
 
-  (defadvice cider-eval-print-last-sexp
-      (before ad-cider-eval-print-last-sexp activate compile)
-    (end-of-defun))
-#+END_SRC
-*** clojure
-#+BEGIN_SRC emacs-lisp
-  (use-package clojure-mode :defer t)
-  (use-package cider
-    :bind (:map cider-mode-map
-                ("M-D" . cider-eval-defun-at-point)
-                ("M-F" . cider-eval-file)
-                ("M-G" . cider-eval-region)
-                ("M-H" . cider-eval-buffer)
-                ("<C-return>" . cider-eval-last-sexp)
-                ("<M-return>" . cider-eval-print-last-sexp)))
-  (use-package clj-refactor
-    :defer t
-    :config
-    (add-hook 'clojure-mode-hook
-              (lambda ()
-                (clj-refactor-mode 1)
-                (yas-minor-mode 1)
-                (cljr-add-keybindings-with-prefix "C-c C-m"))))
+  (add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
+  (enable-eldoc-paredit 'ielm-mode-hook)
+
+  (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
+  (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
 #+END_SRC
 *** common lisp
 #+BEGIN_SRC emacs-lisp
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl")
+  (enable-eldoc-paredit 'slime-repl-mode-hook)
+
+  ;; Stop SLIME's REPL from grabbing DEL,
+  ;; which is annoying when backspacing over a '('
+  (defun override-slime-repl-bindings-with-paredit ()
+    (define-key slime-repl-mode-map
+      (read-kbd-macro paredit-backward-delete-key) nil))
+  (add-hook 'slime-repl-mode-hook
+            'override-slime-repl-bindings-with-paredit)
 #+END_SRC
 *** scheme
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("rkt"  . scheme-mode))
 #+END_SRC
-*** emacs-lisp
+*** clojure
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
-  (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
-#+END_SRC
-*** paredit
-#+BEGIN_SRC emacs-lisp
-  (use-package paredit
-    :bind (:map paredit-mode-map
-                ("C-." . paredit-forward-barf-sexp)
-                ("C-," . paredit-forward-slurp-sexp)
-                ("C-\>" . paredit-backward-barf-sexp)
-                ("C-\<" . paredit-backward-slurp-sexp))
+  (use-package clojure-mode
+    :defer t
     :config
-    (kess--add-lisp-mode-hook 'enable-paredit-mode))
+    (use-package cider
+      :bind (:map cider-mode-map
+                  ("M-D" . cider-eval-defun-at-point)
+                  ("M-F" . cider-eval-file)
+                  ("M-G" . cider-eval-region)
+                  ("M-H" . cider-eval-buffer)
+                  ("<C-return>" . cider-eval-last-sexp)
+                  ("<M-return>" . cider-eval-print-last-sexp))
+      :config
+      (defadvice cider-eval-print-last-sexp
+          (before ad-cider-eval-print-last-sexp activate compile)
+        (end-of-defun))
+      (enable-eldoc-paredit 'cider-repl-mode-hook)
+
+      (use-package clj-refactor
+        :config
+        (add-hook 'clojure-mode-hook
+                  (lambda ()
+                    (clj-refactor-mode 1)
+                    (yas-minor-mode 1)
+                    (cljr-add-keybindings-with-prefix "C-c C-m"))))))
 #+END_SRC
-*** eldoc
+** Erlang/Elixir setup
 #+BEGIN_SRC emacs-lisp
-  (use-package eldoc
-    :diminish eldoc-mode
+  (when (and erlang-root-dir (file-exists-p erlang-root-dir))
+    (use-package erlang
+      :config
+      (require 'erlang-start)))
+  (use-package alchemist)
+#+END_SRC
+** C# coding setup
+More dig into omnisharp-emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package csharp-mode
+    :defer t
     :config
-    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-    (kess--add-lisp-mode-hook (lambda () (eldoc-mode 1))))
+    (use-package omnisharp
+      :config
+      (eval-after-load
+          'company
+        '(add-to-list 'company-backends 'company-omnisharp))
+
+      (add-hook 'csharp-mode-hook #'company-mode)
+      (add-hook 'csharp-mode-hook #'flycheck-mode)
+      (defun my-csharp-mode-setup ()
+        (omnisharp-mode)
+        (company-mode)
+        (flycheck-mode)
+
+        (setq indent-tabs-mode nil)
+        (setq c-syntactic-indentation t)
+        (c-set-style "ellemtel")
+        (setq c-basic-offset 4)
+        (setq truncate-lines t)
+        (setq tab-width 4)
+        (setq evil-shift-width 4)
+
+        ;;csharp-mode README.md recommends this too
+        ;;(electric-pair-mode 1)       ;; Emacs 24
+        ;;(electric-pair-local-mode 1) ;; Emacs 25
+
+        (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+        (local-set-key (kbd "C-c C-c") 'recompile))
+
+      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
@@ -492,42 +573,6 @@ Learn more and get used to it. (Disabled for now)
     (use-package ruby-hash-syntax)
     (use-package eruby-mode))
 #+END_SRC
-** C# coding setup
-More dig into omnisharp-emacs.
-#+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode
-    :defer t
-    :config
-    (use-package omnisharp
-      :config
-      (eval-after-load
-          'company
-        '(add-to-list 'company-backends 'company-omnisharp))
-
-      (add-hook 'csharp-mode-hook #'company-mode)
-      (add-hook 'csharp-mode-hook #'flycheck-mode)
-      (defun my-csharp-mode-setup ()
-        (omnisharp-mode)
-        (company-mode)
-        (flycheck-mode)
-
-        (setq indent-tabs-mode nil)
-        (setq c-syntactic-indentation t)
-        (c-set-style "ellemtel")
-        (setq c-basic-offset 4)
-        (setq truncate-lines t)
-        (setq tab-width 4)
-        (setq evil-shift-width 4)
-
-        ;;csharp-mode README.md recommends this too
-        ;;(electric-pair-mode 1)       ;; Emacs 24
-        ;;(electric-pair-local-mode 1) ;; Emacs 25
-
-        (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
-        (local-set-key (kbd "C-c C-c") 'recompile))
-
-      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
-#+END_SRC
 ** TypeScript setup
 #+BEGIN_SRC emacs-lisp
   (use-package tide
@@ -564,28 +609,6 @@ More dig into omnisharp-emacs.
 
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-#+END_SRC
-** Erlang/Elixir setup
-#+BEGIN_SRC emacs-lisp
-  (when (and erlang-root-dir (file-exists-p erlang-root-dir))
-    (use-package erlang
-      :config
-      (require 'erlang-start)))
-  (use-package alchemist)
-#+END_SRC
-** Common coding setup
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'subword-mode)
-
-  (use-package rainbow-delimiters
-    :config
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    (kess--add-lisp-mode-hook 'rainbow-delimiters-mode))
-
-  (use-package color-identifiers-mode
-    :diminish color-identifiers-mode
-    :config
-    (global-color-identifiers-mode))
 #+END_SRC
 ** mmm-mode setup
 (Disabled for now)
@@ -823,7 +846,8 @@ painful.
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-keys ("<backspace>" . delete-backward-char))
+  (bind-keys ("<backspace>" . delete-backward-char)
+             ("RET" . electrify-return-if-match))
 
   (bind-keys* ("<C-up>" . kess-resize-window-height-up)
               ("<C-down>" . kess-resize-window-height-down)
