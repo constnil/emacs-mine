@@ -283,37 +283,6 @@ this really possible./
 #+END_SRC
 * Coding setup
 ** Common coding setup
-*** utilities
-#+BEGIN_SRC emacs-lisp
-  (defvar electrify-return-match
-    "[\]}\)\"]"
-    "If this regexp matches the text after the cursor, do an \"electric\"
-    return.")
-
-  (defun electrify-return-if-match (arg)
-    "If the text after the cursor matches `electrify-return-match' then
-    open and indent an empty line between the cursor and the text.  Move the
-    cursor to the new line."
-    (interactive "P")
-    (let ((case-fold-search nil))
-      (if (looking-at electrify-return-match)
-          (save-excursion (newline-and-indent)))
-      (newline arg)
-      (indent-according-to-mode)))
-
-  (defun enable-eldoc-paredit (hook)
-    "Enable `eldoc-mode' and `paredit-mode' to specified mode's HOOK"
-    (add-hook hook (lambda ()
-                     (require 'eldoc)
-                     (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-                     (eldoc-add-command 'electrify-return-if-match)
-                     (eldoc-mode +1)
-                     (enable-paredit-mode))))
-
-  (defun enable-smartparens (hook)
-    "Enable `smartparens-mode' to specified mode's HOOK"
-    (add-hook hook (lambda () (smartparens-mode +1))))
-#+END_SRC
 *** common setup
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook
@@ -321,17 +290,30 @@ this really possible./
               (subword-mode +1)
               (diminish 'subword-mode)))
 
+  (use-package eldoc :diminish eldoc-mode)
+
   (use-package paredit
     :diminish paredit-mode
     :config
     (autoload 'enable-paredit-mode
       "paredit" "Turn on pseudo-structural editing of Lisp code." t))
 
-  (use-package eldoc :diminish eldoc-mode)
+  (defun enable-eldoc-paredit (hook)
+    "Enable `eldoc-mode' and `paredit-mode' to specified mode's HOOK"
+    (add-hook hook
+              (lambda ()
+                (require 'eldoc)
+                (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+                (eldoc-mode +1)
+                (enable-paredit-mode))))
 
   (use-package smartparens
     :config
     (require 'smartparens-config))
+
+  (defun enable-smartparens (hook)
+    "Enable `smartparens-mode' to specified mode's HOOK"
+    (add-hook hook (lambda () (smartparens-mode +1))))
 
   (use-package rainbow-delimiters
     :config
@@ -364,16 +346,6 @@ this really possible./
       (eval-after-load 'flycheck
         '(custom-set-variables
           '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))))
-#+END_SRC
-*** templating
-Learn more and get used to it. (Disabled for now)
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package yasnippet
-  ;;   :defer t
-  ;;   :diminish yas-minor-mode
-  ;;   :config
-  ;;   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-  ;;   (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
 *** common setup
@@ -465,6 +437,8 @@ More dig into omnisharp-emacs.
 
       (add-hook 'csharp-mode-hook #'company-mode)
       (add-hook 'csharp-mode-hook #'flycheck-mode)
+      (enable-smartparens 'csharp-mode-hook)
+
       (defun my-csharp-mode-setup ()
         (omnisharp-mode)
         (company-mode)
@@ -485,8 +459,7 @@ More dig into omnisharp-emacs.
         (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
         (local-set-key (kbd "C-c C-c") 'recompile))
 
-      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
-      (enable-smartparens 'csharp-mode-hook)))
+      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
@@ -880,8 +853,7 @@ painful.
 #+END_SRC
 ** Global bindings
 #+BEGIN_SRC emacs-lisp
-  (bind-keys ("<backspace>" . delete-backward-char)
-             ("RET" . electrify-return-if-match))
+  (bind-keys ("<backspace>" . delete-backward-char))
 
   (bind-keys* ("<C-up>" . kess-resize-window-height-up)
               ("<C-down>" . kess-resize-window-height-down)
