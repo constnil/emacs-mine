@@ -313,8 +313,10 @@ this really possible./
 *** common setup
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'subword-mode)
+  (diminish 'subword-mode)
 
   (use-package paredit
+    :diminish paredit-mode
     :config
     (autoload 'enable-paredit-mode
       "paredit" "Turn on pseudo-structural editing of Lisp code." t)
@@ -335,6 +337,7 @@ this really possible./
 *** tags
 #+BEGIN_SRC emacs-lisp
   (use-package ctags-update
+    :diminish ctags-auto-update-mode
     :config
     (ctags-global-auto-update-mode)
     (setq ctags-update-prompt-create-tags nil)
