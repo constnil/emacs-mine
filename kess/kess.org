@@ -332,6 +332,16 @@ this really possible./
     :config
     (global-color-identifiers-mode))
 #+END_SRC
+*** tags
+#+BEGIN_SRC emacs-lisp
+  (use-package ctags-update
+    :config
+    (ctags-global-auto-update-mode)
+    (setq ctags-update-prompt-create-tags nil)
+    (autoload 'turn-on-ctags-auto-update-mode
+      "ctags-update" "turn on 'ctags-auto-update-mode'." t)
+    (add-hook 'prog-mode-hook 'turn-on-ctags-auto-update-mode))
+#+END_SRC
 *** syntax check
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
@@ -986,6 +996,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("r" . inf-ruby)
              ("R" . inf-ruby-console-auto)
              ("s" . slime)
+             ("t" . ctags-update)
              ("x" . smex-major-mode-commands)
              ("X" . execute-extended-command))
 #+END_SRC
