@@ -285,6 +285,7 @@ this really possible./
                 (enable-paredit-mode))))
 
   (use-package smartparens
+    :diminish smartparens-mode
     :config
     (require 'smartparens-config))
 
