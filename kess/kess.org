@@ -309,21 +309,29 @@ this really possible./
                      (eldoc-add-command 'electrify-return-if-match)
                      (eldoc-mode +1)
                      (enable-paredit-mode))))
+
+  (defun enable-smartparens (hook)
+    "Enable `smartparens-mode' to specified mode's HOOK"
+    (add-hook hook (lambda () (smartparens-mode +1))))
 #+END_SRC
 *** common setup
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'subword-mode)
-  (diminish 'subword-mode)
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (subword-mode +1)
+              (diminish 'subword-mode)))
 
   (use-package paredit
     :diminish paredit-mode
     :config
     (autoload 'enable-paredit-mode
-      "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-    (use-package eldoc
-      :diminish eldoc-mode
-      :config
-      (enable-eldoc-paredit 'prog-mode-hook)))
+      "paredit" "Turn on pseudo-structural editing of Lisp code." t))
+
+  (use-package eldoc :diminish eldoc-mode)
+
+  (use-package smartparens
+    :config
+    (require 'smartparens-config))
 
   (use-package rainbow-delimiters
     :config
@@ -368,6 +376,9 @@ Learn more and get used to it. (Disabled for now)
   ;;   (yas-global-mode 1))
 #+END_SRC
 ** Lisp coding setup
+*** common setup
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 *** emacs-lisp
 #+BEGIN_SRC emacs-lisp
   (defadvice eval-print-last-sexp
@@ -375,6 +386,9 @@ Learn more and get used to it. (Disabled for now)
     (end-of-defun))
 
   (add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
+  (enable-eldoc-paredit 'lisp-mode-hook)
+  (enable-eldoc-paredit 'lisp-interaction-mode-hook)
+  (enable-eldoc-paredit 'emacs-lisp-mode-hook)
   (enable-eldoc-paredit 'ielm-mode-hook)
 
   (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
@@ -430,8 +444,12 @@ Learn more and get used to it. (Disabled for now)
   (when (and erlang-root-dir (file-exists-p erlang-root-dir))
     (use-package erlang
       :config
-      (require 'erlang-start)))
-  (use-package alchemist)
+      (require 'erlang-start)
+      (enable-smartparens 'erlang-mode-hook)))
+
+  (use-package alchemist
+    :config
+    (enable-smartparens 'erlang-mode-hook))
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -467,7 +485,8 @@ More dig into omnisharp-emacs.
         (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
         (local-set-key (kbd "C-c C-c") 'recompile))
 
-      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
+      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+      (enable-smartparens 'csharp-mode-hook)))
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
@@ -532,6 +551,8 @@ More dig into omnisharp-emacs.
               (lambda ()
                 (set (make-local-variable 'highlight-symbol-ignore-list)
                      (list (concat "\\_<" (regexp-opt '("do" "end")) "\\_>")))))
+
+    (enable-smartparens 'ruby-mode-hook)
 
     (use-package ruby-tools
       :diminish ruby-tools-mode
