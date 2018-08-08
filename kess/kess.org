@@ -610,6 +610,10 @@ More dig into omnisharp-emacs.
   ;;   (setq mmm-global-mode 'auto)
   ;;   (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
 #+END_SRC
+** misc setup
+#+BEGIN_SRC emacs-lisp
+  (enable-smartparens 'makefile-mode-hook)
+#+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
