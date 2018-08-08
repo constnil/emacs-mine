@@ -938,6 +938,7 @@ painful.
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
+  (require 'info)
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
   (bind-keys :map org-mode-map
