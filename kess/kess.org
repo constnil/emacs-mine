@@ -558,8 +558,7 @@ More dig into omnisharp-emacs.
 
     (use-package yaml-mode)
 
-    (use-package ruby-hash-syntax)
-    (use-package eruby-mode))
+    (use-package ruby-hash-syntax))
 #+END_SRC
 ** TypeScript setup
 #+BEGIN_SRC emacs-lisp
