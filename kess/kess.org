@@ -222,6 +222,18 @@ In order to be KESS, these're packages besides essential packages loaded above.
   (use-package smex :defer t)
   (use-package popwin :config (popwin-mode 1))
 #+END_SRC
+* Shell setup
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (setq show-trailing-whitespace nil)))
+  (add-hook 'shell-mode-hook
+            (lambda ()
+              (setq show-trailing-whitespace nil)))
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (setq show-trailing-whitespace nil)))
+#+END_SRC
 * Evil-mode
 Use advice to escape from insert mode, to just use evil normal and visual
 states, for editing tasks, e.g. insert state, use regular emacs. /Don't know if
