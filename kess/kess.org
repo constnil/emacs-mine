@@ -989,13 +989,14 @@ prefix binding use C-\, which I think very easy to reach.
              ("9" . kess-shortcut-9)
 
              ("C-." . describe-personal-keybindings)
-             ("\\" . whitespace-mode)
+             ("\\" . evil-search-highlight-persist-remove-all)
              ("C-\\" . kess-delete-other-windows)
              ("/" . comment-region)
              ("C-/" . uncomment-region)
 
              ("ESC" . evil-mode)
              ("TAB" . org-force-cycle-archived)
+             ("SPC" . whitespace-mode)
 
              ("`" . kess-toggle-scratch-buffer)
              ("0" . delete-frame)
