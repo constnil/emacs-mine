@@ -163,7 +163,7 @@ Setup ido but not using it by default.
 ** better-defaults
 Use [[https://github.com/technomancy/better-defaults][better-defaults]] package as start point
 #+BEGIN_SRC emacs-lisp
-(use-package better-defaults)
+  (use-package better-defaults)
 #+END_SRC
 ** my defaults
 #+BEGIN_SRC emacs-lisp
@@ -279,34 +279,43 @@ this really possible./
               (subword-mode +1)
               (diminish 'subword-mode)))
 
-  (use-package eldoc :diminish eldoc-mode)
+  (use-package eldoc
+    :diminish eldoc-mode
+    :config
+    (add-hook 'prog-mode-hook 'eldoc-mode))
 
   (use-package paredit
-    :diminish paredit-mode
+    :ensure eldoc
     :config
     (autoload 'enable-paredit-mode
-      "paredit" "Turn on pseudo-structural editing of Lisp code." t))
-
-  (defun enable-eldoc-paredit (hook)
-    "Enable `eldoc-mode' and `paredit-mode' to specified mode's HOOK"
-    (add-hook hook
+      "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+    (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
+    (add-hook 'paredit-mode-hook
               (lambda ()
-                (require 'eldoc)
-                (eldoc-add-command 'paredit-backward-delete 'paredit-close-round)
-                (eldoc-mode +1)
-                (enable-paredit-mode))))
+                (when (and paredit-mode (bound-and-true-p smartparens-mode))
+                  (smartparens-mode -1)
+                  (smartparens-strict-mode -1))))
+    (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+    (add-hook 'scheme-mode-hook 'enable-paredit-mode)
+    (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+    (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+    (add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode))
 
   (use-package smartparens
-    :diminish smartparens-mode
     :config
-    (require 'smartparens-config))
-
-  (defun enable-smartparens (hook)
-    "Enable `smartparens-mode' to specified mode's HOOK"
-    (add-hook hook
+    (require 'smartparens-config)
+    (sp-use-smartparens-bindings)
+    (show-smartparens-global-mode)
+    (add-hook 'smartparens-mode-hook
               (lambda ()
-                (smartparens-mode +1)
-                (smartparens-strict-mode +1))))
+                (when (and smartparens-mode (bound-and-true-p paredit-mode))
+                  (disable-paredit-mode))
+                (if smartparens-mode
+                    (smartparens-strict-mode +1)
+                  (smartparens-strict-mode -1))))
+    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'org-mode-hook 'turn-on-smartparens-strict-mode))
 
   (use-package rainbow-delimiters
     :config
@@ -350,12 +359,6 @@ this really possible./
       (before ad-eval-print-last-sexp activate compile)
     (end-of-defun))
 
-  (add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
-  (enable-eldoc-paredit 'lisp-mode-hook)
-  (enable-eldoc-paredit 'lisp-interaction-mode-hook)
-  (enable-eldoc-paredit 'emacs-lisp-mode-hook)
-  (enable-eldoc-paredit 'ielm-mode-hook)
-
   (add-to-list 'auto-mode-alist '("Cask"  . emacs-lisp-mode))
   (add-to-list 'auto-mode-alist '("archive-contents" . emacs-lisp-mode))
 #+END_SRC
@@ -363,7 +366,6 @@ this really possible./
 #+BEGIN_SRC emacs-lisp
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "sbcl")
-  (enable-eldoc-paredit 'slime-repl-mode-hook)
 
   ;; Stop SLIME's REPL from grabbing DEL,
   ;; which is annoying when backspacing over a '('
@@ -382,39 +384,39 @@ this really possible./
   (use-package clojure-mode
     :defer t
     :config
-    (use-package cider
-      :bind (:map cider-mode-map
-                  ("M-D" . cider-eval-defun-at-point)
-                  ("M-F" . cider-eval-file)
-                  ("M-G" . cider-eval-region)
-                  ("M-H" . cider-eval-buffer)
-                  ("<C-return>" . cider-eval-last-sexp)
-                  ("<M-return>" . cider-eval-print-last-sexp))
-      :config
-      (defadvice cider-eval-print-last-sexp
-          (before ad-cider-eval-print-last-sexp activate compile)
-        (end-of-defun))
-      (enable-eldoc-paredit 'cider-repl-mode-hook)
+    (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode))
 
-      (use-package clj-refactor
-        :config
-        (add-hook 'clojure-mode-hook
-                  (lambda ()
-                    (clj-refactor-mode 1)
-                    (yas-minor-mode 1)
-                    (cljr-add-keybindings-with-prefix "C-c C-m"))))))
+  (use-package cider
+    :ensure clojure-mode
+    :bind (:map cider-mode-map
+                ("M-D" . cider-eval-defun-at-point)
+                ("M-F" . cider-eval-file)
+                ("M-G" . cider-eval-region)
+                ("M-H" . cider-eval-buffer)
+                ("<C-return>" . cider-eval-last-sexp)
+                ("<M-return>" . cider-eval-print-last-sexp))
+    :config
+    (defadvice cider-eval-print-last-sexp
+        (before ad-cider-eval-print-last-sexp activate compile)
+      (end-of-defun)))
+
+  (use-package clj-refactor
+    :ensure clojure-mode
+    :config
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (yas-minor-mode 1)
+                (cljr-add-keybindings-with-prefix "C-c C-m"))))
 #+END_SRC
 ** Erlang/Elixir setup
 #+BEGIN_SRC emacs-lisp
   (when (and erlang-root-dir (file-exists-p erlang-root-dir))
     (use-package erlang
       :config
-      (require 'erlang-start)
-      (enable-smartparens 'erlang-mode-hook)))
+      (require 'erlang-start)))
 
-  (use-package alchemist
-    :config
-    (enable-smartparens 'erlang-mode-hook))
+  (use-package alchemist)
 #+END_SRC
 ** C# coding setup
 More dig into omnisharp-emacs.
@@ -430,7 +432,6 @@ More dig into omnisharp-emacs.
 
       (add-hook 'csharp-mode-hook #'company-mode)
       (add-hook 'csharp-mode-hook #'flycheck-mode)
-      (enable-smartparens 'csharp-mode-hook)
 
       (defun my-csharp-mode-setup ()
         (omnisharp-mode)
@@ -470,7 +471,9 @@ More dig into omnisharp-emacs.
 
   (use-package ruby-mode
     :bind (:map ruby-mode-map
-                ("TAB" . indent-for-tab-command))
+                ("TAB" . indent-for-tab-command)
+                ("<f6>" . ruby-compilation-this-buffer)
+                ("<f7>" . ruby-compilation-this-test))
     :config
     (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
     (add-to-list 'auto-mode-alist '("\\.cap\\'" . ruby-mode))
@@ -504,10 +507,6 @@ More dig into omnisharp-emacs.
     (setq-default ruby-use-encoding-map nil
                   ruby-insert-encoding-magic-comment nil)
 
-    (bind-keys :map ruby-mode-map
-               ("<f6>" . ruby-compilation-this-buffer)
-               ("<f7>" . ruby-compilation-this-test))
-
     (add-hook 'ruby-mode-hook
               (lambda ()
                 (unless (derived-mode-p 'prog-mode)
@@ -517,8 +516,6 @@ More dig into omnisharp-emacs.
               (lambda ()
                 (set (make-local-variable 'highlight-symbol-ignore-list)
                      (list (concat "\\_<" (regexp-opt '("do" "end")) "\\_>")))))
-
-    (enable-smartparens 'ruby-mode-hook)
 
     (use-package ruby-tools
       :diminish ruby-tools-mode
@@ -577,9 +574,7 @@ More dig into omnisharp-emacs.
   (use-package tide
     :defer t
     :config
-    (use-package typescript-mode
-      :config
-      (enable-smartparens 'typescript-mode-hook))
+    (use-package typescript-mode)
 
     (add-hook 'before-save-hook 'tide-format-before-save)
     (add-hook 'typescript-mode-hook 'setup-tide-mode)
@@ -623,7 +618,6 @@ More dig into omnisharp-emacs.
 #+END_SRC
 ** misc setup
 #+BEGIN_SRC emacs-lisp
-  (enable-smartparens 'makefile-mode-hook)
 #+END_SRC
 * Project management
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
@@ -631,12 +625,12 @@ to benefit from both? (Another tough task)
 ** projectile
 (Disabled for now)
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package projectile
-  ;;   :demand
-  ;;   :config
-  ;;   (projectile-global-mode)
-  ;;   (setq projectile-indexing-method 'alien
-  ;;         projectile-enable-caching t))
+;; (use-package projectile
+;;   :demand
+;;   :config
+;;   (projectile-global-mode)
+;;   (setq projectile-indexing-method 'alien
+;;         projectile-enable-caching t))
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
@@ -670,8 +664,6 @@ to benefit from both? (Another tough task)
         org-support-shift-select t
         org-tags-column 80
         org-use-property-inheritance t)
-
-  (enable-smartparens 'org-mode-hook)
 #+END_SRC
 * Emacs server
 Start server if not already running. Properly set server to work on MSWin is
@@ -694,26 +686,26 @@ painful.
 #+BEGIN_SRC emacs-lisp
   (defcustom kess-switch-black-list '("\\*.*\\*" "TAGS")
     "Regex list for filter buffer names which will be ignored while
-    switching buffer through `kess-switch-buffer'.")
+      switching buffer through `kess-switch-buffer'.")
 
   (defcustom kess-switch-white-list '("\\*Org Src .*")
     "Regex list for filter buffer names which will be allowed while
-    switching buffer through `kess-switch-buffer'.")
+      switching buffer through `kess-switch-buffer'.")
 
   (defun kess--ignore-buffer-p (buffer)
     "Match given buffer name BUFFER with all patterns in BLACKLIST.
 
-    Return t if a match is found, otherwise nil."
+      Return t if a match is found, otherwise nil."
     (cond ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-white-list) nil)
           ((member-if (lambda (pat) (string-match-p pat buffer)) kess-switch-black-list) t)))
 
   (defun kess-switch-buffer (&optional prev)
     "Switch to next/previous buffer, skip buffer names matched in
-    `kess-switch-black-list' and allow those names specified in
-    `kess-switch-white-list'.
+      `kess-switch-black-list' and allow those names specified in
+      `kess-switch-white-list'.
 
-    Switch to next buffer by default, if PREV is non-nil then switch
-    to previous buffer."
+      Switch to next buffer by default, if PREV is non-nil then switch
+      to previous buffer."
     (let ((bread-crumb (buffer-name))
           (switch-fn (or (and prev 'previous-buffer) 'next-buffer)))
       (funcall switch-fn)
@@ -726,10 +718,10 @@ painful.
 
   (defun kess-switch-next-win-or-buf (&optional force-buffer)
     "Switch to next window, if FORCE-BUFFER is not nil or just one
-    window in frame, then switch to next buffer.
+      window in frame, then switch to next buffer.
 
-    Switch buffer by calling `kess-switch-buffer' with default
-    argument."
+      Switch buffer by calling `kess-switch-buffer' with default
+      argument."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (kess-switch-buffer)
@@ -737,9 +729,9 @@ painful.
 
   (defun kess-switch-prev-win-or-buf (&optional force-buffer)
     "Switch to previous window, if FORCE-BUFFER is not nil or just
-    one window in frame, then switch to previous buffer.
+      one window in frame, then switch to previous buffer.
 
-    Switch buffer by call `kess-switch-buffer' with 'PREV."
+      Switch buffer by call `kess-switch-buffer' with 'PREV."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (kess-switch-buffer 'prev)
@@ -753,7 +745,7 @@ painful.
   (defun kess-kill-buf-or-win (&optional force-buffer)
     "Kill current buffer or delete window (if not single window).
 
-    Kill buffer if FORCE-BUFFER is not nil."
+      Kill buffer if FORCE-BUFFER is not nil."
     (interactive "P")
     (if (or force-buffer (one-window-p 'nomini))
         (progn
@@ -765,11 +757,11 @@ painful.
   (defun kess-delete-other-windows ()
     "Delete other windows or restore to previous windows layout.
 
-    if not only one window in frame then delete other windows and
-    recenter selected window.
+      if not only one window in frame then delete other windows and
+      recenter selected window.
 
-    Otherwise use `winner-undo' to restore previous windows layout
-    configurations."
+      Otherwise use `winner-undo' to restore previous windows layout
+      configurations."
     (interactive)
     (if (one-window-p 'nomini)
         (progn (setq this-command 'winner-undo)
@@ -800,8 +792,8 @@ painful.
 
   (defun kess--resize-window-height (delta)
     "Change current window height by given DELTA. Check window
-    vertical position to determin how window height needs to be
-    changed."
+      vertical position to determin how window height needs to be
+      changed."
     (if (= (nth 3 (window-pixel-edges))
            (kess--frame-pixel-height-no-mini))
         (window-resize-no-error (selected-window) (* -1 delta))
@@ -809,20 +801,20 @@ painful.
 
   (defun kess-resize-window-height-up ()
     "Wrapper for `kess-resize-window-height' function call to fit
-    the behavior 'up'."
+      the behavior 'up'."
     (interactive)
     (kess--resize-window-height -1))
 
   (defun kess-resize-window-height-down ()
     "Wrapper for `kess-resize-window-height' function call to fit
-    the behavior 'down'."
+      the behavior 'down'."
     (interactive)
     (kess--resize-window-height 1))
 
   (defun kess--resize-window-width (delta)
     "Change current window width by given DELTA. Check window
-    horizontal position to determin how window width needs to be
-    changed."
+      horizontal position to determin how window width needs to be
+      changed."
     (if (= (nth 2 (window-pixel-edges))
            (frame-pixel-width))
         (window-resize-no-error (selected-window) (* -1 delta) 'horizontal)
@@ -830,13 +822,13 @@ painful.
 
   (defun kess-resize-window-width-left ()
     "Wrapper for `kess-resize-window-width' function call to fit
-    the behavior 'left'."
+      the behavior 'left'."
     (interactive)
     (kess--resize-window-width -1))
 
   (defun kess-resize-window-width-right ()
     "Wrapper for `kess-resize-window-width' function call to fit
-    the behavior 'right'."
+      the behavior 'right'."
     (interactive)
     (kess--resize-window-width 1))
 

@@ -33,7 +33,7 @@ up my own configuration.
   (set-language-environment 'utf-8)
   (set-locale-environment "utf-8")
 
-  ;; try load local ~/.emacs-mine.el to setup prerequests, if exists
+  ;; try load ~/.local-preset.el to setup prerequests, if exists
   (load (expand-file-name "~/.local-preset.el") 'noerror)
 
   ;; mine directory, will set to user-emacs-directory after preset loaded
