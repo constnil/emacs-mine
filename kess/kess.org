@@ -1010,7 +1010,7 @@ prefix binding use C-\, which I think very easy to reach.
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
-             ("h" . evil-search-highlight-persist-remove-all)
+;;             ("h" . evil-search-highlight-persist-remove-all)
              ("i" . alchemist-iex-project-run)
              ("I" . alchemist-iex-run)
              ("j" . counsel-git-grep)
