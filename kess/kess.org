@@ -384,6 +384,7 @@ this really possible./
   ;;   (defun geiser-save ()
   ;;     (interactive)
   ;;     (geiser-repl--write-input-ring)))
+  (add-to-list 'auto-mode-alist '("rkt"  . scheme-mode))
 #+END_SRC
 *** clojure
 #+BEGIN_SRC emacs-lisp
