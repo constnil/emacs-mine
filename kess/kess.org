@@ -377,15 +377,13 @@ this really possible./
 #+END_SRC
 *** scheme
 #+BEGIN_SRC emacs-lisp
-  (use-package geiser
-    :config
-    (require 'geiser)
-    (setq geiser-active-implementations '(racket))
-    (defun geiser-save ()
-      (interactive)
-      (geiser-repl--write-input-ring)))
-
-  (add-to-list 'auto-mode-alist '("rkt"  . scheme-mode))
+  ;; (use-package geiser
+  ;;   :config
+  ;;   (require 'geiser)
+  ;;   (setq geiser-active-implementations '(racket))
+  ;;   (defun geiser-save ()
+  ;;     (interactive)
+  ;;     (geiser-repl--write-input-ring)))
 #+END_SRC
 *** clojure
 #+BEGIN_SRC emacs-lisp
