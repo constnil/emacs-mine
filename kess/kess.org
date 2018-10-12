@@ -181,7 +181,8 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         scroll-step 1
         system-time-locale "C"
         tramp-default-method "ssh"
-        diff-switches "-u")
+        diff-switches "-u"
+        dired-dwim-target t)
 
   (winner-mode 1)
   (show-paren-mode 1)
@@ -1003,9 +1004,10 @@ prefix binding use C-\, which I think very easy to reach.
              ("b" . switch-to-buffer-other-window)
              ("c" . cider-jack-in)
              ("C" . cider-jack-in-clojurescript)
+             ("d" . wdired-change-to-wdired-mode)
+             ("D" . dired-other-window)
              ("e" . erlang-shell-display)
              ("E" . erlang-shell)
-             ("d" . dired-other-window)
              ("f" . find-file-other-window)
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
