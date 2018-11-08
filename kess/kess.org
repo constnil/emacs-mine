@@ -225,15 +225,9 @@ In order to be KESS, these're packages besides essential packages loaded above.
 #+END_SRC
 * Shell setup
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (setq show-trailing-whitespace nil)))
-  (add-hook 'shell-mode-hook
-            (lambda ()
-              (setq show-trailing-whitespace nil)))
-  (add-hook 'term-mode-hook
-            (lambda ()
-              (setq show-trailing-whitespace nil)))
+  (let ((hooks '(comint-mode-hook term-mode-hook eshell-mode-hook)))
+    (dolist (hook hooks)
+      (add-hook hook (lambda () (setq show-trailing-whitespace nil)))))
 #+END_SRC
 * Evil-mode
 Use advice to escape from insert mode, to just use evil normal and visual
