@@ -182,7 +182,8 @@ Use [[https://github.com/technomancy/better-defaults][better-defaults]] package 
         system-time-locale "C"
         tramp-default-method "ssh"
         diff-switches "-u"
-        dired-dwim-target t)
+        dired-dwim-target t
+        delete-by-moving-to-trash t)
 
   (winner-mode 1)
   (show-paren-mode 1)
