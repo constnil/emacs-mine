@@ -3,13 +3,8 @@
 #+OPTIONS: toc:4 h:4
 
 * Preface
-OK, the following configuration as *simple* as promised, but I'm trying achieve
-this goal as I'm getting more comfortable with emacs.
-
-Also, I'm trying to make KESS work as I expect on all my OSs:
-- Win7/Win10 (chocolatey emacs package)
-- Debian/Ubuntu (apt-get emacs package)
-- Arch Linux (pacman emacs package)
+OK, the following configuration is not as *simple* as promised, but I'm
+trying achieve this goal as I'm getting more comfortable with emacs.
 * Personal information
 I got this [[https://github.com/sachac/.emacs.d][org-babel config]] idea from [[https://github.com/sachac][Sacha Chua]] and her [[http://sachachua.com/blog/][amazing blog]].
 #+BEGIN_SRC emacs-lisp
@@ -66,18 +61,16 @@ my own key bindings.
   (eval-when-compile
     (require 'use-package)
     (setq use-package-always-ensure t
-          use-package-verbose t))
+	  use-package-verbose t))
 
-  ;; packages that use-package recommend
-  (use-package diminish)
-  (use-package bind-key)
+  (require 'diminish)
+  (require 'bind-key)
 #+END_SRC
 ** essential packages
-These're packages I think is essential.
+These're packages I think essential for me.
 *** no-littering
 #+BEGIN_SRC emacs-lisp
   (use-package no-littering
-    :ensure t
     :config
     (require 'recentf)
     (add-to-list 'recentf-exclude no-littering-var-directory)
@@ -86,6 +79,7 @@ These're packages I think is essential.
 *** undo-tree
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
+    :diminish undo-tree-mode
     :config
     (global-undo-tree-mode 1))
 #+END_SRC
@@ -231,9 +225,6 @@ In order to be KESS, these're packages besides essential packages loaded above.
       (add-hook hook (lambda () (setq show-trailing-whitespace nil)))))
 #+END_SRC
 * Evil-mode
-Use advice to escape from insert mode, to just use evil normal and visual
-states, for editing tasks, e.g. insert state, use regular emacs. /Don't know if
-this really possible./
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :diminish undo-tree-mode
@@ -336,7 +327,6 @@ this really possible./
 *** syntax check
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :defer t
     :diminish flycheck-mode
     :config
     (use-package flycheck-pos-tip)
@@ -373,13 +363,14 @@ this really possible./
 #+END_SRC
 *** scheme
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package geiser
-  ;;   :config
-  ;;   (require 'geiser)
-  ;;   (setq geiser-active-implementations '(racket))
-  ;;   (defun geiser-save ()
-  ;;     (interactive)
-  ;;     (geiser-repl--write-input-ring)))
+  (use-package geiser
+    :disabled
+    :config
+    (require 'geiser)
+    (setq geiser-active-implementations '(racket))
+    (defun geiser-save ()
+      (interactive)
+      (geiser-repl--write-input-ring)))
   (add-to-list 'auto-mode-alist '("rkt"  . scheme-mode))
 #+END_SRC
 *** clojure
@@ -421,42 +412,60 @@ this really possible./
 
   (use-package alchemist)
 #+END_SRC
-** C# coding setup
-More dig into omnisharp-emacs.
+** JavaScript/TypeScript setup
 #+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode
-    :defer t
+  (use-package tide
+    :demand
+    :hook ((typescript-mode . tide-setup)
+           (typescript-mode . tide-hl-identifier-mode)
+           (before-save . tide-format-before-save))
     :config
-    (use-package omnisharp
-      :config
-      (eval-after-load
-          'company
-        '(add-to-list 'company-backends 'company-omnisharp))
+    ;; aligns annotation to the right hand side
+    (setq company-tooltip-align-annotations t)
 
-      (add-hook 'csharp-mode-hook #'company-mode)
-      (add-hook 'csharp-mode-hook #'flycheck-mode)
+    (setq tide-format-options
+          '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
 
-      (defun my-csharp-mode-setup ()
-        (omnisharp-mode)
-        (company-mode)
-        (flycheck-mode)
+    (defun setup-tide-mode ()
+      (interactive)
+      (tide-setup)
+      (flycheck-mode +1)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (eldoc-mode +1)
+      (tide-hl-identifier-mode +1)
+      ;; company is an optional dependency. You have to
+      ;; install it separately via package-install
+      ;; `M-x package-install [ret] company`
+      (company-mode +1))
 
-        (setq indent-tabs-mode nil)
-        (setq c-syntactic-indentation t)
-        (c-set-style "ellemtel")
-        (setq c-basic-offset 4)
-        (setq truncate-lines t)
-        (setq tab-width 4)
-        (setq evil-shift-width 4)
+    (add-hook 'js2-mode-hook #'setup-tide-mode)
+    ;; configure javascript-tide checker to run after your default javascript checker
+    (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append))
 
-        ;;csharp-mode README.md recommends this too
-        ;;(electric-pair-mode 1)       ;; Emacs 24
-        ;;(electric-pair-local-mode 1) ;; Emacs 25
+  (use-package web-mode
+    :ensure tide
+    :config
+    (require 'web-mode)
 
-        (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
-        (local-set-key (kbd "C-c C-c") 'recompile))
+    ;; TSX
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+    (add-hook 'web-mode-hook
+              (lambda ()
+                (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                  (setup-tide-mode))))
+    ;; enable typescript-tslint checker
+    (flycheck-add-mode 'typescript-tslint 'web-mode)
 
-      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
+    ;; JSX
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+    (add-hook 'web-mode-hook
+              (lambda ()
+                (when (string-equal "jsx" (file-name-extension buffer-file-name))
+                  (setup-tide-mode))))
+    ;; configure jsx-tide checker to run after your default jsx checker
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+    )
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
@@ -572,52 +581,53 @@ More dig into omnisharp-emacs.
 
     (use-package ruby-hash-syntax))
 #+END_SRC
-** TypeScript setup
+** C# coding setup
+More dig into omnisharp-emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package tide
+  (use-package csharp-mode
     :defer t
     :config
-    (use-package typescript-mode)
-
-    (add-hook 'before-save-hook 'tide-format-before-save)
-    (add-hook 'typescript-mode-hook 'setup-tide-mode)
-
-    (use-package js2-mode
-      :defer t
+    (use-package omnisharp
       :config
-      (add-hook 'js2-mode-hook 'setup-tide-mode)
-      (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)))
+      (eval-after-load
+          'company
+        '(add-to-list 'company-backends 'company-omnisharp))
 
-  (use-package web-mode
-    :ensure tide
-    :defer t
-    :config
-    (defun setup-tide-mode ()
-      (interactive)
-      (tide-setup)
-      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-      (eldoc-mode +1)
-      (tide-hl-identifier-mode +1)
-      (company-mode +1))
+      (add-hook 'csharp-mode-hook #'company-mode)
+      (add-hook 'csharp-mode-hook #'flycheck-mode)
 
-    (add-hook 'web-mode-hook
-              (lambda ()
-                (when (member (file-name-extension buffer-file-name)
-                              '("tsx" "jsx"))
-                  (setup-tide-mode)))))
+      (defun my-csharp-mode-setup ()
+        (omnisharp-mode)
+        (company-mode)
+        (flycheck-mode)
 
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+        (setq indent-tabs-mode nil)
+        (setq c-syntactic-indentation t)
+        (c-set-style "ellemtel")
+        (setq c-basic-offset 4)
+        (setq truncate-lines t)
+        (setq tab-width 4)
+        (setq evil-shift-width 4)
+
+        ;;csharp-mode README.md recommends this too
+        ;;(electric-pair-mode 1)       ;; Emacs 24
+        ;;(electric-pair-local-mode 1) ;; Emacs 25
+
+        (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+        (local-set-key (kbd "C-c C-c") 'recompile))
+
+      (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)))
 #+END_SRC
 ** mmm-mode setup
 (Disabled for now)
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package mmm-mode
-  ;;   :config
-  ;;   (require 'mmm-auto)
-  ;;   (require 'mmm-erb)
-  ;;   (setq mmm-global-mode 'auto)
-  ;;   (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
+  (use-package mmm-mode
+    :disabled
+    :config
+    (require 'mmm-auto)
+    (require 'mmm-erb)
+    (setq mmm-global-mode 'auto)
+    (mmm-add-mode-ext-class 'csharp-mode "\\.cs\\.erb$" 'erb))
 #+END_SRC
 ** misc setup
 #+BEGIN_SRC emacs-lisp
@@ -626,14 +636,14 @@ More dig into omnisharp-emacs.
 Just start to use them, maybe one of both is enough? Or maybe a wrapper package
 to benefit from both? (Another tough task)
 ** projectile
-(Disabled for now)
 #+BEGIN_SRC emacs-lisp
-;; (use-package projectile
-;;   :demand
-;;   :config
-;;   (projectile-global-mode)
-;;   (setq projectile-indexing-method 'alien
-;;         projectile-enable-caching t))
+  (use-package projectile
+    :disabled
+    :demand
+    :config
+    (projectile-global-mode)
+    (setq projectile-indexing-method 'alien
+          projectile-enable-caching t))
 #+END_SRC
 ** find-file-in-project
 #+BEGIN_SRC emacs-lisp
@@ -947,6 +957,9 @@ painful.
   (require 'info)
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
+  (bind-keys :map tide-mode-map
+             ("M-." . tide-jump-to-definition)
+             ("M-," . tide-jump-back))
   (bind-keys :map org-mode-map
              ("M-n" . org-down-element)
              ("M-p" . org-up-element))
