@@ -957,16 +957,14 @@ painful.
               ("C-h u" . counsel-unicode-char)
 
               ("C-h R" . yari)
-              ("C-j" . kess-open-line-below))
+              ("C-j" . open-line)
+              ("C-o" . kess-open-line-below))
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
   (require 'info)
   (bind-keys :map Info-mode-map
              ("<backspace>" . Info-scroll-down))
-  ;; (bind-keys :map tide-mode-map
-  ;;            ("M-." . tide-jump-to-definition)
-  ;;            ("M-," . tide-jump-back))
   (bind-keys :map org-mode-map
              ("M-n" . org-down-element)
              ("M-p" . org-up-element))
