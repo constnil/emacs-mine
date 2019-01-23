@@ -845,6 +845,12 @@ painful.
     (interactive)
     (kess--resize-window-width 1))
 
+  (defun kess-open-line-below ()
+    "Insert a newline and move point to it use `indent-new-comment-line'."
+    (interactive)
+    (move-end-of-line 1)
+    (indent-new-comment-line))
+
   (defun kess-info-elisp-manual ()
     "Open Emacs lisp manual info document."
     (interactive)
@@ -869,13 +875,13 @@ painful.
   (kess--defshortcut "kess-shortcut-8")
   (kess--defshortcut "kess-shortcut-9")
 
-  (defun kess--undo ()
+  (defun kess-undo ()
     (interactive)
     (when (not undo-tree-mode)
       (undo-tree-mode))
     (undo-tree-undo))
 
-  (defun kess--redo ()
+  (defun kess-redo ()
     (interactive)
     (when (not undo-tree-mode)
       (undo-tree-mode))
@@ -908,8 +914,8 @@ painful.
               ("C-=" . winner-redo)
               ("C--" . winner-undo)
 
-              ("C-z" . kess--undo)
-              ("M-z" . kess--redo)
+              ("C-z" . kess-undo)
+              ("M-z" . kess-redo)
               ("C-S-z" . undo-tree-visualize)
 
               ("M-Z" . zap-up-to-char)
@@ -950,7 +956,8 @@ painful.
               ("C-h L" . counsel-find-library)
               ("C-h u" . counsel-unicode-char)
 
-              ("C-h R" . yari))
+              ("C-h R" . yari)
+              ("C-j" . kess-open-line-below))
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
