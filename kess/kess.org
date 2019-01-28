@@ -63,8 +63,8 @@ my own key bindings.
     (setq use-package-always-ensure t
 	  use-package-verbose t))
 
-  (require 'diminish)
-  (require 'bind-key)
+  (use-package diminish)
+  (use-package bind-key)
 #+END_SRC
 ** essential packages
 These're packages I think essential for me.
@@ -414,11 +414,18 @@ In order to be KESS, these're packages besides essential packages loaded above.
 #+END_SRC
 ** JavaScript/TypeScript setup
 #+BEGIN_SRC emacs-lisp
+  (setq js-indent-level 2
+        css-indent-offset 2)
+
+  (use-package js2-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
   (use-package tide
     :demand
     :hook ((typescript-mode . tide-setup)
-           (typescript-mode . tide-hl-identifier-mode)
-           (before-save . tide-format-before-save))
+           ;; (before-save . tide-format-before-save)
+           (typescript-mode . tide-hl-identifier-mode))
     :config
     ;; aligns annotation to the right hand side
     (setq company-tooltip-align-annotations t)
@@ -464,8 +471,7 @@ In order to be KESS, these're packages besides essential packages loaded above.
                   (setup-tide-mode))))
     ;; configure jsx-tide checker to run after your default jsx checker
     (flycheck-add-mode 'javascript-eslint 'web-mode)
-    (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-    )
+    (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append))
 #+END_SRC
 ** Ruby coding setup
 #+BEGIN_SRC emacs-lisp
