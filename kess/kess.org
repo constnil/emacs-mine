@@ -851,11 +851,17 @@ painful.
     (interactive)
     (kess--resize-window-width 1))
 
-  (defun kess-open-line-below ()
-    "Insert a newline and move point to it use `indent-new-comment-line'."
+  (defun kess-open-line-below-or-append (&optional ch)
+    "Insert a newline and move point to it use
+  `indent-new-comment-line' when CH is nil, otherwise append CH to
+  the end of line."
     (interactive)
     (move-end-of-line 1)
-    (indent-new-comment-line))
+    (let ((tr (buffer-substring-no-properties (point) (1- (point)))))
+      (if (and (stringp ch) (eq 1 (length ch)))
+          (unless (string-equal ch tr)
+            (insert ch))
+        (indent-new-comment-line))))
 
   (defun kess-info-elisp-manual ()
     "Open Emacs lisp manual info document."
@@ -911,12 +917,6 @@ painful.
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
 
-              ("C-'" . set-mark-command)
-              ("C-;" . mark-sexp)
-
-              ("C-/" . swiper)
-              ("C-`" . ivy-resume)
-
               ("C-=" . winner-redo)
               ("C--" . winner-undo)
 
@@ -963,8 +963,16 @@ painful.
               ("C-h u" . counsel-unicode-char)
 
               ("C-h R" . yari)
-              ("C-j" . open-line)
-              ("C-o" . kess-open-line-below))
+              ("C-j" . mark-sexp)
+              ("C-S-o" . open-line)
+              ("C-o" . kess-open-line-below-or-append)
+
+              ("C-'" . set-mark-command)
+              ("C-;" . (lambda () (interactive) (kess-open-line-below-or-append ";")))
+              ("C-," . (lambda () (interactive) (kess-open-line-below-or-append ",")))
+
+              ("C-/" . swiper)
+              ("C-`" . ivy-resume))
 #+END_SRC
 ** Mode-map bindings
 #+BEGIN_SRC emacs-lisp
