@@ -851,16 +851,16 @@ painful.
     (interactive)
     (kess--resize-window-width 1))
 
-  (defun kess-open-line-below-or-append (&optional ch)
+  (defun kess-open-line-below-or-append (&optional str)
     "Insert a newline and move point to it use
-  `indent-new-comment-line' when CH is nil, otherwise append CH to
+  `indent-new-comment-line' when STR is nil, otherwise append STR to
   the end of line."
     (interactive)
     (move-end-of-line 1)
-    (let ((tr (buffer-substring-no-properties (point) (1- (point)))))
-      (if (and (stringp ch) (eq 1 (length ch)))
-          (unless (string-equal ch tr)
-            (insert ch))
+    (let ((tr (buffer-substring-no-properties (point) (- (point) (length str)))))
+      (if (stringp str)
+          (unless (string-equal str tr)
+            (insert str))
         (indent-new-comment-line))))
 
   (defun kess-info-elisp-manual ()
@@ -917,9 +917,6 @@ painful.
               ("M-x" . counsel-M-x)
               ("M-X" . smex)
 
-              ("C-=" . winner-redo)
-              ("C--" . winner-undo)
-
               ("C-z" . kess-undo)
               ("M-z" . kess-redo)
               ("C-S-z" . undo-tree-visualize)
@@ -968,10 +965,14 @@ painful.
               ("C-o" . kess-open-line-below-or-append)
 
               ("C-'" . set-mark-command)
+
               ("C-;" . (lambda () (interactive) (kess-open-line-below-or-append ";")))
               ("C-," . (lambda () (interactive) (kess-open-line-below-or-append ",")))
+              ("C-/" . (lambda () (interactive) (kess-open-line-below-or-append ".")))
+              ("C-=" . (lambda () (interactive) (kess-open-line-below-or-append " = ")))
+              ("C--" . (lambda () (interactive) (kess-open-line-below-or-append " ->")))
 
-              ("C-/" . swiper)
+              ("C-?" . swiper)
               ("C-`" . ivy-resume))
 #+END_SRC
 ** Mode-map bindings
@@ -1039,7 +1040,6 @@ prefix binding use C-\, which I think very easy to reach.
              ("C-f" . flycheck-mode)
              ("g" . counsel-ag)
              ("C-g" . counsel-git)
-;;             ("h" . evil-search-highlight-persist-remove-all)
              ("i" . alchemist-iex-project-run)
              ("I" . alchemist-iex-run)
              ("j" . counsel-git-grep)
@@ -1049,5 +1049,8 @@ prefix binding use C-\, which I think very easy to reach.
              ("s" . slime)
              ("t" . ctags-update)
              ("x" . smex-major-mode-commands)
-             ("X" . execute-extended-command))
+             ("X" . execute-extended-command)
+
+             ("=" . winner-redo)
+             ("-" . winner-undo))
 #+END_SRC

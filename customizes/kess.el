@@ -10,7 +10,7 @@
     ("\\*Org Src" "\\*cider-repl" "\\*slime-repl" "\\*ruby")))
  '(package-selected-packages
    (quote
-    (jsx-tide flycheck-add flycheck-add-mode tide-mode js2-mode flycheck-pos-tip find-file-in-repository rainbow-delimiters evil-search-highlight-persist evil-numbers evil-leader evil-visualstar popwin smex fullframe geiser smartparens-config erlang alchemist ctags-update smartparens find-file-in-project eruby-mode yard-mode ruby-electric ruby-tools enh-ruby-mode mmm-mode yaml-mode bundler goto-gem yari rspec-mode robe ruby-compilation ruby-hash-syntax projectile color-identifiers-mode web-mode tide omnisharp csharp-mode clj-refactor cider clojure-mode yasnippet flycheck evil dtrt-indent bookmark+ ack ag better-defaults counsel ido-ubiquitous company undo-tree no-littering))))
+    (use-package jsx-tide flycheck-add flycheck-add-mode tide-mode js2-mode flycheck-pos-tip find-file-in-repository rainbow-delimiters evil-search-highlight-persist evil-numbers evil-leader evil-visualstar popwin smex fullframe geiser smartparens-config erlang alchemist ctags-update smartparens find-file-in-project eruby-mode yard-mode ruby-electric ruby-tools enh-ruby-mode mmm-mode yaml-mode bundler goto-gem yari rspec-mode robe ruby-compilation ruby-hash-syntax projectile color-identifiers-mode web-mode tide omnisharp csharp-mode clj-refactor cider clojure-mode yasnippet flycheck evil dtrt-indent bookmark+ ack ag better-defaults counsel ido-ubiquitous company undo-tree no-littering))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
