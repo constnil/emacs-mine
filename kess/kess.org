@@ -394,14 +394,14 @@ In order to be KESS, these're packages besides essential packages loaded above.
         (before ad-cider-eval-print-last-sexp activate compile)
       (end-of-defun)))
 
-  (use-package clj-refactor
-    :ensure clojure-mode
-    :config
-    (add-hook 'clojure-mode-hook
-              (lambda ()
-                (clj-refactor-mode 1)
-                (yas-minor-mode 1)
-                (cljr-add-keybindings-with-prefix "C-c C-m"))))
+  ;; (use-package clj-refactor
+  ;;   :ensure clojure-mode
+  ;;   :config
+  ;;   (add-hook 'clojure-mode-hook
+  ;;             (lambda ()
+  ;;               (clj-refactor-mode 1)
+  ;;               (yas-minor-mode 1)
+  ;;               (cljr-add-keybindings-with-prefix "C-c C-m"))))
 #+END_SRC
 ** Erlang/Elixir setup
 #+BEGIN_SRC emacs-lisp
