@@ -5,11 +5,11 @@
 * Preface
 /(This was originally my emacs configuration backup repository)/
 
-There are hundreds of emacs config repositories on github (prelude, emacs-live,
-spacemacs, etc). I started by including them individualy as submodule (so called
-"/emacs mine/") and load particular /mine/ specified by environment variable
-$EMACS_MINE on emacs startup. Thus I can easily taste and study them, not mess
-up my own configuration.
+There are hundreds of emacs config repositories on github (prelude,
+emacs-live, spacemacs, etc). I started by including them individualy
+as submodule (so called "/emacs mine/") and load particular /mine/
+specified by environment variable $EMACS_MINE on emacs startup. Thus I
+can easily taste and study them, not mess up my own configuration.
 * My custom aliases
 ** Mine prefix aliases
 - alias prelude='export EMACS_MINE="prelude" && echo "launch emacs using mine: $EMACS_MINE" &&'
@@ -36,9 +36,6 @@ up my own configuration.
   ;; try load ~/.local-preset.el to setup prerequests, if exists
   (load (expand-file-name "~/.local-preset.el") 'noerror)
 
-  ;; mine directory, will set to user-emacs-directory after preset loaded
-  (defvar mine-root-path nil)
-
   ;; default mine init file, if mine's init file is not named init.el,
   ;; then change it in mine preset file, see below.
   (defvar mine-init-file "init.el")
@@ -51,33 +48,31 @@ up my own configuration.
   ;;  sachac - Sacha Chua's .emacs.d (https://github.com/sachac/.emacs.d.git)
   ;; purcell - Steve Purcell's emacs.d (https://github.com/purcell/emacs.d.git)
   ;;    kess - default "Keep Emacs Simple, Stupid" mine
-  (let* ((mines '("live" "prelude" "space" "bling" "sachac" "purcell" "kess"))
-         (env (getenv "EMACS_MINE"))
-         (mine (or (and (member env mines) env) "kess")))
+  (let* ((mines '("live" "prelude" "space" "bling" "sachac" "purcell" "kess" "constnil"))
+	 (env (getenv "EMACS_MINE"))
+	 (mine (or (and (member env mines) env) "constnil")))
     (setenv "EMACS_MINE" mine)  ; In case environment variable not set
     (message "start mine \"%s\" loading on %s" mine system-type)
 
-    (setq user-emacs-directory
-          (file-name-as-directory (expand-file-name user-emacs-directory)))
-    (setq mine-root-path
-          (file-name-as-directory (expand-file-name mine user-emacs-directory)))
-    (message "root path of mine \"%s\": %s" mine mine-root-path)
+    (let ((user-dir (file-name-as-directory user-emacs-directory)))
+      (setq user-emacs-directory
+	    (file-name-as-directory (concat user-dir "mines/" mine))))
+    (message "root path of mine \"%s\": %s" mine user-emacs-directory)
 
     ;; Set package.el 'elpa' directory to mine's own elpa directory
     (require 'package)
-    (setq package-user-dir (concat mine-root-path "elpa/"))
+    (setq package-user-dir (concat user-emacs-directory "elpa/"))
 
     ;; Load mine preset file if exists.
     ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-    (load (concat user-emacs-directory "presets/" mine ".el") 'noerror)
+    (load (concat user-emacs-directory mine ".el") 'noerror)
 
     ;; Set emacs customize file for loading mine.
-    (setq custom-file (concat user-emacs-directory "customizes/" mine ".el"))
+    (setq custom-file (concat user-emacs-directory mine "-custom.el"))
     (load custom-file 'noerror)
 
-    ;; HACK: Change user-emacs-directory to mine's root directory, and load it
-    (setq user-emacs-directory mine-root-path)
-    (load (concat user-emacs-directory mine-init-file))
+    (setq user-init-file (concat user-emacs-directory mine-init-file))
+    (load user-init-file)
 
     ;; Personal settings can be set in ~/.personal.el file, if exists.
     (load (expand-file-name "~/.personal.el") 'noerror)

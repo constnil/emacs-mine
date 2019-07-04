@@ -1,3 +1,4 @@
+mines/
 backups/
 elpa/
 eshell/
@@ -22,12 +23,6 @@ projectile*
 *~
 \#*#
 .#*
-bling/
-live/
-prelude/
-sachac/
-space/
-purcell/
 *.jar
 history
 network-security.data
