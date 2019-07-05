@@ -2,85 +2,61 @@
 #+STARTUP: content
 #+OPTIONS: toc:4 h:4
 
-* Preface
-/(This was originally my emacs configuration backup repository)/
+* Description
+  /(This was originally my emacs configuration backup repository)/
 
-There are hundreds of emacs config repositories on github (prelude,
-emacs-live, spacemacs, etc). I started by including them individualy
-as submodule (so called "/emacs mine/") and load particular /mine/
-specified by environment variable $EMACS_MINE on emacs startup. Thus I
-can easily taste and study them, not mess up my own configuration.
-* My custom aliases
-** Mine prefix aliases
-- alias prelude='export EMACS_MINE="prelude" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias live='export EMACS_MINE="live" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias space='export EMACS_MINE="space" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias bling='export EMACS_MINE="bling" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias sachac='export EMACS_MINE="sachac" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias purcell='export EMACS_MINE="purcell" && echo "launch emacs using mine: $EMACS_MINE" &&'
-- alias kess='export EMACS_MINE="kess" && echo "launch emacs using mine: $EMACS_MINE" &&'
-** Emacs command aliases, they can be used follow above mine prefixes, like 'prelude emacw'
-- alias vanilla='emacs -nw -q'
-- alias emacn='emacs -nw'
-- alias emacd='emacs -nw --debug-init'
-- alias emawd='emacs --debug-init &'
-- alias emact='emacsclient -t'
-- alias emacw='emacsclient -c &'
-* Mine Loading
-#+BEGIN_SRC emacs-lisp
-  ;; Common setting and variables
-  (prefer-coding-system 'utf-8)
-  (set-language-environment 'utf-8)
-  (set-locale-environment "utf-8")
+  There are hundreds of emacs config repositories on github (prelude,
+  emacs-live, spacemacs, etc). I started by including them individualy
+  as submodule (so called "/emacs mine/") and load particular /mine/
+  specified by environment variable $EMACS_MINE on emacs startup. Thus I
+  can easily taste and study them, not mess up my own configuration.
 
-  ;; try load ~/.local-preset.el to setup prerequests, if exists
-  (load (expand-file-name "~/.local-preset.el") 'noerror)
+  Since the environment variable solution is not convenient, new
+  /mine/ management and selection is WIP.
+* Boot your emacs
+** Load mine list
+   #+BEGIN_SRC emacs-lisp
+     ;; Common setting and variables
+     (prefer-coding-system 'utf-8)
+     (set-language-environment 'utf-8)
+     (set-locale-environment "utf-8")
 
-  ;; default mine init file, if mine's init file is not named init.el,
-  ;; then change it in mine preset file, see below.
-  (defvar mine-init-file "init.el")
+     (let ((mine "constnil"))
+       (message "start mine \"%s\" loading on %s" mine system-type)
 
-  ;; Load specified mines from the following list:
-  ;;    live - emacs-live (https://github.com/overtone/emacs-live.git)
-  ;; prelude - prelude (https://github.com/bbatsov/prelude.git)
-  ;;   space - spacemacs (https://github.com/syl20bnr/spacemacs.git)
-  ;;   bling - bling's KISS dotemacs (https://github.com/bling/dotemacs.git)
-  ;;  sachac - Sacha Chua's .emacs.d (https://github.com/sachac/.emacs.d.git)
-  ;; purcell - Steve Purcell's emacs.d (https://github.com/purcell/emacs.d.git)
-  ;;    kess - default "Keep Emacs Simple, Stupid" mine
-  (let* ((mines '("live" "prelude" "space" "bling" "sachac" "purcell" "kess" "constnil"))
-	 (env (getenv "EMACS_MINE"))
-	 (mine (or (and (member env mines) env) "constnil")))
-    (setenv "EMACS_MINE" mine)  ; In case environment variable not set
-    (message "start mine \"%s\" loading on %s" mine system-type)
+       ;; try load ~/.local-preset.el to setup prerequests, if exists
+       (load (expand-file-name "~/.preset.el") 'noerror)
 
-    (let ((user-dir (file-name-as-directory user-emacs-directory)))
-      (setq user-emacs-directory
-	    (file-name-as-directory (concat user-dir "mines/" mine))))
-    (message "root path of mine \"%s\": %s" mine user-emacs-directory)
+       (let ((user-dir (file-name-as-directory user-emacs-directory)))
+	 (setq user-emacs-directory
+	       (file-name-as-directory (concat user-dir "mines/" mine))))
+       (message "root path of mine \"%s\": %s" mine user-emacs-directory)
 
-    ;; Set package.el 'elpa' directory to mine's own elpa directory
-    (require 'package)
-    (setq package-user-dir (concat user-emacs-directory "elpa/"))
+       ;; Set package.el 'elpa' directory to mine's own elpa directory
+       (require 'package)
+       (setq package-user-dir (concat user-emacs-directory "elpa/"))
 
-    ;; Load mine preset file if exists.
-    ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-    (load (concat user-emacs-directory mine ".el") 'noerror)
+       ;; Load mine preset file if exists.
+       ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
+       (load (concat user-emacs-directory mine ".el") 'noerror)
 
-    ;; Set emacs customize file for loading mine.
-    (setq custom-file (concat user-emacs-directory mine "-custom.el"))
-    (load custom-file 'noerror)
+       ;; Set emacs customize file for loading mine.
+       (setq custom-file (concat user-emacs-directory ".custom.el"))
+       (load custom-file 'noerror)
 
-    (setq user-init-file (concat user-emacs-directory mine-init-file))
-    (load user-init-file)
+       (let ((init-file (concat user-emacs-directory mine ".el")))
+	 (if (file-exists-p init-file)
+	     (setq user-init-file init-file)
+	   (setq user-init-file (concat user-emacs-directory "init.el"))))
+       (load user-init-file)
 
-    ;; Personal settings can be set in ~/.personal.el file, if exists.
-    (load (expand-file-name "~/.personal.el") 'noerror)
+       ;; Personal settings can be set in ~/.personal.el file, if exists.
+       (load (expand-file-name "~/.personal.el") 'noerror)
 
-    ;; Load post set file if exists. I use it to specify machine local
-    ;; settings such as font size, frame size, etc.
-    (load (expand-file-name "~/.local-postset.el") 'noerror)
+       ;; Load post set file if exists. I use it to specify machine local
+       ;; settings such as font size, frame size, etc.
+       (load (expand-file-name "~/.postset.el") 'noerror)
 
-    ;; Done
-    (message "mine \"%s\" loaded" mine))
-#+END_SRC
+       ;; Done
+       (message "mine \"%s\" loaded" mine))
+   #+END_SRC
