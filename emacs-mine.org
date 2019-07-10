@@ -14,49 +14,48 @@
   Since the environment variable solution is not convenient, new
   /mine/ management and selection is WIP.
 * Boot your emacs
-** Load mine list
+** Load mine list and selection UI
+   - read all directories from ~/.emacs.d/mines as mine list
+   - display a somewhat selection UI to choose particular mine to load
+   - remember last used mine as default choice, if not choose by user
+     after few seconds automaticly use it
+     #+BEGIN_SRC emacs-lisp
+      (setq mine "constnil")
+      (message "start mine \"%s\" loading on %s" mine system-type)
+     #+END_SRC
+** Loading process
    #+BEGIN_SRC emacs-lisp
-     ;; Common setting and variables
-     (prefer-coding-system 'utf-8)
-     (set-language-environment 'utf-8)
-     (set-locale-environment "utf-8")
+     ;; ~/.preset.el is the place to put pre configs on local machine
+     (load (expand-file-name "~/.preset.el") 'noerror)
 
-     (let ((mine "constnil"))
-       (message "start mine \"%s\" loading on %s" mine system-type)
+     (setq user-emacs-directory (concat user-emacs-directory "mines/" mine "/"))
+     (message "set root path of \"%s\": %s" mine user-emacs-directory)
 
-       ;; try load ~/.local-preset.el to setup prerequests, if exists
-       (load (expand-file-name "~/.preset.el") 'noerror)
+     (require 'package)
+     (setq package-user-dir (concat user-emacs-directory "elpa/"))
+     (message "set 'elpa' directory of \"%s\": %s" mine package-user-dir)
 
-       (let ((user-dir (file-name-as-directory user-emacs-directory)))
-	 (setq user-emacs-directory
-	       (file-name-as-directory (concat user-dir "mines/" mine))))
-       (message "root path of mine \"%s\": %s" mine user-emacs-directory)
+     ;; Load mine preset file if exists.
+     ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
+     (load (concat user-emacs-directory mine ".el") 'noerror)
 
-       ;; Set package.el 'elpa' directory to mine's own elpa directory
-       (require 'package)
-       (setq package-user-dir (concat user-emacs-directory "elpa/"))
+     ;; Set emacs customize file for loading mine.
+     (setq custom-file (concat user-emacs-directory ".custom.el"))
+     (load custom-file 'noerror)
 
-       ;; Load mine preset file if exists.
-       ;; Opportunity for adjusting given mine, such as change mine-init-file, etc.
-       (load (concat user-emacs-directory mine ".el") 'noerror)
+     (let ((init-file (concat user-emacs-directory mine ".el")))
+       (if (file-exists-p init-file)
+	   (setq user-init-file init-file)
+	 (setq user-init-file (concat user-emacs-directory "init.el"))))
+     (load user-init-file)
 
-       ;; Set emacs customize file for loading mine.
-       (setq custom-file (concat user-emacs-directory ".custom.el"))
-       (load custom-file 'noerror)
+     ;; Personal settings can be set in ~/.personal.el file, if exists.
+     (load (expand-file-name "~/.personal.el") 'noerror)
 
-       (let ((init-file (concat user-emacs-directory mine ".el")))
-	 (if (file-exists-p init-file)
-	     (setq user-init-file init-file)
-	   (setq user-init-file (concat user-emacs-directory "init.el"))))
-       (load user-init-file)
+     ;; Load post set file if exists. I use it to specify machine local
+     ;; settings such as font size, frame size, etc.
+     (load (expand-file-name "~/.postset.el") 'noerror)
 
-       ;; Personal settings can be set in ~/.personal.el file, if exists.
-       (load (expand-file-name "~/.personal.el") 'noerror)
-
-       ;; Load post set file if exists. I use it to specify machine local
-       ;; settings such as font size, frame size, etc.
-       (load (expand-file-name "~/.postset.el") 'noerror)
-
-       ;; Done
-       (message "mine \"%s\" loaded" mine))
+     ;; Done
+     (message "mine \"%s\" loaded" mine)
    #+END_SRC
