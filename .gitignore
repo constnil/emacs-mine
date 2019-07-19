@@ -26,3 +26,4 @@ projectile*
 *.jar
 history
 network-security.data
+.custom.el

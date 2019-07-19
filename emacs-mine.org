@@ -8,8 +8,9 @@
   There are hundreds of emacs config repositories on github (prelude,
   emacs-live, spacemacs, etc). I started by including them individualy
   as submodule (so called "/emacs mine/") and load particular /mine/
-  specified by environment variable $EMACS_MINE on emacs startup. Thus I
-  can easily taste and study them, not mess up my own configuration.
+  specified by environment variable $EMACS_MINE on emacs startup. Thus
+  I can easily taste and study them, not mess up with my own emacs
+  configuration.
 
   Since the environment variable solution is not convenient, new
   /mine/ management and selection is WIP.
