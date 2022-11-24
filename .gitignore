@@ -27,3 +27,5 @@ projectile*
 history
 network-security.data
 .custom.el
+
+.local*.el
