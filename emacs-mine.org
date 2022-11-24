@@ -3,79 +3,78 @@
 #+OPTIONS: toc:4 h:4
 
 * Description
-  /(This was originally my emacs configuration backup repository)/
+/(This was originally my emacs configuration backup repository)/
 
-  There are hundreds of emacs config repositories on github (prelude,
-  emacs-live, spacemacs, etc). I started by including them individualy
-  as submodule (so called "/emacs mine/") and load particular /mine/
-  specified by environment variable $EMACS_MINE on emacs startup. Thus
-  I can easily taste and study them, not mess up with my own emacs
-  configuration.
+There are hundreds of emacs config repositories on github (prelude,
+emacs-live, spacemacs, etc). I started by including them individualy
+as submodule (so called "/emacs mine/") and load particular /mine/
+specified by environment variable $EMACS_MINE on emacs startup. Thus
+I can easily taste and study them, not mess up with my own emacs
+configuration.
 
-  Since the environment variable solution is not convenient, new
-  /mine/ management and selection is WIP.
+Since the environment variable solution is not convenient, new
+/mine/ management and selection is WIP.
 * Boot your emacs
 ** Load mine list and selection UI
-   - read all directories from ~/.emacs.d/mines as mine list
-   - display a somewhat selection UI to choose particular mine to load
-   - remember last used mine as default choice, if not choose by user
-     after few seconds automaticly use it
-     #+BEGIN_SRC emacs-lisp
-      (setq mine "constnil")
-      (message "start mine \"%s\" loading on %s" mine system-type)
-     #+END_SRC
+- read all directories from ~/.emacs.d/mines as mine list
+- display a somewhat selection UI to choose particular mine to load
+- remember last used mine as default choice, if not choose by user
+  after few seconds automaticly use it
+  #+BEGIN_SRC emacs-lisp
+    (setq mine "kess")
+    (message "start mine \"%s\" loading on %s" mine system-type)
+  #+END_SRC
 ** Loading process
-   #+BEGIN_SRC emacs-lisp
-     ;; The ~/.preset.el is the place to put pre configs only on local
-     ;; machine to set up things like bin or lib paths, environment
-     ;; variables, etc.
-     ;;
-     ;; Files like this (see personal.el and .postset.el below) mean to not
-     ;; put into version control, because they're settings for local
-     ;; machine.
-     (load (expand-file-name "~/.preset.el") 'noerror)
+#+BEGIN_SRC emacs-lisp
+  ;; Files (.preset.el and .postset.el) mean to not put into version
+  ;; control, because they're settings for local machine.
+  ;;
+  ;; .preset.el is loaded BEFORE specified 'MINE' config
+  ;; .postset.el is loaded AFTER specified 'MINE' config
+  (let* ((preset-config (concat user-emacs-directory ".local-preset.el"))
+         (post-config (concat user-emacs-directory ".local-postset.el"))
+         (mine-root (concat user-emacs-directory "mines/" mine "/"))
+         (mine-tweak (concat user-emacs-directory "mines/" mine ".el"))
+         (mine-init (concat mine-root "init.el"))
+         (mine-custom (concat mine-root ".custom.el"))
+         (elpa-root (concat mine-root "elpa/")))
 
-     ;; Change `user-emacs-directory' to specific directory - the mine's
-     ;; root. Ideally all other files and directories generated or saved by
-     ;; particular mine is under this directory.
-     ;;
-     ;; Typically, this will be ~/.emacs.d/mines/WHAT-EVER-MINE/
-     (setq user-emacs-directory (concat user-emacs-directory "mines/" mine "/"))
-     (message "set root path of \"%s\": %s" mine user-emacs-directory)
+    ;; To set up things like load paths, environment variables, etc.
+    (load (expand-file-name preset-config) 'noerror)
 
-     ;; Set `package-user-dir' as sub-directory under mine's root. For the
-     ;; sake of disk space saving this is not a good practice, but I perfer
-     ;; isolation between mines more than disk spaces.
-     ;;
-     ;; But I found someone's configuration will hard code these paths,
-     ;; need find a way to prevent that.
-     (require 'package)
-     (setq package-user-dir (concat user-emacs-directory "elpa/"))
-     (message "set 'elpa' directory of \"%s\": %s" mine package-user-dir)
+    ;; Change `user-emacs-directory' to the MINE's root. Ideally all
+    ;; other files and directories generated or saved by particular mine
+    ;; is under this directory.
+    ;;
+    ;; Typically, this will be ~/.emacs.d/mines/WHAT-EVER-MINE/
+    (setq user-emacs-directory mine-root)
+    (message "set root path of \"%s\": %s" mine user-emacs-directory)
 
-     ;; Set emacs `custom-file' for current mine, again, isolation between
-     ;; others.
-     (setq custom-file (concat user-emacs-directory ".custom.el"))
-     (load custom-file 'noerror)
+    ;; Set `package-user-dir' as sub-directory under mine's root. For
+    ;; the sake of disk space saving this is not a good practice, but I
+    ;; perfer isolation between mines more than disk spaces.
+    ;;
+    ;; Besides, I found someone's configuration will hard code these
+    ;; paths, need find a way to prevent that.
+    (require 'package)
+    (setq package-user-dir (expand-file-name elpa-root))
+    (message "set 'elpa' directory of \"%s\": %s" mine package-user-dir)
 
-     ;; Basically 'init.el' is the default file name to load a mine, but
-     ;; here will try 'MINE.el' first to offer oppotunity to do some 'work
-     ;; around' work in some special cases. If 'MINE.el' file not provided
-     ;; then try 'init.el'.
-     (let ((init-file (concat user-emacs-directory mine ".el")))
-       (if (file-exists-p init-file)
-	   (setq user-init-file init-file)
-	 (setq user-init-file (concat user-emacs-directory "init.el"))))
-     (load user-init-file)
+    ;; Set emacs `custom-file' for current MINE, isolate to others.
+    (setq custom-file (expand-file-name mine-custom))
+    (load custom-file 'noerror)
 
-     ;; After mine completely loaded, load '~/.personal.el' to setup
-     ;; personal settings, if exists.
-     (load (expand-file-name "~/.personal.el") 'noerror)
+    ;; Set `user-init-file' to 'MINE-ROOT/init.el' first, then try load
+    ;; tweak file first, if exists.
+    (setq user-init-file (expand-file-name mine-init))
+    (load mine-tweak 'noerror)
+    ;; Finally, try load the MINE
+    (load user-init-file)
 
-     ;; Finally, load post set file if exists. I use it to specify machine local
-     ;; settings such as font size, frame size, etc.
-     (load (expand-file-name "~/.postset.el") 'noerror)
+    ;; After mine success loaded, load post set file if exists. I use it
+    ;; to specify machine local settings such as font, frame size, etc.
+    (load (expand-file-name post-config) 'noerror)
 
-     ;; Done
-     (message "mine \"%s\" loaded" mine)
-   #+END_SRC
+    ;; Done
+    (message "mine \"%s\" loaded" mine))
+#+END_SRC
